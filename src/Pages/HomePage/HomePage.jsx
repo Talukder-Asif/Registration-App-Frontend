@@ -1,3 +1,9 @@
+const handleSubmit = (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const name_bengali = form.name_bengali.value;
+  console.log(name_bengali);
+};
 const HomePage = () => {
   return (
     <div className="py-10 px-3">
@@ -5,105 +11,127 @@ const HomePage = () => {
         <h2 className="text-3xl pb-1 text-center">Registration Form</h2>
         <div className="p-0.5 mb-4 w-1/3 text-center m-auto bg-black"></div>
       </div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="grid gap-6 mb-6 md:grid-cols-2">
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Name in Bengali
+              Name in Bengali <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               name="name_bengali"
+              required
               className="block w-full rounded-md border p-2.5"
             />
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Name in English
+              Name in English <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               name="name_english"
+              required
               className="block w-full rounded-md border p-2.5"
             />
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Date of Birth
+              Date of Birth <span className="text-red-500">*</span>
             </label>
             <input
               type="date"
+              required
               name="dob"
               className="block w-full rounded-md border p-2.5"
             />
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Nationality
+              Nationality <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
+              required
               name="nationality"
+              defaultValue={"Bangladeshi"}
               className="block w-full rounded-md border p-2.5"
             />
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Religion
+              Religion <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               name="religion"
+              required
               className="block w-full rounded-md border p-2.5"
             />
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Blood Group
+              Blood Group <span className="text-red-500">*</span>
             </label>
-            <input
-              type="text"
+            <select
               name="blood_group"
+              required
+              defaultValue={"Pick one"}
               className="block w-full rounded-md border p-2.5"
-            />
+            >
+              <option disabled>Pick one</option>
+              <option>A+</option>
+              <option>A-</option>
+              <option>B+</option>
+              <option>B-</option>
+              <option>AB+</option>
+              <option>AB-</option>
+              <option>O+</option>
+              <option>O-</option>
+            </select>
           </div>
+
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Father&apos;s Name
+              Father&apos;s Name <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               name="father_name"
+              required
               className="block w-full rounded-md border p-2.5"
             />
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Mother&apos;s Name
+              Mother&apos;s Name <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               name="mother_name"
+              required
               className="block w-full rounded-md border p-2.5"
             />
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Occupation
+              Occupation <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               name="occupation"
+              required
               className="block w-full rounded-md border p-2.5"
             />
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Phone Number
+              Phone Number <span className="text-red-500">*</span>
             </label>
             <input
               type="tel"
               name="phone"
+              required
               className="block w-full rounded-md border p-2.5"
             />
           </div>
@@ -119,20 +147,31 @@ const HomePage = () => {
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Family Member
+              Family Members Attending <span className="text-red-500">*</span>
             </label>
-            <input
-              type="text"
-              name="family_member"
+            <select
+              name="family_members"
+              required
+              defaultValue={"Pick one"}
               className="block w-full rounded-md border p-2.5"
-            />
+            >
+              <option disabled>Pick one</option>
+              <option>Participant only: (2000 BDT)</option>
+              <option>1 family member will attend (2500)</option>
+              <option>2 family members will attend (3000)</option>
+              <option>3 family members will attend (3500)</option>
+              <option>4 family members will attend (4000)</option>
+              <option>5 family members will attend (4500)</option>
+              <option>6 family members will attend (5000)</option>
+            </select>
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Address
+              Address <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
+              required
               name="address"
               className="block w-full rounded-md border p-2.5"
             />
@@ -149,81 +188,61 @@ const HomePage = () => {
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Driver
+              Driver <span className="text-red-500">*</span>
+            </label>
+            <select
+              name="driver"
+              required
+              defaultValue={"Pick one"}
+              className="block w-full rounded-md border p-2.5"
+            >
+              <option disabled>Pick one</option>
+              <option>Yes (500 Taka will charged)</option>
+              <option>No</option>
+            </select>
+          </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium text-gray-900">
+              img
             </label>
             <input
               type="text"
-              name="driver"
+              name="image"
               className="block w-full rounded-md border p-2.5"
             />
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Registration Fee (Self)
+              T-Shirt Size <span className="text-red-500">*</span>
             </label>
-            <input
-              type="number"
-              name="reg_fee_self"
+            <select
+              name="t-shirt"
+              required
+              defaultValue={"Pick one"}
               className="block w-full rounded-md border p-2.5"
-            />
+            >
+              <option disabled>Pick one</option>
+              <option>S</option>
+              <option>M</option>
+              <option>XL</option>
+            </select>
           </div>
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">
-              Registration Fee (Family)
+              Total Fee
             </label>
-            <input
-              type="number"
-              name="reg_fee_family"
-              className="block w-full rounded-md border p-2.5"
-            />
-          </div>
-          <div>
-            <label className="block mb-2 text-sm font-medium text-gray-900">
-              Registration Fee (Driver)
-            </label>
-            <input
-              type="number"
-              name="reg_fee_driver"
-              className="block w-full rounded-md border p-2.5"
-            />
-          </div>
-          <div>
-            <label className="block mb-2 text-sm font-medium text-gray-900">
-              T-Shirt Size
-            </label>
-            <div className="flex gap-2">
-              <label>
-                <input type="radio" name="tshirt_size" value="S" /> S
-              </label>
-              <label>
-                <input type="radio" name="tshirt_size" value="M" /> M
-              </label>
-              <label>
-                <input type="radio" name="tshirt_size" value="L" /> L
-              </label>
-              <label>
-                <input type="radio" name="tshirt_size" value="XL" /> XL
-              </label>
-            </div>
-          </div>
-          <div>
-            <label className="block mb-2 text-sm font-medium text-gray-900">
-              Date
-            </label>
-            <input
-              type="date"
-              name="date"
-              className="block w-full rounded-md border p-2.5"
-            />
+            <h3 className="text-2xl">2000 BDT</h3>
           </div>
         </div>
 
-        <button
-          type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5"
-        >
-          Submit
-        </button>
+        <div className="m-auto text-center">
+          <button
+            type="submit"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium w-1/2 rounded-lg text-sm px-5  py-2.5"
+          >
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );

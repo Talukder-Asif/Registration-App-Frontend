@@ -47,20 +47,20 @@ const AuthProvider = ({ children }) => {
     };
   }, []);
 
-//   Update USer
-const updateUser = (name, image) =>{
-  setUserLoad(true);
+  //   Update USer
+  const updateUser = (name, image) => {
+    setUserLoad(true);
     return updateProfile(auth.currentUser, {
-        displayName: name, photoURL: image
-      })
-}
+      displayName: name,
+      photoURL: image,
+    });
+  };
 
-
-//   signout
-const signout = () =>{
-  setUserLoad(true);
+  //   signout
+  const signout = () => {
+    setUserLoad(true);
     return signOut(auth);
-}
+  };
 
   const authentications = {
     googleSignin,
@@ -69,7 +69,7 @@ const signout = () =>{
     User,
     signout,
     updateUser,
-    UserLoad
+    UserLoad,
   };
   return (
     <AuthContext.Provider value={authentications}>
