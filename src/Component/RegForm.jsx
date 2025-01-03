@@ -37,7 +37,7 @@ const RegForm = ({ id }) => {
 
           <div className="flex gap-5 justify-around">
             <p>Serial No:</p>
-            <div className="text-xl text-white bg-[#2A2E97] p-2 px-3 rounded-t-xl">
+            <div className="text-2xl text-white bg-[#2A2E97] p-2 px-3 rounded-t-xl">
               রেজিস্ট্রেশন ফর্ম
             </div>
             <p>Office Copy</p>
@@ -54,7 +54,7 @@ const RegForm = ({ id }) => {
             opacity: "1",
           }}
         >
-          <div className="bg-[#f2f8fff3] text-xl">
+          <div className="bg-[#f2f8fff3] text-base">
             <div
               style={{
                 border: "1px solid #ccc",
@@ -68,80 +68,80 @@ const RegForm = ({ id }) => {
                 <p className="text-center">Photo</p>
               </div>
               {/* Participant ID */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "5px" }} className="flex gap-5">
                 <label className="w-48 my-1 py-1">Participant ID</label>
                 <label className="my-1 py-1">
                   {participant?.participantId}
                 </label>
               </div>
               {/* Name In Bengali */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "5px" }} className="flex gap-5">
                 <label className="w-48 my-1 py-1">Name In Bengali</label>
                 <label className="my-1 py-1">{participant?.name_bengali}</label>
               </div>
 
               {/* Name in English */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "5px" }} className="flex gap-5">
                 <label className="w-48 my-1 py-1">Name in English:</label>
                 <label className="my-1 py-1">{participant?.name_english}</label>
               </div>
 
               {/* Date of Birth */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "5px" }} className="flex gap-5">
                 <label className="w-48 my-1 py-1">Date of Birth:</label>
                 <label className="my-1 py-1">{participant?.dob}</label>
               </div>
 
               {/* Nationality */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "5px" }} className="flex gap-5">
                 <label className="w-48 my-1 py-1">Nationality:</label>
                 <label className="my-1 py-1">{participant?.nationality}</label>
               </div>
 
               {/* Religion */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "5px" }} className="flex gap-5">
                 <label className="w-48 my-1 py-1">Religion:</label>
                 <label className="my-1 py-1">{participant?.religion}</label>
               </div>
 
               {/* Blood Group */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "5px" }} className="flex gap-5">
                 <label className="w-48 my-1 py-1">Blood Group:</label>
                 <label className="my-1 py-1">{participant?.blood_group}</label>
               </div>
 
               {/* Father's Name */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "5px" }} className="flex gap-5">
                 <label className="w-48 my-1 py-1">Father&apos;s Name:</label>
                 <label className="my-1 py-1">{participant?.father_name}</label>
               </div>
 
               {/* Mother's Name */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "5px" }} className="flex gap-5">
                 <label className="w-48 my-1 py-1">Mother&apos;s Name:</label>
                 <label className="my-1 py-1">{participant?.mother_name}</label>
               </div>
 
               {/* Occupation */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "5px" }} className="flex gap-5">
                 <label className="w-48 my-1 py-1">Occupation:</label>
                 <label className="my-1 py-1">{participant?.occupation}</label>
               </div>
 
               {/* Phone Number */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "5px" }} className="flex gap-5">
                 <label className="w-48 my-1 py-1">Phone Number:</label>
                 <label className="my-1 py-1">{participant?.phone}</label>
               </div>
 
               {/* Email */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "5px" }} className="flex gap-5">
                 <label className="w-48 my-1 py-1">Email:</label>
                 <label className="my-1 py-1">{participant?.email}</label>
               </div>
 
               {/* Family Members Attending */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "5px" }} className="flex gap-5">
                 <label className="w-48 my-1 py-1">Family Members:</label>
                 <label className="my-1 py-1">
                   {participant?.family_members}
@@ -149,19 +149,19 @@ const RegForm = ({ id }) => {
               </div>
 
               {/* Address */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "5px" }} className="flex gap-5">
                 <label className="w-48 my-1 py-1">Address:</label>
                 <label className="my-1 py-1">{participant?.address}</label>
               </div>
 
               <div className="flex justify-between gap-2">
                 {/* SSC Passing year */}
-                <div style={{ marginBottom: "10px" }} className="flex gap-5">
+                <div style={{ marginBottom: "5px" }} className="flex gap-5">
                   <label className="w-48 my-1 py-1">SSC Passing Year:</label>
                   <label className="my-1 py-1">{participant?.ssc_year}</label>
                 </div>
                 {/* Driver Attending */}
-                <div style={{ marginBottom: "10px" }} className="flex gap-5">
+                <div style={{ marginBottom: "5px" }} className="flex gap-5">
                   <label className="w-16 mt-2">Driver:</label>
                   <label className=" w-auto mt-2">{participant?.driver}</label>
                 </div>
@@ -182,7 +182,7 @@ const RegForm = ({ id }) => {
               </div>
 
               {/* T-Shirt Size */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "5px" }} className="flex gap-5">
                 <label className="w-48 my-1 py-1">T-Shirt Size:</label>
                 <label className="my-1 py-1">{participant?.tshirt_size}</label>
               </div>
@@ -202,6 +202,74 @@ const RegForm = ({ id }) => {
         </div>
 
         {/* Footer Part */}
+        <div
+          style={{
+            backgroundImage: `url(${leftLogo})`,
+            backgroundSize: "40% auto",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center center",
+            opacity: "1",
+          }}
+        >
+          <div className="bg-[#fff5f8e2] min-h-96">
+            <div className="px-10 space-y-3 text-base">
+              <div className="flex gap-5 mb-5 justify-around">
+                <p className="mt-4">Serial No:</p>
+                <div className="text-2xl text-white bg-[#2A2E97] p-2 px-3 rounded-b-xl">
+                  রেজিস্ট্রেশন ফর্ম
+                </div>
+                <p className="mt-4">Student Copy</p>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+                <div className="flex gap-10 justify-start">
+                  <label>Registration ID:</label>
+                  <label>{participant?.participantId}</label>
+                </div>
+                <div className="flex gap-10 justify-center">
+                  <label>T-Shirt Size:</label>
+                  <label>{participant?.tshirt_size}</label>
+                </div>
+                <div className="flex gap-10 justify-end">
+                  <label>Date:</label>
+                  <label>{participant?.Date}</label>
+                </div>
+              </div>
+
+              <div>
+                <div style={{ marginBottom: "5px" }} className="flex ">
+                  <label className="w-48 my-1 py-1">Name In Bengali:</label>
+                  <label className="my-1 py-1">
+                    {participant?.name_bengali}
+                  </label>
+                </div>
+
+                {/* Name in English */}
+                <div style={{ marginBottom: "5px" }} className="flex">
+                  <label className="w-48 my-1 py-1">Name in English:</label>
+                  <label className="my-1 py-1">
+                    {participant?.name_english}
+                  </label>
+                </div>
+              </div>
+
+              <div className="grid mt-4 grid-cols-3 gap-4">
+                <div className="flex gap-4 justify-start">
+                  <label>Registration Fee self:</label>
+                  <label>{participant?.participantFee}</label>
+                </div>
+                <div className="flex gap-4 justify-start">
+                  <label>Registration Fee Family:</label>
+                  <label>{participant?.familyFee}</label>
+                </div>
+                <div className="flex gap-4 justify-start">
+                  <label>Registration Fee Driver:</label>
+                  <label>{participant?.driverFee}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
