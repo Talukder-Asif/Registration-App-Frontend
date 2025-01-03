@@ -7,6 +7,7 @@ import HomePage from "../Pages/HomePage/HomePage";
 import Signin from "../Pages/SIgnin/Signin";
 import Profile from "../Pages/User/Profile";
 import AdminRoute from "./AdminRoute";
+import PreviewPage from "../Pages/HomePage/PreviewPage";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage></HomePage>,
+      },
+      {
+        path: "/preview/:id",
+        element: <PreviewPage></PreviewPage>,
       },
       {
         path: "/signin",

@@ -1,10 +1,73 @@
-const handleSubmit = (e) => {
-  e.preventDefault();
-  const form = e.target;
-  const name_bengali = form.name_bengali.value;
-  console.log(name_bengali);
-};
+import { useState } from "react";
+import useAxios from "../../Hooks/useAxios";
+
 const HomePage = () => {
+  const participantFee = 2000;
+  const [driverFee, setDriverFee] = useState(0);
+  const [familyFee, setFamilyFee] = useState(0);
+
+  const handleFamily = (e) => {
+    const member = e.target.value;
+    setFamilyFee(parseInt(member));
+  };
+
+  const handleDriver = (e) => {
+    const driver = e.target.value;
+    setDriverFee(parseInt(driver));
+  };
+  const axiosPublic = useAxios();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const name_bengali = form.name_bengali.value;
+    const name_english = form.name_english.value;
+    const dob = form.dob.value;
+    const nationality = form.nationality.value;
+    const religion = form.religion.value;
+    const blood_group = form.blood_group.value;
+    const father_name = form.father_name.value;
+    const mother_name = form.mother_name.value;
+    const occupation = form.occupation.value;
+    const phone = form.phone.value;
+    const email = form.email.value;
+    const family_members = parseInt(form.family_members.value) / 500;
+    const address = form.address.value;
+    const ssc_year = form.ssc_year.value;
+    const driver = form.driver.value === "500" ? "Yes" : "No";
+    const image = form.image.value;
+    const tshirt_size = form["t-shirt"].value;
+
+    // Log all form values
+    const participantData = {
+      name_bengali,
+      name_english,
+      dob,
+      nationality,
+      religion,
+      blood_group,
+      father_name,
+      mother_name,
+      occupation,
+      phone,
+      email,
+      family_members,
+      address,
+      ssc_year,
+      driver,
+      image,
+      tshirt_size,
+      familyFee,
+      driverFee,
+      participantFee,
+      total_fee: participantFee + familyFee + driverFee,
+      status: "Unpaid",
+    };
+
+    axiosPublic.post("/participant", participantData).then((res) => {
+      console.log(res.data);
+    });
+  };
+
   return (
     <div className="py-10 px-3">
       <div>
@@ -76,10 +139,8 @@ const HomePage = () => {
             <select
               name="blood_group"
               required
-              defaultValue={"Pick one"}
               className="block w-full rounded-md border p-2.5"
             >
-              <option disabled>Pick one</option>
               <option>A+</option>
               <option>A-</option>
               <option>B+</option>
@@ -152,17 +213,26 @@ const HomePage = () => {
             <select
               name="family_members"
               required
-              defaultValue={"Pick one"}
               className="block w-full rounded-md border p-2.5"
+              onChange={handleFamily}
             >
-              <option disabled>Pick one</option>
-              <option>Participant only: (2000 BDT)</option>
-              <option>1 family member will attend (2500)</option>
-              <option>2 family members will attend (3000)</option>
-              <option>3 family members will attend (3500)</option>
-              <option>4 family members will attend (4000)</option>
-              <option>5 family members will attend (4500)</option>
-              <option>6 family members will attend (5000)</option>
+              <option value={"00"}>Participant only: (2000 BDT)</option>
+              <option value={"500"}>1 family member will attend (2500)</option>
+              <option value={"1000"}>
+                2 family members will attend (3000)
+              </option>
+              <option value={"1500"}>
+                3 family members will attend (3500)
+              </option>
+              <option value={"2000"}>
+                4 family members will attend (4000)
+              </option>
+              <option value={"2500"}>
+                5 family members will attend (4500)
+              </option>
+              <option value={"3000"}>
+                6 family members will attend (5000)
+              </option>
             </select>
           </div>
           <div>
@@ -193,12 +263,11 @@ const HomePage = () => {
             <select
               name="driver"
               required
-              defaultValue={"Pick one"}
               className="block w-full rounded-md border p-2.5"
+              onChange={handleDriver}
             >
-              <option disabled>Pick one</option>
-              <option>Yes (500 Taka will charged)</option>
-              <option>No</option>
+              <option value={"00"}>No</option>
+              <option value={"500"}>Yes (500 Taka will charged)</option>
             </select>
           </div>
           <div>
@@ -218,10 +287,8 @@ const HomePage = () => {
             <select
               name="t-shirt"
               required
-              defaultValue={"Pick one"}
               className="block w-full rounded-md border p-2.5"
             >
-              <option disabled>Pick one</option>
               <option>S</option>
               <option>M</option>
               <option>XL</option>
@@ -231,7 +298,9 @@ const HomePage = () => {
             <label className="block mb-2 text-sm font-medium text-gray-900">
               Total Fee
             </label>
-            <h3 className="text-2xl">2000 BDT</h3>
+            <h3 className="text-2xl">
+              {participantFee + driverFee + familyFee} BDT
+            </h3>
           </div>
         </div>
 
