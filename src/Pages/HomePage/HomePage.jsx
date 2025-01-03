@@ -1,10 +1,14 @@
 import { useState } from "react";
 import useAxios from "../../Hooks/useAxios";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const today = new Date();
+  const formattedDate = today.toISOString().split("T")[0];
   const participantFee = 2000;
   const [driverFee, setDriverFee] = useState(0);
   const [familyFee, setFamilyFee] = useState(0);
+  const navigate = useNavigate();
 
   const handleFamily = (e) => {
     const member = e.target.value;
@@ -30,15 +34,16 @@ const HomePage = () => {
     const occupation = form.occupation.value;
     const phone = form.phone.value;
     const email = form.email.value;
-    const family_members = parseInt(form.family_members.value) / 500;
     const address = form.address.value;
     const ssc_year = form.ssc_year.value;
     const driver = form.driver.value === "500" ? "Yes" : "No";
     const image = form.image.value;
+    const family_members = parseInt(form.family_members.value) / 500;
     const tshirt_size = form["t-shirt"].value;
 
     // Log all form values
     const participantData = {
+      participantId: null,
       name_bengali,
       name_english,
       dob,
@@ -50,21 +55,26 @@ const HomePage = () => {
       occupation,
       phone,
       email,
-      family_members,
       address,
       ssc_year,
-      driver,
       image,
       tshirt_size,
-      familyFee,
-      driverFee,
       participantFee,
+      family_members,
+      familyFee,
+      driver,
+      driverFee,
       total_fee: participantFee + familyFee + driverFee,
+      Date: formattedDate,
       status: "Unpaid",
     };
 
     axiosPublic.post("/participant", participantData).then((res) => {
-      console.log(res.data);
+      if (res.data.status === 500) {
+        console.log(res.data.message);
+      } else {
+        navigate(`/preview/${res.data.participantId}`);
+      }
     });
   };
 

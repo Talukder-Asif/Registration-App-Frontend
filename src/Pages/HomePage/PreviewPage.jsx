@@ -1,5 +1,13 @@
+import { useParams } from "react-router-dom";
+import RegForm from "../../Component/RegForm";
 const PreviewPage = () => {
-  return <div></div>;
+  const params = useParams();
+  console.log(params.id);
+  return (
+    <div>
+      <RegForm id={params.id}></RegForm>
+    </div>
+  );
 };
 
 export default PreviewPage;
