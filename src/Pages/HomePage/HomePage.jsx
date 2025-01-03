@@ -88,276 +88,39 @@ const HomePage = () => {
   };
 
   return (
-    // <div className="py-10 px-3 max-w-screen-xl m-auto">
-    //   <div>
-    //     <h2 className="text-3xl pb-1 text-center">Registration Form</h2>
-    //     <div className="p-0.5 mb-4 w-1/3 text-center m-auto bg-black"></div>
-    //   </div>
-    //   <form onSubmit={handleSubmit}>
-    //     <div className="grid gap-6 mb-6 md:grid-cols-2">
-    //       <div>
-    //         <label className="block mb-2 text-sm font-medium text-gray-900">
-    //           Name in Bengali <span className="text-red-500">*</span>
-    //         </label>
-    //         <input
-    //           type="text"
-    //           name="name_bengali"
-    //           required
-    //           className="block w-full rounded-md border p-2.5"
-    //         />
-    //       </div>
-    //       <div>
-    //         <label className="block mb-2 text-sm font-medium text-gray-900">
-    //           Name in English <span className="text-red-500">*</span>
-    //         </label>
-    //         <input
-    //           type="text"
-    //           name="name_english"
-    //           required
-    //           className="block w-full rounded-md border p-2.5"
-    //         />
-    //       </div>
-    //       <div>
-    //         <label className="block mb-2 text-sm font-medium text-gray-900">
-    //           Date of Birth <span className="text-red-500">*</span>
-    //         </label>
-    //         <input
-    //           type="date"
-    //           required
-    //           name="dob"
-    //           className="block w-full rounded-md border p-2.5"
-    //         />
-    //       </div>
-    //       <div>
-    //         <label className="block mb-2 text-sm font-medium text-gray-900">
-    //           Nationality <span className="text-red-500">*</span>
-    //         </label>
-    //         <input
-    //           type="text"
-    //           required
-    //           name="nationality"
-    //           defaultValue={"Bangladeshi"}
-    //           className="block w-full rounded-md border p-2.5"
-    //         />
-    //       </div>
-    //       <div>
-    //         <label className="block mb-2 text-sm font-medium text-gray-900">
-    //           Religion <span className="text-red-500">*</span>
-    //         </label>
-    //         <input
-    //           type="text"
-    //           name="religion"
-    //           required
-    //           className="block w-full rounded-md border p-2.5"
-    //         />
-    //       </div>
-    //       <div>
-    //         <label className="block mb-2 text-sm font-medium text-gray-900">
-    //           Blood Group <span className="text-red-500">*</span>
-    //         </label>
-    //         <select
-    //           name="blood_group"
-    //           required
-    //           className="block w-full rounded-md border p-2.5"
-    //         >
-    //           <option>A+</option>
-    //           <option>A-</option>
-    //           <option>B+</option>
-    //           <option>B-</option>
-    //           <option>AB+</option>
-    //           <option>AB-</option>
-    //           <option>O+</option>
-    //           <option>O-</option>
-    //         </select>
-    //       </div>
-
-    //       <div>
-    //         <label className="block mb-2 text-sm font-medium text-gray-900">
-    //           Father&apos;s Name <span className="text-red-500">*</span>
-    //         </label>
-    //         <input
-    //           type="text"
-    //           name="father_name"
-    //           required
-    //           className="block w-full rounded-md border p-2.5"
-    //         />
-    //       </div>
-    //       <div>
-    //         <label className="block mb-2 text-sm font-medium text-gray-900">
-    //           Mother&apos;s Name <span className="text-red-500">*</span>
-    //         </label>
-    //         <input
-    //           type="text"
-    //           name="mother_name"
-    //           required
-    //           className="block w-full rounded-md border p-2.5"
-    //         />
-    //       </div>
-    //       <div>
-    //         <label className="block mb-2 text-sm font-medium text-gray-900">
-    //           Occupation <span className="text-red-500">*</span>
-    //         </label>
-    //         <input
-    //           type="text"
-    //           name="occupation"
-    //           required
-    //           className="block w-full rounded-md border p-2.5"
-    //         />
-    //       </div>
-    //       <div>
-    //         <label className="block mb-2 text-sm font-medium text-gray-900">
-    //           Phone Number <span className="text-red-500">*</span>
-    //         </label>
-    //         <input
-    //           type="tel"
-    //           name="phone"
-    //           required
-    //           className="block w-full rounded-md border p-2.5"
-    //         />
-    //       </div>
-    //       <div>
-    //         <label className="block mb-2 text-sm font-medium text-gray-900">
-    //           Email
-    //         </label>
-    //         <input
-    //           type="email"
-    //           name="email"
-    //           className="block w-full rounded-md border p-2.5"
-    //         />
-    //       </div>
-    //       <div>
-    //         <label className="block mb-2 text-sm font-medium text-gray-900">
-    //           Family Members Attending <span className="text-red-500">*</span>
-    //         </label>
-    //         <select
-    //           name="family_members"
-    //           required
-    //           className="block w-full rounded-md border p-2.5"
-    //           onChange={handleFamily}
-    //         >
-    //           <option value={"00"}>Participant only: (2000 BDT)</option>
-    //           <option value={"500"}>1 family member will attend (2500)</option>
-    //           <option value={"1000"}>
-    //             2 family members will attend (3000)
-    //           </option>
-    //           <option value={"1500"}>
-    //             3 family members will attend (3500)
-    //           </option>
-    //           <option value={"2000"}>
-    //             4 family members will attend (4000)
-    //           </option>
-    //           <option value={"2500"}>
-    //             5 family members will attend (4500)
-    //           </option>
-    //           <option value={"3000"}>
-    //             6 family members will attend (5000)
-    //           </option>
-    //         </select>
-    //       </div>
-    //       <div>
-    //         <label className="block mb-2 text-sm font-medium text-gray-900">
-    //           Address <span className="text-red-500">*</span>
-    //         </label>
-    //         <input
-    //           type="text"
-    //           required
-    //           name="address"
-    //           className="block w-full rounded-md border p-2.5"
-    //         />
-    //       </div>
-    //       <div>
-    //         <label className="block mb-2 text-sm font-medium text-gray-900">
-    //           SSC Passing Year
-    //         </label>
-    //         <input
-    //           type="text"
-    //           name="ssc_year"
-    //           className="block w-full rounded-md border p-2.5"
-    //         />
-    //       </div>
-    //       <div>
-    //         <label className="block mb-2 text-sm font-medium text-gray-900">
-    //           Driver <span className="text-red-500">*</span>
-    //         </label>
-    //         <select
-    //           name="driver"
-    //           required
-    //           className="block w-full rounded-md border p-2.5"
-    //           onChange={handleDriver}
-    //         >
-    //           <option value={"00"}>No</option>
-    //           <option value={"500"}>Yes (500 Taka will charged)</option>
-    //         </select>
-    //       </div>
-    //       <div>
-    //         <label className="block mb-2 text-sm font-medium text-gray-900">
-    //           img
-    //         </label>
-    //         <input
-    //           type="text"
-    //           name="image"
-    //           className="block w-full rounded-md border p-2.5"
-    //         />
-    //       </div>
-    //       <div>
-    //         <label className="block mb-2 text-sm font-medium text-gray-900">
-    //           T-Shirt Size <span className="text-red-500">*</span>
-    //         </label>
-    //         <select
-    //           name="t-shirt"
-    //           required
-    //           className="block w-full rounded-md border p-2.5"
-    //         >
-    //           <option>S</option>
-    //           <option>M</option>
-    //           <option>XL</option>
-    //         </select>
-    //       </div>
-    //       <div>
-    //         <label className="block mb-2 text-sm font-medium text-gray-900">
-    //           Total Fee
-    //         </label>
-    //         <h3 className="text-2xl">
-    //           {participantFee + driverFee + familyFee} BDT
-    //         </h3>
-    //       </div>
-    //     </div>
-
-    //     <div className="m-auto text-center">
-    //       <button
-    //         type="submit"
-    //         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium w-1/2 rounded-lg text-sm px-5  py-2.5"
-    //       >
-    //         Submit
-    //       </button>
-    //     </div>
-    //   </form>
-    // </div>
-    <div className="py-10 px-3 max-w-screen-xl m-auto">
+    <div className="md:py-10 md:px-3 max-w-screen-xl m-auto">
       <div style={{ fontFamily: "Arial, sans-serif", margin: "20px" }}>
-        <div className="bg-[#FFF5F8] pt-16">
-          {/* Header */}
-          <div className="flex gap-4 p-4 justify-between">
-            <div className="max-w-40">
-              <img className="max-w-40" src={leftLogo} alt="" />
+        {/* Header */}
+        <div className="bg-[rgba(255,245,248,0.99)] pt-1 md:pt-5">
+          <div className="flex md:gap-4 p-1 md:p-2 lg:p-4 justify-between">
+            <div className="max-w-12 md:max-w-24 lg:max-w-40">
+              <img
+                className="max-w-12 md:max-w-24 lg:max-w-40"
+                src={leftLogo}
+                alt=""
+              />
             </div>
-            <div style={{ textAlign: "center", marginBottom: "20px" }}>
-              <h1 className="text-5xl lg:text-6xl text-[#C81031] font-bold">
+            <div className="mb:2 md:mb-5" style={{ textAlign: "center" }}>
+              <h1 className="text-lg md:text-4xl lg:text-6xl text-[rgb(200,16,49)] font-bold">
                 শতবর্ষ উদযাপন পরিষদ
               </h1>
-              <h2 className="text-lg font-semibold">
+              <h2 className="text-[7px] md:text-base lg:text-lg font-semibold">
                 বাংলাদেশ রেলওয়ে সরকারি উচ্চ বিদ্যালয়,
                 <br /> পাহাড়তলী, চট্টগ্রাম
               </h2>
             </div>
-            <div className="max-w-40">
-              <img className="max-w-36" src={rightLogo} alt="" />
+            <div className="max-w-12 md:max-w-24 lg:max-w-40">
+              <img
+                className="max-w-12 md:max-w-24 lg:max-w-36"
+                src={rightLogo}
+                alt=""
+              />
             </div>
           </div>
 
-          <div className="flex gap-5 justify-around">
+          <div className="flex text-[7px] md:text-sm md:gap-5 justify-around">
             <p>Serial No:</p>
-            <div className="text-xl text-white bg-[#2A2E97] p-2 px-3 rounded-t-xl">
+            <div className="md:text-lg lg:text-2xl text-white bg-[rgb(42,46,151)] p-0.5 lg:p-2 px-2 lg:px-3 rounded-t-lg md:rounded-t-xl">
               রেজিস্ট্রেশন ফর্ম
             </div>
             <p>Office Copy</p>
@@ -374,90 +137,88 @@ const HomePage = () => {
             opacity: "1",
           }}
         >
-          <div className="bg-[#f2f8fff3]">
+          <div className="bg-[#f2f8fff3]  text-xs">
             {/* Form */}
             <form
               onSubmit={handleSubmit}
               style={{
                 border: "1px solid #ccc",
-                padding: "40px",
                 position: "relative",
               }}
+              className="p-2 md:p-10"
             >
               {/* Image Box */}
-              <div className="absolute right-6">
-                <img className="max-w-60" src={man} alt="" />
+              <div className="absolute right-2 md:right-6">
+                <img
+                  className="max-w-20 md:max-w-32 lg:max-w-48"
+                  src={man}
+                  alt=""
+                />
                 <p className="text-center">Photo</p>
               </div>
               {/* Name In Bengali */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
                 <label className="w-36 my-1 py-1">Name In Bengali</label>
                 <input
                   type="text"
                   name="name_bengali"
                   required
-                  className="rounded-md border bg-transparent"
-                  style={{ width: "400px" }}
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
                 />
               </div>
 
               {/* Name in English */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
                 <label className="w-36 my-1 py-1">Name in English:</label>
                 <input
                   type="text"
                   name="name_english"
                   required
-                  className="rounded-md border bg-transparent"
-                  style={{ width: "400px" }}
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
                 />
               </div>
 
               {/* Date of Birth */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
                 <label className="w-36 my-1 py-1">Date of Birth:</label>
                 <input
                   type="date"
                   name="dob"
                   required
-                  className="rounded-md border bg-transparent"
-                  style={{ width: "400px" }}
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
                 />
               </div>
 
               {/* Nationality */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
                 <label className="w-36 my-1 py-1">Nationality:</label>
                 <input
                   type="text"
                   name="nationality"
                   required
                   defaultValue="Bangladeshi"
-                  className="rounded-md border bg-transparent"
-                  style={{ width: "400px" }}
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
                 />
               </div>
 
               {/* Religion */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
                 <label className="w-36 my-1 py-1">Religion:</label>
                 <input
                   type="text"
                   name="religion"
                   required
-                  className="rounded-md border bg-transparent"
-                  style={{ width: "400px" }}
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
                 />
               </div>
 
               {/* Blood Group */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
                 <label className="w-36 my-1 py-1">Blood Group:</label>
                 <select
                   name="blood_group"
                   required
-                  className="rounded-md border bg-transparent"
-                  style={{ width: "400px" }}
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
                 >
                   <option>A+</option>
                   <option>A-</option>
@@ -471,72 +232,66 @@ const HomePage = () => {
               </div>
 
               {/* Father's Name */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
                 <label className="w-36 my-1 py-1">Father&apos;s Name:</label>
                 <input
                   type="text"
                   name="father_name"
                   required
-                  className="rounded-md border bg-transparent"
-                  style={{ width: "400px" }}
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
                 />
               </div>
 
               {/* Mother's Name */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
                 <label className="w-36 my-1 py-1">Mother&apos;s Name:</label>
                 <input
                   type="text"
                   name="mother_name"
                   required
-                  className="rounded-md border bg-transparent"
-                  style={{ width: "400px" }}
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
                 />
               </div>
 
               {/* Occupation */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
                 <label className="w-36 my-1 py-1">Occupation:</label>
                 <input
                   type="text"
                   name="occupation"
                   required
-                  className="rounded-md border bg-transparent"
-                  style={{ width: "400px" }}
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
                 />
               </div>
 
               {/* Phone Number */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
                 <label className="w-36 my-1 py-1">Phone Number:</label>
                 <input
                   type="tel"
                   name="phone"
                   required
-                  className="rounded-md border bg-transparent"
-                  style={{ width: "400px" }}
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
                 />
               </div>
 
               {/* Email */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
                 <label className="w-36 my-1 py-1">Email:</label>
                 <input
                   type="email"
                   name="email"
-                  className="rounded-md border bg-transparent"
-                  style={{ width: "400px" }}
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
                 />
               </div>
 
               {/* Family Members Attending */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
                 <label className="w-36 my-1 py-1">Family Members:</label>
                 <select
                   name="family_members"
                   required
-                  className="rounded-md border bg-transparent"
-                  style={{ width: "400px" }}
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
                   onChange={handleFamily}
                 >
                   <option value="00">Participant only: (2000 BDT)</option>
@@ -562,37 +317,34 @@ const HomePage = () => {
               </div>
 
               {/* Address */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
                 <label className="w-36 my-1 py-1">Address:</label>
                 <input
                   type="text"
                   name="address"
                   required
-                  className="rounded-md border bg-transparent"
-                  style={{ width: "400px" }}
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
                 />
               </div>
 
-              <div className="flex justify-between gap-2">
+              <div className="lg:flex justify-between gap-2">
                 {/* SSC Passing year */}
-                <div style={{ marginBottom: "10px" }} className="flex gap-5">
+                <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
                   <label className="w-36 my-1 py-1">SSC Passing Year:</label>
                   <input
                     type="text"
                     name="ssc_year"
                     required
-                    className="rounded-md border bg-transparent"
-                    style={{ width: "300px" }}
+                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border bg-transparent"
                   />
                 </div>
                 {/* Family Members Attending */}
-                <div style={{ marginBottom: "10px" }} className="flex gap-5">
-                  <label className="w-16 mt-2">Driver:</label>
+                <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
+                  <label className="w-36 my-1 py-1">Driver:</label>
                   <select
                     name="driver"
                     required
-                    className="rounded-md border bg-transparent"
-                    style={{ width: "300px" }}
+                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border bg-transparent"
                     onChange={handleDriver}
                   >
                     <option value={"00"}>No</option>
@@ -605,7 +357,7 @@ const HomePage = () => {
                   </select>
                 </div>
               </div>
-              <div className="grid mt-4 grid-cols-3 gap-4">
+              <div className="grid mt-4 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div>
                   <label className="text-center m-auto">
                     Registration Fee self
@@ -614,8 +366,7 @@ const HomePage = () => {
                     type="text"
                     name="selfFee"
                     required
-                    className="rounded-md border py-1.5 mb-2 bg-transparent"
-                    style={{ width: "300px" }}
+                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border bg-transparent"
                     value={participantFee}
                     readOnly
                   />
@@ -628,8 +379,7 @@ const HomePage = () => {
                     type="text"
                     name="familyFee"
                     required
-                    className="rounded-md border py-1.5 mb-2 bg-transparent"
-                    style={{ width: "300px" }}
+                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border bg-transparent"
                     value={familyFee}
                     readOnly
                   />
@@ -642,8 +392,7 @@ const HomePage = () => {
                     type="text"
                     name="driverFee"
                     required
-                    className="rounded-md border py-1.5 mb-2 bg-transparent"
-                    style={{ width: "300px" }}
+                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border bg-transparent"
                     value={driverFee}
                     readOnly
                   />
@@ -651,7 +400,7 @@ const HomePage = () => {
               </div>
 
               {/* T-Shirt Size */}
-              <div style={{ marginBottom: "10px" }} className="flex gap-5">
+              <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
                 <label className="w-36 my-1 py-1">T-Shirt Size:</label>
                 <label>
                   <input
@@ -685,15 +434,14 @@ const HomePage = () => {
                 </label>
               </div>
 
-              <div className="grid mt-4 grid-cols-3 gap-4">
+              <div className="md:grid space-y-2 my-4 grid-cols-2 lg:grid-cols-3 gap-4">
                 <div>
                   <label className="text-center m-auto">Date</label>
                   <input
                     type="Date"
                     name="date"
                     required
-                    className="rounded-md border py-1.5 mb-2 bg-transparent"
-                    style={{ width: "300px" }}
+                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border bg-transparent"
                     value={formattedDate}
                     readOnly
                   />
@@ -704,8 +452,7 @@ const HomePage = () => {
                     type="text"
                     name="total_fee"
                     required
-                    className="rounded-md border py-1.5 mb-2 bg-transparent"
-                    style={{ width: "300px" }}
+                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border bg-transparent"
                     value={participantFee + familyFee + driverFee}
                     readOnly
                   />
@@ -716,7 +463,7 @@ const HomePage = () => {
               <div className="text-center">
                 <button
                   type="submit"
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5"
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm md:px-5 px-2.5 py-1.5 md:py-2.5"
                   style={{ width: "50%" }}
                 >
                   Submit
