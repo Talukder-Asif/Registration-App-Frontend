@@ -1,10 +1,11 @@
 import { useState } from "react";
 import useAxios from "../../Hooks/useAxios";
 import { useNavigate } from "react-router-dom";
+import imageCompression from "browser-image-compression";
 
 import leftLogo from "/src/assets/logo1.png";
 import rightLogo from "/src/assets/rigthLogo.png";
-import man from "/src/assets/Man1.png";
+import { CLOUD_NAME, Preset } from "../../Config/cloudinary.config";
 const HomePage = () => {
   const today = new Date();
   const formattedDate = today.toISOString().split("T")[0];
@@ -12,7 +13,46 @@ const HomePage = () => {
   const [driverFee, setDriverFee] = useState(0);
   const [familyFee, setFamilyFee] = useState(0);
   const navigate = useNavigate();
+  const [showImagePreview, setShowImagePreview] = useState(null);
+  const [err, setErr] = useState("");
+  const [imageLoading, setImageLoading] = useState(false);
 
+  const handleClear = () => {
+    setShowImagePreview(null);
+  };
+  const handleImg = async (e) => {
+    const showImageFile = e.target.files[0];
+    if (!showImageFile) {
+      setErr("Please upload an image.");
+      return;
+    }
+    setImageLoading(true);
+    // Compress the image before uploading
+    const compressedImage = await imageCompression(showImageFile, {
+      maxSizeMB: 0.3,
+      maxWidthOrHeight: 500,
+      useWebWorker: true,
+    });
+
+    const data = new FormData();
+    data.append("file", compressedImage);
+    data.append("upload_preset", Preset);
+    data.append("cloud_name", CLOUD_NAME);
+
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+    const imageURL = await res.json();
+    console.log(imageURL.url);
+    if (imageURL) {
+      setShowImagePreview(imageURL.url);
+      setImageLoading(false);
+    }
+  };
   const handleFamily = (e) => {
     const member = e.target.value;
     setFamilyFee(parseInt(member));
@@ -24,6 +64,7 @@ const HomePage = () => {
   };
   const axiosPublic = useAxios();
   const handleSubmit = async (e) => {
+    setErr("");
     e.preventDefault();
     const form = e.target;
     const name_bengali = form.name_bengali.value;
@@ -45,10 +86,14 @@ const HomePage = () => {
         : form.driver.value === "1000"
         ? "Driver for 2 days"
         : "No driver";
-    // const image = form.image.value;
+    const image = showImagePreview;
     const family_members = parseInt(form.family_members.value) / 500;
     const tshirt_size = form["tshirtSize"].value;
 
+    if (!showImagePreview) {
+      setErr("Please upload an image.");
+      return;
+    }
     // Log all form values
     const participantData = {
       participantId: null,
@@ -65,7 +110,7 @@ const HomePage = () => {
       email,
       address,
       ssc_year,
-      // image,
+      image,
       tshirt_size,
       participantFee,
       family_members,
@@ -80,7 +125,8 @@ const HomePage = () => {
 
     axiosPublic.post("/participant", participantData).then((res) => {
       if (res.data.status === 500) {
-        console.log(res.data.message);
+        setErr(res.data.message);
+        return;
       } else {
         navigate(`/preview/${res.data.participantId}`);
       }
@@ -89,6 +135,12 @@ const HomePage = () => {
 
   return (
     <div className="md:py-10 md:px-3 max-w-screen-xl m-auto">
+      {imageLoading && (
+        <div className="fixed w-full h-full -mt-24 flex -ml-3 z-50">
+          <div className="w-60 h-60 animate-[spin_1s_linear_infinite] rounded-full border-double border-4 border-r-0 border-l-0 border-b-sky-400 border-t-sky-700 m-auto"></div>
+        </div>
+      )}
+
       <div style={{ fontFamily: "Arial, sans-serif", margin: "20px" }}>
         {/* Header */}
         <div className="bg-[rgba(255,245,248,0.99)] pt-1 md:pt-5">
@@ -111,7 +163,7 @@ const HomePage = () => {
             </div>
             <div className="max-w-12 md:max-w-24 lg:max-w-40">
               <img
-                className="max-w-12 md:max-w-24 lg:max-w-36"
+                className="max-w-12 md:max-w-24 lg:max-md:w-36 lg:w-40"
                 src={rightLogo}
                 alt=""
               />
@@ -137,7 +189,7 @@ const HomePage = () => {
             opacity: "1",
           }}
         >
-          <div className="bg-[#f2f8fff3]  text-xs">
+          <div className="bg-[#f2f8fff3]  text-xs md:text-lg">
             {/* Form */}
             <form
               onSubmit={handleSubmit}
@@ -148,17 +200,95 @@ const HomePage = () => {
               className="p-2 md:p-10"
             >
               {/* Image Box */}
-              <div className="absolute right-2 md:right-6">
-                <img
-                  className="max-w-20 md:max-w-32 lg:max-w-48"
-                  src={man}
-                  alt=""
-                />
-                <p className="text-center">Photo</p>
+              <div className="absolute max-w-20 md:max-w-32 lg:max-w-60 right-2 md:right-6">
+                {showImagePreview ? (
+                  <div className="relative">
+                    <img src={showImagePreview} alt="Image" />
+                    <div
+                      onClick={handleClear}
+                      className="md:px-2 px-1 lg:px-3 lg:py-1 rounded-full border border-black hover:border-red-500 hover:text-red-500 duration-300 absolute top-1 right-1 lg:top-3 lg:right-3"
+                    >
+                      X
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {" "}
+                    <label htmlFor="file6">
+                      <div className="flex flex-col items-center justify-center gap-8 rounded-lg border border-dashed border-black/50 p-10">
+                        {" "}
+                        <svg
+                          width={35}
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="white"
+                        >
+                          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                          <g
+                            id="SVGRepo_tracerCarrier"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          ></g>
+                          <g id="SVGRepo_iconCarrier">
+                            <g id="Complete">
+                              <g id="upload">
+                                {" "}
+                                <g>
+                                  <path
+                                    d="M3,12.3v7a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2v-7"
+                                    fill="none"
+                                    stroke="#2E2E30"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                  ></path>
+                                  <g>
+                                    {" "}
+                                    <polyline
+                                      data-name="Right"
+                                      fill="none"
+                                      id="Right-2"
+                                      points="7.9 6.7 12 2.7 16.1 6.7"
+                                      stroke="black"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth="2"
+                                    ></polyline>{" "}
+                                    <line
+                                      fill="none"
+                                      stroke="black"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth="2"
+                                      x1="12"
+                                      x2="12"
+                                      y1="16.3"
+                                      y2="4.8"
+                                    ></line>
+                                  </g>
+                                </g>
+                              </g>
+                            </g>
+                          </g>
+                        </svg>
+                      </div>
+                    </label>
+                    <input
+                      onChange={handleImg}
+                      className="hidden"
+                      id="file6"
+                      type="file"
+                      name="img"
+                    />
+                  </>
+                )}
+                <p className="text-center ">Photo</p>
               </div>
               {/* Name In Bengali */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="w-36 my-1 py-1">Name In Bengali</label>
+                <label className="md:w-36 lg:w-40 my-1 py-1">
+                  Name In Bengali
+                </label>
                 <input
                   type="text"
                   name="name_bengali"
@@ -169,7 +299,9 @@ const HomePage = () => {
 
               {/* Name in English */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="w-36 my-1 py-1">Name in English:</label>
+                <label className="md:w-36 lg:w-40 my-1 py-1">
+                  Name in English:
+                </label>
                 <input
                   type="text"
                   name="name_english"
@@ -180,7 +312,9 @@ const HomePage = () => {
 
               {/* Date of Birth */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="w-36 my-1 py-1">Date of Birth:</label>
+                <label className="md:w-36 lg:w-40 my-1 py-1">
+                  Date of Birth:
+                </label>
                 <input
                   type="date"
                   name="dob"
@@ -191,7 +325,9 @@ const HomePage = () => {
 
               {/* Nationality */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="w-36 my-1 py-1">Nationality:</label>
+                <label className="md:w-36 lg:w-40 my-1 py-1">
+                  Nationality:
+                </label>
                 <input
                   type="text"
                   name="nationality"
@@ -203,7 +339,7 @@ const HomePage = () => {
 
               {/* Religion */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="w-36 my-1 py-1">Religion:</label>
+                <label className="md:w-36 lg:w-40 my-1 py-1">Religion:</label>
                 <input
                   type="text"
                   name="religion"
@@ -214,7 +350,9 @@ const HomePage = () => {
 
               {/* Blood Group */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="w-36 my-1 py-1">Blood Group:</label>
+                <label className="md:w-36 lg:w-40 my-1 py-1">
+                  Blood Group:
+                </label>
                 <select
                   name="blood_group"
                   required
@@ -233,7 +371,9 @@ const HomePage = () => {
 
               {/* Father's Name */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="w-36 my-1 py-1">Father&apos;s Name:</label>
+                <label className="md:w-36 lg:w-40 my-1 py-1">
+                  Father&apos;s Name:
+                </label>
                 <input
                   type="text"
                   name="father_name"
@@ -244,7 +384,9 @@ const HomePage = () => {
 
               {/* Mother's Name */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="w-36 my-1 py-1">Mother&apos;s Name:</label>
+                <label className="md:w-36 lg:w-40 my-1 py-1">
+                  Mother&apos;s Name:
+                </label>
                 <input
                   type="text"
                   name="mother_name"
@@ -255,7 +397,7 @@ const HomePage = () => {
 
               {/* Occupation */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="w-36 my-1 py-1">Occupation:</label>
+                <label className="md:w-36 lg:w-40 my-1 py-1">Occupation:</label>
                 <input
                   type="text"
                   name="occupation"
@@ -266,7 +408,9 @@ const HomePage = () => {
 
               {/* Phone Number */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="w-36 my-1 py-1">Phone Number:</label>
+                <label className="md:w-36 lg:w-40 my-1 py-1">
+                  Phone Number:
+                </label>
                 <input
                   type="tel"
                   name="phone"
@@ -277,7 +421,7 @@ const HomePage = () => {
 
               {/* Email */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="w-36 my-1 py-1">Email:</label>
+                <label className="md:w-36 lg:w-40 my-1 py-1">Email:</label>
                 <input
                   type="email"
                   name="email"
@@ -287,7 +431,9 @@ const HomePage = () => {
 
               {/* Family Members Attending */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="w-36 my-1 py-1">Family Members:</label>
+                <label className="md:w-36 lg:w-40 my-1 py-1">
+                  Family Members:
+                </label>
                 <select
                   name="family_members"
                   required
@@ -318,7 +464,7 @@ const HomePage = () => {
 
               {/* Address */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="w-36 my-1 py-1">Address:</label>
+                <label className="md:w-36 lg:w-40 my-1 py-1">Address:</label>
                 <input
                   type="text"
                   name="address"
@@ -330,21 +476,26 @@ const HomePage = () => {
               <div className="lg:flex justify-between gap-2">
                 {/* SSC Passing year */}
                 <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                  <label className="w-36 my-1 py-1">SSC Passing Year:</label>
+                  <label className="md:w-36 lg:w-40 my-1 py-1">
+                    SSC Passing Year:
+                  </label>
                   <input
                     type="text"
                     name="ssc_year"
                     required
-                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border bg-transparent"
+                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
                   />
                 </div>
-                {/* Family Members Attending */}
-                <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                  <label className="w-36 my-1 py-1">Driver:</label>
+                {/* Driver Attending */}
+                <div
+                  style={{ marginBottom: "10px" }}
+                  className="md:flex gap-5 lg:gap-2"
+                >
+                  <label className="md:w-36 lg:w-20 my-1 py-1">Driver:</label>
                   <select
                     name="driver"
                     required
-                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border bg-transparent"
+                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
                     onChange={handleDriver}
                   >
                     <option value={"00"}>No</option>
@@ -352,7 +503,7 @@ const HomePage = () => {
                       Yes (500 Taka will charged for 1 day)
                     </option>
                     <option value={"1000"}>
-                      Yes (500 Taka will charged for 2 day)
+                      Yes (1000 Taka will charged for 2 day)
                     </option>
                   </select>
                 </div>
@@ -401,7 +552,9 @@ const HomePage = () => {
 
               {/* T-Shirt Size */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="w-36 my-1 py-1">T-Shirt Size:</label>
+                <label className="md:w-36 lg:w-40 my-1 py-1">
+                  T-Shirt Size:
+                </label>
                 <label>
                   <input
                     type="radio"
@@ -458,12 +611,14 @@ const HomePage = () => {
                   />
                 </div>
               </div>
-
+              {err && (
+                <p className="text-red-500 text-center my-2 text-sm">{err}</p>
+              )}
               {/* Submit Button */}
               <div className="text-center">
                 <button
                   type="submit"
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm md:px-5 px-2.5 py-1.5 md:py-2.5"
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5"
                   style={{ width: "50%" }}
                 >
                   Submit

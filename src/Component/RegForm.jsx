@@ -6,7 +6,7 @@ import man from "/src/assets/Man1.png";
 import React from "react";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
-
+import unpaid from "/src/assets/unpaid.png";
 const RegForm = ({ id }) => {
   const [participant, isParticipantLoading] = useOneParticipant({
     id,
@@ -62,7 +62,12 @@ const RegForm = ({ id }) => {
       console.error("Error generating PDF:", error);
     }
   };
-
+  if (isParticipantLoading)
+    return (
+      <div className="fixed w-full h-full -mt-24 flex -ml-3 z-50">
+        <div className="w-60 h-60 animate-[spin_1s_linear_infinite] rounded-full border-double border-4 border-r-0 border-l-0 border-b-sky-400 border-t-sky-700 m-auto"></div>
+      </div>
+    );
   return (
     <div className="py-10 px-3 max-w-screen-lg m-auto">
       <div ref={printRef} style={{ fontFamily: "Arial, sans-serif" }}>
@@ -114,7 +119,7 @@ const RegForm = ({ id }) => {
             opacity: "1",
           }}
         >
-          <div className="bg-[#f2f8fff3] text-[7px] md:text-sm lg:text-base">
+          <div className="bg-[#f2f8fff3] relative text-[7px] md:text-sm lg:text-lg">
             <div
               className="p-2 md:p-5 lg:p-10"
               style={{
@@ -125,13 +130,13 @@ const RegForm = ({ id }) => {
               <div className="absolute right-2 md:right-4 lg:right-6">
                 <img
                   className="max-w-16 md:max-w-32 lg:max-w-40"
-                  src={man}
+                  src={participant?.image ? participant.image : man}
                   alt=""
                 />
                 <p className="text-center">Photo</p>
               </div>
               {/* Participant ID */}
-              <div className="flex mb-0.5 lg:mb-1.5 gap-5">
+              <div className="flex mb-0.5 lg:mb-1 gap-5">
                 <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
                   Participant ID
                 </label>
@@ -140,7 +145,7 @@ const RegForm = ({ id }) => {
                 </label>
               </div>
               {/* Name In Bengali */}
-              <div className="flex mb-0.5 lg:mb-1.5 gap-5">
+              <div className="flex mb-0.5 lg:mb-1 gap-5">
                 <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
                   Name In Bengali
                 </label>
@@ -150,7 +155,7 @@ const RegForm = ({ id }) => {
               </div>
 
               {/* Name in English */}
-              <div className="flex mb-0.5 lg:mb-1.5 gap-5">
+              <div className="flex mb-0.5 lg:mb-1 gap-5">
                 <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
                   Name in English:
                 </label>
@@ -160,7 +165,7 @@ const RegForm = ({ id }) => {
               </div>
 
               {/* Date of Birth */}
-              <div className="flex mb-0.5 lg:mb-1.5 gap-5">
+              <div className="flex mb-0.5 lg:mb-1 gap-5">
                 <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
                   Date of Birth:
                 </label>
@@ -170,7 +175,7 @@ const RegForm = ({ id }) => {
               </div>
 
               {/* Nationality */}
-              <div className="flex mb-0.5 lg:mb-1.5 gap-5">
+              <div className="flex mb-0.5 lg:mb-1 gap-5">
                 <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
                   Nationality:
                 </label>
@@ -180,7 +185,7 @@ const RegForm = ({ id }) => {
               </div>
 
               {/* Religion */}
-              <div className="flex mb-0.5 lg:mb-1.5 gap-5">
+              <div className="flex mb-0.5 lg:mb-1 gap-5">
                 <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
                   Religion:
                 </label>
@@ -190,7 +195,7 @@ const RegForm = ({ id }) => {
               </div>
 
               {/* Blood Group */}
-              <div className="flex mb-0.5 lg:mb-1.5 gap-5">
+              <div className="flex mb-0.5 lg:mb-1 gap-5">
                 <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
                   Blood Group:
                 </label>
@@ -200,7 +205,7 @@ const RegForm = ({ id }) => {
               </div>
 
               {/* Father's Name */}
-              <div className="flex mb-0.5 lg:mb-1.5 gap-5">
+              <div className="flex mb-0.5 lg:mb-1 gap-5">
                 <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
                   Father&apos;s Name:
                 </label>
@@ -210,7 +215,7 @@ const RegForm = ({ id }) => {
               </div>
 
               {/* Mother's Name */}
-              <div className="flex mb-0.5 lg:mb-1.5 gap-5">
+              <div className="flex mb-0.5 lg:mb-1 gap-5">
                 <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
                   Mother&apos;s Name:
                 </label>
@@ -220,7 +225,7 @@ const RegForm = ({ id }) => {
               </div>
 
               {/* Occupation */}
-              <div className="flex mb-0.5 lg:mb-1.5 gap-5">
+              <div className="flex mb-0.5 lg:mb-1 gap-5">
                 <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
                   Occupation:
                 </label>
@@ -230,7 +235,7 @@ const RegForm = ({ id }) => {
               </div>
 
               {/* Phone Number */}
-              <div className="flex mb-0.5 lg:mb-1.5 gap-5">
+              <div className="flex mb-0.5 lg:mb-1 gap-5">
                 <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
                   Phone Number:
                 </label>
@@ -240,7 +245,7 @@ const RegForm = ({ id }) => {
               </div>
 
               {/* Email */}
-              <div className="flex mb-0.5 lg:mb-1.5 gap-5">
+              <div className="flex mb-0.5 lg:mb-1 gap-5">
                 <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
                   Email:
                 </label>
@@ -250,7 +255,7 @@ const RegForm = ({ id }) => {
               </div>
 
               {/* Family Members Attending */}
-              <div className="flex mb-0.5 lg:mb-1.5 gap-5">
+              <div className="flex mb-0.5 lg:mb-1 gap-5">
                 <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
                   Family Members:
                 </label>
@@ -260,7 +265,7 @@ const RegForm = ({ id }) => {
               </div>
 
               {/* Address */}
-              <div className="flex mb-0.5 lg:mb-1.5 gap-5">
+              <div className="flex mb-0.5 lg:mb-1 gap-5">
                 <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
                   Address:
                 </label>
@@ -269,9 +274,9 @@ const RegForm = ({ id }) => {
                 </label>
               </div>
 
-              <div className="flex justify-between gap-2">
+              <div className="grid mt-1 md:mt-4 grid-cols-2 md:grid-cols-3 gap-x-2 md:gap-4">
                 {/* SSC Passing year */}
-                <div className="flex mb-0.5 lg:mb-1.5 gap-5">
+                <div className="flex gap-3 md:gap-4 justify-start">
                   <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
                     SSC Passing Year:
                   </label>
@@ -280,36 +285,32 @@ const RegForm = ({ id }) => {
                   </label>
                 </div>
                 {/* Driver Attending */}
-                <div className="flex mb-0.5 lg:mb-1.5 md:gap-5">
+                <div className="flex mb-0.5  lg:mb-1 md:gap-5">
                   <label className="w-10 md:mt-2">Driver:</label>
                   <label className=" w-auto md:mt-2">
                     {participant?.driver}
                   </label>
                 </div>
               </div>
-              <div className="grid mt-1 md:mt-4 grid-cols-2 md:grid-cols-3 gap-x-2 md:gap-4">
+              <div className="grid md:mt-4 grid-cols-2 md:grid-cols-3 gap-x-2 md:gap-4">
                 <div className="flex gap-3 md:gap-4 justify-start">
                   <label>Registration Fee self:</label>
-                  <label>{participant?.participantFee}</label>
+                  <label>{participant?.participantFee} BDT</label>
                 </div>
                 <div className="flex gap-3 md:gap-4 justify-start">
                   <label>Registration Fee Family:</label>
-                  <label>{participant?.familyFee}</label>
+                  <label>{participant?.familyFee} BDT</label>
                 </div>
+                <div> </div>
                 <div className="flex gap-3 md:gap-4 justify-start">
                   <label>Registration Fee Driver:</label>
-                  <label>{participant?.driverFee}</label>
+                  <label>{participant?.driverFee} BDT</label>
                 </div>
-              </div>
-
-              {/* T-Shirt Size */}
-              <div className="flex mb-0.5 lg:mb-1.5 gap-5">
-                <label className="w-12 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
-                  T-Shirt Size:
-                </label>
-                <label className="my-0 md:my-1 md:py-0.5 lg:py-1">
-                  {participant?.tshirt_size}
-                </label>
+                {/* T-Shirt Size */}
+                <div className="flex mb-0.5 lg:mb-1 gap-5">
+                  <label>T-Shirt Size:</label>
+                  <label>{participant?.tshirt_size}</label>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -322,6 +323,18 @@ const RegForm = ({ id }) => {
                   <label>{participant?.total_fee} BDT</label>
                 </div>
               </div>
+            </div>
+
+            {/* QR Code */}
+            <div className=" absolute bottom-0 right-2 lg:right-5">
+              {participant?.status === "Unpaid" ? (
+                <img
+                  className=" max-w-16 md:max-w-40 lg:max-w-60"
+                  src={unpaid}
+                ></img>
+              ) : (
+                <h3> QR Code</h3>
+              )}
             </div>
           </div>
         </div>
@@ -336,7 +349,7 @@ const RegForm = ({ id }) => {
             opacity: "1",
           }}
         >
-          <div className="bg-[#fff5f8e2] pb-1 md:pb-5">
+          <div className="bg-[#fff5f8e2] relative pb-1 md:pb-5">
             <div className="px-2 md:px-10 space-y-1 lg:space-y-3 text-[7px] md:text-base">
               <div className="flex gap-5 mb-3 lg:mb-5 justify-around">
                 <p className="mt-1 md:mt-2 lg:mt-4">Serial No:</p>
@@ -362,7 +375,7 @@ const RegForm = ({ id }) => {
               </div>
 
               <div>
-                <div className="flex mb-0.5 lg:mb-1.5 ">
+                <div className="flex mb-0.5 lg:mb-1 ">
                   <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
                     Name In Bengali:
                   </label>
@@ -372,7 +385,7 @@ const RegForm = ({ id }) => {
                 </div>
 
                 {/* Name in English */}
-                <div className="flex mb-0.5 lg:mb-1.5">
+                <div className="flex mb-0.5 lg:mb-1">
                   <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
                     Name in English:
                   </label>
@@ -385,25 +398,51 @@ const RegForm = ({ id }) => {
               <div className="grid mt-1 md:mt-4 grid-cols-2 md:grid-cols-3 lg:gap-4">
                 <div className="flex md:gap-2 lg:gap-4 justify-start">
                   <label>Registration Fee self:</label>
-                  <label>{participant?.participantFee}</label>
+                  <label>{participant?.participantFee} BDT</label>
                 </div>
                 <div className="flex md:gap-2 lg:gap-4 justify-start">
                   <label>Registration Fee Family:</label>
-                  <label>{participant?.familyFee}</label>
+                  <label>{participant?.familyFee} BDT</label>
                 </div>
                 <div className="hidden md:inline"> </div>
                 <div className="flex md:gap-2 lg:gap-4 justify-start">
                   <label>Registration Fee Driver:</label>
-                  <label>{participant?.driverFee}</label>
+                  <label>{participant?.driverFee} BDT</label>
+                </div>
+                <div className="flex md:gap-2 lg:gap-4 justify-start">
+                  <label>Total Fee :</label>
+                  <label>{participant?.total_fee} BDT</label>
                 </div>
               </div>
+            </div>
+            {/* QR Code */}
+            <div className=" absolute bottom-0 right-2 lg:right-5">
+              {participant?.status === "Unpaid" ? (
+                <img
+                  className=" max-w-16 md:max-w-40 lg:max-w-60"
+                  src={unpaid}
+                ></img>
+              ) : (
+                <h3> QR Code</h3>
+              )}
             </div>
           </div>
         </div>
       </div>
-      <div>
-        <button onClick={handleDownloadPDF} className="btn-circle">
+      <div className="mt-5 flex flex-wrap gap-5">
+        <button
+          onClick={handleDownloadPDF}
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5"
+          style={{ width: "30%" }}
+        >
           Download PDF
+        </button>
+
+        <button
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5"
+          style={{ width: "30%" }}
+        >
+          Pay Now
         </button>
       </div>
     </div>
