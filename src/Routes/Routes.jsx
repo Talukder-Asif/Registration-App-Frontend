@@ -9,6 +9,8 @@ import Profile from "../Pages/User/Profile";
 import AdminRoute from "./AdminRoute";
 import PreviewPage from "../Pages/HomePage/PreviewPage";
 import UserRoute from "./UserRoute";
+import ManageRegistration from "../Pages/Admin/ManageRegistration/ManageRegistration";
+import ModifyForm from "/src/Pages/Admin/ModifyForm/ModifyForm";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +52,14 @@ const router = createBrowserRouter([
           {
             path: "/dashboard/users/:email",
             element: <ManageSingleUser></ManageSingleUser>,
+          },
+          {
+            path: "/dashboard/registration",
+            element: <ManageRegistration></ManageRegistration>,
+          },
+          {
+            path: "/dashboard/registration/update/:id",
+            element: <ModifyForm></ModifyForm>,
           },
         ],
       },

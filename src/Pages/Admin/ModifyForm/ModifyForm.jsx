@@ -1,12 +1,13 @@
 import { useState } from "react";
-import useAxios from "../../Hooks/useAxios";
 import { useNavigate } from "react-router-dom";
 import imageCompression from "browser-image-compression";
 
 import leftLogo from "/src/assets/logo1.png";
 import rightLogo from "/src/assets/rigthLogo.png";
-import { CLOUD_NAME, Preset } from "../../Config/cloudinary.config";
-const HomePage = () => {
+import useAxios from "../../../Hooks/useAxios";
+import { CLOUD_NAME, Preset } from "../../../Config/cloudinary.config";
+
+const ModifyForm = () => {
   const today = new Date();
   const formattedDate = today.toISOString().split("T")[0];
   const participantFee = 2000;
@@ -630,4 +631,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default ModifyForm;

@@ -25,7 +25,7 @@ const Dashboard = () => {
 
             <li>
               <NavLink
-                to={"/dashboard/voters"}
+                to={"/dashboard/registration"}
                 className={({ isActive }) =>
                   `flex items-center py-3 px-6 text-sm font-medium uppercase tracking-widest duration-300 border-2 group border-[#002a3f] ${
                     isActive
