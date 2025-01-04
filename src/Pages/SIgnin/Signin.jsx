@@ -36,7 +36,7 @@ const Signin = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate("/");
+        navigate("/dashboard");
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -154,7 +154,7 @@ const Signin = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate("/");
+        navigate("/dashboard");
       })
       .catch((error) => {
         console.log(error);

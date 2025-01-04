@@ -8,6 +8,7 @@ import Signin from "../Pages/SIgnin/Signin";
 import Profile from "../Pages/User/Profile";
 import AdminRoute from "./AdminRoute";
 import PreviewPage from "../Pages/HomePage/PreviewPage";
+import UserRoute from "./UserRoute";
 
 const router = createBrowserRouter([
   {
@@ -28,7 +29,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard",
-        element: <Dashboard></Dashboard>,
+        element: (
+          <UserRoute>
+            <Dashboard></Dashboard>
+          </UserRoute>
+        ),
         children: [
           {
             path: "/dashboard",
