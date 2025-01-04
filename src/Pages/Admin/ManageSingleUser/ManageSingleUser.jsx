@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import man from "/src/assets/Man1.png";
 
 const ManageSingleUser = () => {
   const params = useParams();
@@ -49,26 +50,23 @@ const ManageSingleUser = () => {
         {User?.name}&apos;s Profile
       </h3>
       <div className="flex gap-10 flex-wrap">
-        <img className="w-40 h-40 rounded-full" src={User?.photoURL} alt="" />
+        <img
+          className="w-40 h-40 rounded-full"
+          src={User?.photoURL ? User?.photoURL : man}
+          alt=""
+        />
         <div>
           <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
-            Account Type: {User?.accountType || "Not Defined"}
+            Name: {User?.name || "Not Defined"}
           </h3>
-          {User?.accountType === "Student" && (
-            <>
-              <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
-                Student ID: {User?.studentID}
-              </h3>
-              <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
-                Department: {User?.department || "Not Defined"}
-              </h3>
-              <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
-                Batch: {User?.batch}
-              </h3>
-            </>
-          )}
           <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
             Email: {User?.email}
+          </h3>
+          <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
+            Phone: {User?.phone}
+          </h3>
+          <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
+            Batch: {User?.batch}
           </h3>
           <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
             Role:{" "}
