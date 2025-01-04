@@ -1,9 +1,13 @@
 import { Link, NavLink } from "react-router-dom";
-import Logo from "/src/assets/Logo-01.png";
+import Logo from "/src/assets/logo1.png";
 import { useContext } from "react";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import man from "/src/assets/Man1.png";
+
 const NavBar = () => {
+  const navigate = useNavigate();
   const { signout, User } = useContext(AuthContext);
   const handleSignOut = () => {
     Swal.fire({
@@ -17,6 +21,7 @@ const NavBar = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         signout();
+        navigate("/signin");
         Swal.fire({
           title: "Log Out",
           text: "please use me again",
@@ -168,25 +173,28 @@ const NavBar = () => {
         </div>
         <div className="navbar-end">
           {User?.email ? (
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle avatar"
-            >
-              <div className="w-10 rounded-full">
-                <Link to={"/dashboard"}>
-                  <img alt={User?.displayName} src={User?.photoURL} />
-                </Link>
+            <>
+              {" "}
+              <li onClick={handleSignOut} className="group mr-4 flex flex-col">
+                <button className="text-red-500 font-bold">Log Out</button>
+                <span className="mt-[2px] h-[3px] w-[0px] rounded-full bg-red-500 transition-all duration-300 group-hover:w-full hidden lg:inline z-50"></span>
+              </li>
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar"
+              >
+                <div className="w-10 rounded-full">
+                  <Link to={"/dashboard"}>
+                    <img
+                      alt={User?.displayName}
+                      src={User?.photoURL ? User?.photoURL : man}
+                    />
+                  </Link>
+                </div>
               </div>
-            </div>
-          ) : (
-            <li className="group flex flex-col">
-              <NavLink to={"./signin"}>
-                <button className="text-red-500 font-bold">Log In</button>
-              </NavLink>
-              <span className="mt-[2px] h-[3px] w-[0px] rounded-full bg-red-500 transition-all duration-300 group-hover:w-full hidden lg:inline z-50"></span>
-            </li>
-          )}
+            </>
+          ) : null}
         </div>
       </div>
     </div>

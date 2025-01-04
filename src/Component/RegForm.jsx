@@ -69,7 +69,7 @@ const RegForm = ({ id }) => {
       </div>
     );
   return (
-    <div className="py-10 px-3 max-w-screen-lg m-auto">
+    <div className="md:py-10 md:px-3 max-w-screen-lg m-auto">
       <div ref={printRef} style={{ fontFamily: "Arial, sans-serif" }}>
         {/* Header Part */}
         <div className="bg-[rgba(255,245,248,0.99)] pt-1 md:pt-5">
@@ -301,13 +301,13 @@ const RegForm = ({ id }) => {
                   <label>Registration Fee Family:</label>
                   <label>{participant?.familyFee} BDT</label>
                 </div>
-                <div> </div>
+                <div className="hidden md:inline"> </div>
                 <div className="flex gap-3 md:gap-4 justify-start">
                   <label>Registration Fee Driver:</label>
                   <label>{participant?.driverFee} BDT</label>
                 </div>
                 {/* T-Shirt Size */}
-                <div className="flex mb-0.5 lg:mb-1 gap-5">
+                <div className="flex gap-3 md:gap-4 justify-start">
                   <label>T-Shirt Size:</label>
                   <label>{participant?.tshirt_size}</label>
                 </div>

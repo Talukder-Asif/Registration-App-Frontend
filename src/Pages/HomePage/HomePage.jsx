@@ -134,14 +134,14 @@ const HomePage = () => {
   };
 
   return (
-    <div className="md:py-10 md:px-3 max-w-screen-xl m-auto">
+    <div className=" md:py-10 md:px-3 max-w-screen-xl m-auto">
       {imageLoading && (
         <div className="fixed w-full h-full -mt-24 flex -ml-3 z-50">
           <div className="w-60 h-60 animate-[spin_1s_linear_infinite] rounded-full border-double border-4 border-r-0 border-l-0 border-b-sky-400 border-t-sky-700 m-auto"></div>
         </div>
       )}
 
-      <div style={{ fontFamily: "Arial, sans-serif", margin: "20px" }}>
+      <div style={{ fontFamily: "Arial, sans-serif", margin: "0px" }}>
         {/* Header */}
         <div className="bg-[rgba(255,245,248,0.99)] pt-1 md:pt-5">
           <div className="flex md:gap-4 p-1 md:p-2 lg:p-4 justify-between">
@@ -483,7 +483,7 @@ const HomePage = () => {
                     type="text"
                     name="ssc_year"
                     required
-                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
+                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border bg-transparent"
                   />
                 </div>
                 {/* Driver Attending */}
@@ -495,7 +495,7 @@ const HomePage = () => {
                   <select
                     name="driver"
                     required
-                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
+                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border bg-transparent"
                     onChange={handleDriver}
                   >
                     <option value={"00"}>No</option>

@@ -3,18 +3,14 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import useUserDetails from "../../Hooks/useUserDetails";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "../../Config/firebase.config";
-import { v4 } from "uuid";
 import imageCompression from "browser-image-compression";
+import { CLOUD_NAME, Preset } from "../../Config/cloudinary.config";
+import man from "/src/assets/Man1.png";
 
 const Profile = () => {
   const [user, isUserLoading, refetch] = useUserDetails();
   const { updateUser } = useContext(AuthContext);
   const axiosPrivate = useAxiosSecure();
-  const [accountType, setAccountType] = useState(
-    user?.accountType ? user.accountType : "Student"
-  );
   const [imageUpload, setImageUpload] = useState(null);
 
   const handleUpdate = async (e) => {
@@ -22,9 +18,8 @@ const Profile = () => {
     const form = e.target;
     const name = form.name.value;
     const batch = form?.batch ? form.batch.value : "";
-    const studentID = form?.studentID ? form.studentID.value : "";
-    const department = form.department.value;
     const photoURL = user?.photoURL;
+    const phone = form.phone.value;
 
     if (!imageUpload) {
       updateUser(name, photoURL);
@@ -35,9 +30,7 @@ const Profile = () => {
         photoURL: photoURL,
         role: user?.role,
         batch,
-        studentID,
-        accountType,
-        department,
+        phone,
       };
 
       return await axiosPrivate
@@ -66,9 +59,20 @@ const Profile = () => {
         useWebWorker: true,
       });
 
-      const imageRef = ref(storage, `users/${compressedImage.name + v4()}`);
-      const snapshot = await uploadBytes(imageRef, compressedImage);
-      const imageURL = await getDownloadURL(snapshot.ref);
+      const data = new FormData();
+      data.append("file", compressedImage);
+      data.append("upload_preset", Preset);
+      data.append("cloud_name", CLOUD_NAME);
+
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+      const imagefile = await res?.json();
+      const imageURL = imagefile?.url;
 
       updateUser(name, imageURL);
 
@@ -78,9 +82,7 @@ const Profile = () => {
         photoURL: imageURL,
         role: user?.role,
         batch,
-        studentID,
-        accountType,
-        department,
+        phone,
       };
 
       await axiosPrivate.put(`/user/${user?.email}`, userData).then((res) => {
@@ -143,29 +145,23 @@ const Profile = () => {
         My Profile
       </h3>
       <div className="flex gap-10 flex-wrap">
-        <img className="w-40 h-40 rounded-full" src={user?.photoURL} alt="" />
+        <img
+          className="w-40 h-40 rounded-full"
+          src={user?.photoURL ? user?.photoURL : man}
+          alt=""
+        />
         <div>
-          <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
-            Account Type: {user?.accountType || "Not Defined"}
-          </h3>
           <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
             Full Name: {user?.name}
           </h3>
-          {user?.accountType === "Student" && (
-            <>
-              <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
-                Student ID: {user?.studentID}
-              </h3>
-              <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
-                Department: {user?.department || "Not Defined"}
-              </h3>
-              <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
-                Batch: {user?.batch}
-              </h3>
-            </>
-          )}
           <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
             Email: {user?.email}
+          </h3>
+          <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
+            Phone: {user?.phone}
+          </h3>
+          <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
+            Batch: {user?.batch}
           </h3>
           <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
             Role:{" "}
@@ -188,51 +184,22 @@ const Profile = () => {
             required
           />
 
-          <select
-            name="accountType"
-            defaultValue={user?.accountType} // This sets the default selected value
-            onChange={(e) => setAccountType(e.target.value)}
+          <input
+            type="number"
+            name="batch"
+            defaultValue={user?.batch}
+            placeholder="Batch No"
             className="block w-full rounded-md border p-2.5 outline-none dark:border-[#002a3f] focus:ring-1 ring-[#002a3f]"
             required
-          >
-            <option value="Student">Student</option>
-            <option value="Teacher">Teacher</option>
-          </select>
-
-          <select
-            name="department"
-            defaultValue={user?.department} // This sets the default selected value
+          />
+          <input
+            type="tel"
+            name="phone"
+            defaultValue={user?.phone}
+            placeholder="Phone Number"
             className="block w-full rounded-md border p-2.5 outline-none dark:border-[#002a3f] focus:ring-1 ring-[#002a3f]"
             required
-          >
-            <option value="CSE">CSE</option>
-            <option value="EEE">EEE</option>
-            <option value="BBA">BBA</option>
-            <option value="Pharmacy">Pharmacy</option>
-            <option value="English">English</option>
-            <option value="MIS">MIS</option>
-          </select>
-
-          {accountType === "Student" && (
-            <>
-              <input
-                type="number"
-                name="batch"
-                defaultValue={user?.batch}
-                placeholder="Batch No"
-                className="block w-full rounded-md border p-2.5 outline-none dark:border-[#002a3f] focus:ring-1 ring-[#002a3f]"
-                required
-              />
-              <input
-                type="number"
-                name="studentID"
-                defaultValue={user?.studentID}
-                placeholder="Student ID"
-                className="block w-full rounded-md border p-2.5 outline-none dark:border-[#002a3f] focus:ring-1 ring-[#002a3f]"
-                required
-              />
-            </>
-          )}
+          />
 
           <input
             type="file"

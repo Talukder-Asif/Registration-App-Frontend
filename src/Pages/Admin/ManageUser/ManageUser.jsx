@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import useAllUsers from "../../../Hooks/useAllUsers";
 import useUserDetails from "../../../Hooks/useUserDetails";
 import { Link } from "react-router-dom";
+import man from "/src/assets/Man1.png";
 
 const ManageUser = () => {
   const [Users, isUsersLoading, refetch] = useAllUsers();
@@ -14,9 +15,7 @@ const ManageUser = () => {
       role: newRole,
       photoURL: user?.photoURL,
       batch: user?.batch,
-      studentID: user?.studentID,
-      accountType: user?.accountType,
-      department: user?.department,
+      phone: user?.phone,
     };
     axios
       .put(`http://localhost:3000/user/${user?.email}`, updateData)
@@ -105,7 +104,7 @@ const ManageUser = () => {
               <label>#</label>
             </th>
             <th>Name</th>
-            <th>Department</th>
+            <th>Batch</th>
             <th>Role</th>
             <th></th>
           </tr>
@@ -126,7 +125,10 @@ const ManageUser = () => {
                   <div className="flex items-center gap-3">
                     <div className="avatar">
                       <div className="mask mask-squircle w-12 h-12">
-                        <img src={userData?.photoURL} alt="userData Avatar" />
+                        <img
+                          src={userData?.photoURL ? userData?.photoURL : man}
+                          alt="User Avatar"
+                        />
                       </div>
                     </div>
                     <div>
@@ -138,9 +140,7 @@ const ManageUser = () => {
                   </div>
                 </Link>
               </td>
-              <td>
-                {userData?.department ? userData?.department : "Not Defined"}
-              </td>
+              <td>{userData?.batch ? userData?.batch : "Not Defined"}</td>
               <td>{userData?.role}</td>
               <th>
                 {user?.role === "Admin" && userData?.role !== "SuperAdmin" ? (
@@ -171,17 +171,13 @@ const ManageUser = () => {
                       User
                     </option>
                     <option
-                      className={userData?.role === "EVM" ? "hidden" : null}
-                    >
-                      EVM
-                    </option>
-                    <option
                       className={
-                        userData?.role === "Live Result" ? "hidden" : null
+                        userData?.role === "Executive" ? "hidden" : null
                       }
                     >
-                      Live Result
+                      Executive
                     </option>
+
                     <option
                       className={userData?.role === "Admin" ? "hidden" : null}
                     >
