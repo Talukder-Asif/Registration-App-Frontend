@@ -49,7 +49,7 @@ const NavBar = () => {
       </li>
       <li className="group flex flex-col">
         <NavLink
-          to={"/"}
+          to={"/participants"}
           className={({ isActive, isPending }) =>
             isActive
               ? "text-[#2ec4b6] font-medium"
@@ -58,7 +58,7 @@ const NavBar = () => {
               : "text-white font-normal"
           }
         >
-          ID Card
+          Search
         </NavLink>
         <span className="mt-[2px] h-[3px] w-[0px] rounded-full bg-[#2ec4b6] transition-all duration-300 group-hover:w-full hidden lg:inline z-50"></span>
       </li>

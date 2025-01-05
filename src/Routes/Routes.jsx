@@ -10,6 +10,7 @@ import AdminRoute from "./AdminRoute";
 import PreviewPage from "../Pages/HomePage/PreviewPage";
 import UserRoute from "./UserRoute";
 import ManageRegistration from "../Pages/Admin/ManageRegistration/ManageRegistration";
+import SearchPage from "../Pages/SearchPage/SearchPage";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage></HomePage>,
+      },
+      {
+        path: "/participants",
+        element: <SearchPage></SearchPage>,
       },
       {
         path: "/preview/:id",
