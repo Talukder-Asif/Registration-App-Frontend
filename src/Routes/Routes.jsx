@@ -8,9 +8,9 @@ import Signin from "../Pages/SIgnin/Signin";
 import Profile from "../Pages/User/Profile";
 import AdminRoute from "./AdminRoute";
 import PreviewPage from "../Pages/HomePage/PreviewPage";
-import UserRoute from "./UserRoute";
 import ManageRegistration from "../Pages/Admin/ManageRegistration/ManageRegistration";
 import SearchPage from "../Pages/SearchPage/SearchPage";
+import Payment from "../Pages/Payment/Payment";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +26,10 @@ const router = createBrowserRouter([
         element: <SearchPage></SearchPage>,
       },
       {
+        path: "/payment/:id",
+        element: <Payment></Payment>,
+      },
+      {
         path: "/preview/:id",
         element: <PreviewPage></PreviewPage>,
       },
@@ -35,11 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard",
-        element: (
-          <UserRoute>
-            <Dashboard></Dashboard>
-          </UserRoute>
-        ),
+        element: <Dashboard></Dashboard>,
         children: [
           {
             path: "/dashboard",
@@ -59,7 +59,11 @@ const router = createBrowserRouter([
           },
           {
             path: "/dashboard/registration",
-            element: <ManageRegistration></ManageRegistration>,
+            element: (
+              <AdminRoute>
+                <ManageRegistration></ManageRegistration>
+              </AdminRoute>
+            ),
           },
         ],
       },

@@ -18,7 +18,7 @@ const SearchPage = () => {
     const fetchTotalParticipants = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/totalParticipant"
+          "https://api.registration.exstudentsforum-brghs.com/totalParticipant"
         );
         setTotalParticipants(response?.data);
       } catch (error) {
@@ -34,7 +34,7 @@ const SearchPage = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          "http://localhost:3000/allParticipant",
+          "https://api.registration.exstudentsforum-brghs.com/allParticipant",
           {
             params: { page, size },
           }
@@ -63,11 +63,14 @@ const SearchPage = () => {
     setSearchingLoading(true);
     setsearching(true);
     axios
-      .get("http://localhost:3000/participants/search", {
-        params: {
-          query: e.target.search.value.toLowerCase(),
-        },
-      })
+      .get(
+        "https://api.registration.exstudentsforum-brghs.com/participants/search",
+        {
+          params: {
+            query: e.target.search.value.toLowerCase(),
+          },
+        }
+      )
       .then((response) => {
         setParticipants(response?.data);
         setSearchingLoading(false);
@@ -95,7 +98,7 @@ const SearchPage = () => {
             <div role="status">
               <svg
                 aria-hidden="true"
-                className="inline w-32 h-32 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-[#eb0029]"
+                className="inline w-32 h-32 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-[#012940]"
                 viewBox="0 0 100 101"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -140,12 +143,12 @@ const SearchPage = () => {
                   type="search"
                   name="search"
                   id="default-search"
-                  className="block w-full p-4 pl-10 text-sm text-gray-900 border border-[#eb002732] rounded-lg bg-gray-50  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="block w-full p-4 pl-10 text-sm text-gray-900 border border-[#012940] rounded-lg bg-gray-50  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Your Name"
                 />
                 <button
                   type="submit"
-                  className="absolute right-2.5 bottom-2 focus:ring-4 focus:outline-none focus:ring-[#eb00275f] font-medium rounded-lg text-sm px-4 py-2 border-2 border-[#eb0029] text-white bg-[#eb0029] hover:bg-white hover:text-[#eb0029]  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                  className="absolute right-2.5 bottom-2 focus:ring-4 focus:outline-none focus:ring-[#eb00275f] font-medium rounded-lg text-sm px-4 py-2 border-2 border-[#012940] text-white bg-[#012940] hover:bg-white hover:text-[#012940]  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                 >
                   Search
                 </button>

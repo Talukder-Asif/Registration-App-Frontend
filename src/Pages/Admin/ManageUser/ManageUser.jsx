@@ -18,7 +18,10 @@ const ManageUser = () => {
       phone: user?.phone,
     };
     axios
-      .put(`http://localhost:3000/user/${user?.email}`, updateData)
+      .put(
+        `https://api.registration.exstudentsforum-brghs.com/user/${user?.email}`,
+        updateData
+      )
       .then((res) => {
         if (res.data.modifiedCount > 0) {
           refetch();
@@ -38,22 +41,26 @@ const ManageUser = () => {
       text: `Do you want to delete ${user?.name}?`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#eb0029",
+      confirmButtonColor: "#012940",
       cancelButtonColor: "#28b392",
       confirmButtonText: "Yes",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:3000/user/${user?._id}`).then((res) => {
-          if (res.data.deletedCount > 0) {
-            refetch();
-            Swal.fire({
-              icon: "success",
-              title: `${user.name} has been deleted from the database`,
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          }
-        });
+        axios
+          .delete(
+            `https://api.registration.exstudentsforum-brghs.com/user/${user?._id}`
+          )
+          .then((res) => {
+            if (res.data.deletedCount > 0) {
+              refetch();
+              Swal.fire({
+                icon: "success",
+                title: `${user.name} has been deleted from the database`,
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          });
       }
     });
   };
@@ -65,7 +72,7 @@ const ManageUser = () => {
           <div role="status">
             <svg
               aria-hidden="true"
-              className="inline w-32 h-32 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-[#eb0029]"
+              className="inline w-32 h-32 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-[#012940]"
               viewBox="0 0 100 101"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -151,7 +158,7 @@ const ManageUser = () => {
                         text: `Do you want to update ${userData?.name} as ${e.target.value}?`,
                         icon: "warning",
                         showCancelButton: true,
-                        confirmButtonColor: "#eb0029",
+                        confirmButtonColor: "#012940",
                         cancelButtonColor: "#28b392",
                         confirmButtonText: "Yes",
                       }).then((result) => {

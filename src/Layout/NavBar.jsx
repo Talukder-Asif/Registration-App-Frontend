@@ -58,14 +58,14 @@ const NavBar = () => {
               : "text-white font-normal"
           }
         >
-          Search
+          View Participant
         </NavLink>
         <span className="mt-[2px] h-[3px] w-[0px] rounded-full bg-[#2ec4b6] transition-all duration-300 group-hover:w-full hidden lg:inline z-50"></span>
       </li>
 
       <li className="group flex flex-col">
         <NavLink
-          to={"/signin"}
+          to={"https://www.exstudentsforum-brghs.com/contact/"}
           className={({ isActive, isPending }) =>
             isActive
               ? "text-[#2ec4b6] font-medium"
@@ -74,7 +74,7 @@ const NavBar = () => {
               : "text-white font-normal"
           }
         >
-          Show Registration
+          Contact Us
         </NavLink>
         <span className="mt-[2px] h-[3px] w-[0px] rounded-full bg-[#2ec4b6] transition-all duration-300 group-hover:w-full hidden lg:inline z-50"></span>
       </li>
@@ -99,7 +99,7 @@ const NavBar = () => {
       </li>
       <li className="group flex flex-col">
         <NavLink
-          to={"/"}
+          to={"/participants"}
           className={({ isActive, isPending }) =>
             isActive
               ? "text-[#2ec4b6] font-medium"
@@ -108,14 +108,14 @@ const NavBar = () => {
               : "text-black font-normal"
           }
         >
-          ID Card
+          View Participants
         </NavLink>
         <span className="mt-[2px] h-[3px] w-[0px] rounded-full bg-[#2ec4b6] transition-all duration-300 group-hover:w-full hidden lg:inline z-50"></span>
       </li>
 
       <li className="group flex flex-col">
         <NavLink
-          to={"/signin"}
+          to={"https://www.exstudentsforum-brghs.com/contact/"}
           className={({ isActive, isPending }) =>
             isActive
               ? "text-[#2ec4b6] font-medium"
@@ -124,7 +124,7 @@ const NavBar = () => {
               : "text-black font-normal"
           }
         >
-          Log In
+          Contact Us
         </NavLink>
         <span className="mt-[2px] h-[3px] w-[0px] rounded-full bg-[#2ec4b6] transition-all duration-300 group-hover:w-full hidden lg:inline z-50"></span>
       </li>

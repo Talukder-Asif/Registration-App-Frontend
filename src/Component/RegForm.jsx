@@ -3,7 +3,7 @@ import leftLogo from "/src/assets/logo1.png";
 import rightLogo from "/src/assets/rigthLogo.png";
 import useOneParticipant from "../Hooks/useOneParticipant";
 import man from "/src/assets/Man1.png";
-import React from "react";
+import React, { useState } from "react";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import unpaid from "/src/assets/unpaid.png";
@@ -11,6 +11,46 @@ const RegForm = ({ id }) => {
   const [participant, isParticipantLoading] = useOneParticipant({
     id,
   });
+
+  const [responseMessage, setResponseMessage] = useState("");
+
+  const handlePayment = async () => {
+    const formData = {
+      merchantbillno: "12345",
+      customername: participant?.name_english,
+      customernumber: participant?.phone,
+      amount: participant?.total_fee,
+      invoicedescription: "Participant Registration",
+    };
+
+    try {
+      const response = await fetch(
+        "https://api.registration.exstudentsforum-brghs.com/create-payment",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "API-Key": "6d6c0ede-c766-11ef-9701-5254d4781e09", // Replace with your actual API key
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      if (data.error) {
+        setResponseMessage(`Error: ${data.error}`);
+      } else {
+        setResponseMessage("Payment created successfully!");
+        console.log("Payment Response:", data);
+        if (data.paymentURL) {
+          window.location.href = data.paymentURL; // Redirect to payment page if provided
+        }
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setResponseMessage("Failed to create payment.");
+    }
+  };
 
   const printRef = React.useRef(null);
   const handleDownloadPDF = async () => {
@@ -439,12 +479,17 @@ const RegForm = ({ id }) => {
         </button>
 
         <button
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5"
+          disabled
+          onClick={handlePayment}
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium text-center rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5"
           style={{ width: "30%" }}
         >
           Pay Now
         </button>
       </div>
+      {responseMessage && (
+        <p className="text-red-500 m-auto">{responseMessage}</p>
+      )}
     </div>
   );
 };

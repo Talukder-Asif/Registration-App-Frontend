@@ -135,15 +135,14 @@ const Signin = () => {
     googleSignin()
       .then((res) => {
         const userData = {
-          name: res.user.displayName,
-          email: res.user.email,
+          name: res?.user?.displayName,
+          email: res?.user?.email,
           photoURL: res.user.photoURL,
           role: "User",
           batch: "",
-          studentID: "",
-          accountType: "",
-          department: "",
+          phone: "",
         };
+        console.log(userData);
         axiosPublic.post("/user", userData).then((res) => {
           console.log(res);
         });

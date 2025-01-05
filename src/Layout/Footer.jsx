@@ -12,9 +12,9 @@ const Footer = () => {
             <a
               className="text-[#2ec4b6]"
               target="_blank"
-              href="https://asif-talukder.vercel.app/"
+              href="https://inforsix.com/"
             >
-              Asif Talukder
+              Inforsix LTD
             </a>
           </p>
         </div>
