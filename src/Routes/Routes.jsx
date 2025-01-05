@@ -10,7 +10,6 @@ import AdminRoute from "./AdminRoute";
 import PreviewPage from "../Pages/HomePage/PreviewPage";
 import UserRoute from "./UserRoute";
 import ManageRegistration from "../Pages/Admin/ManageRegistration/ManageRegistration";
-import ModifyForm from "/src/Pages/Admin/ModifyForm/ModifyForm";
 
 const router = createBrowserRouter([
   {
@@ -56,10 +55,6 @@ const router = createBrowserRouter([
           {
             path: "/dashboard/registration",
             element: <ManageRegistration></ManageRegistration>,
-          },
-          {
-            path: "/dashboard/registration/update/:id",
-            element: <ModifyForm></ModifyForm>,
           },
         ],
       },

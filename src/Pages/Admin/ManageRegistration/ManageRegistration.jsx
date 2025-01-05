@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import man from "/src/assets/Man1.png";
-import { GoGear } from "react-icons/go";
+import Swal from "sweetalert2";
 
 const ManageRegistration = () => {
   const [participants, setParticipants] = useState([]);
@@ -10,6 +10,63 @@ const ManageRegistration = () => {
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10); // Number of items per page
   const [loading, setLoading] = useState(false);
+  const [updateLoading, setUpdateLoading] = useState(false);
+  const handleMakePaid = (participantData) => {
+    const updateData = {
+      participantId: participantData?.participantId,
+      name_bengali: participantData?.name_bengali,
+      name_english: participantData?.name_english,
+      dob: participantData?.dob,
+      nationality: participantData?.nationality,
+      religion: participantData?.religion,
+      blood_group: participantData?.blood_group,
+      father_name: participantData?.father_name,
+      mother_name: participantData?.mother_name,
+      occupation: participantData?.occupation,
+      phone: participantData?.phone,
+      email: participantData?.email,
+      address: participantData?.address,
+      ssc_year: participantData?.ssc_year,
+      image: participantData?.image,
+      tshirt_size: participantData?.tshirt_size,
+      participantFee: participantData?.participantFee,
+      family_members: participantData?.family_members,
+      familyFee: participantData?.familyFee,
+      driver: participantData?.driver,
+      driverFee: participantData?.driverFee,
+      total_fee: participantData?.total_fee,
+      Date: participantData?.Date,
+      status: "Paid",
+    };
+    Swal.fire({
+      title: "Are you sure?",
+      text: `Is ${participantData?.name_english} paid his due?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#eb0029",
+      cancelButtonColor: "#28b392",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .put(
+            `http://localhost:3000/participant/${participantData?.participantId}`,
+            updateData
+          )
+          .then((res) => {
+            if (res?.data?.modifiedCount > 0) {
+              setUpdateLoading(!updateLoading);
+              Swal.fire({
+                icon: "success",
+                title: `${participantData?.name_english} has been modified`,
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          });
+      }
+    });
+  };
 
   // Fetch the total number of participants
   useEffect(() => {
@@ -44,11 +101,10 @@ const ManageRegistration = () => {
       setLoading(false);
     };
     fetchParticipants();
-  }, [page, size]);
+  }, [page, size, updateLoading]);
 
   // Calculate the total number of pages
   const totalPages = Math.ceil(totalParticipants?.total / size);
-  console.log(totalParticipants.total);
 
   return (
     <div>
@@ -78,70 +134,73 @@ const ManageRegistration = () => {
           <h1 className="text-5xl md:text-7xl font-bold">Please Wait....</h1>
         </div>
       ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th className="text-center">Name</th>
-              <th>Batch</th>
-              <th>Guest</th>
-              <th>Driver</th>
-              <th>Status</th>
-              <th className="text-center">Update</th>
-            </tr>
-          </thead>
-          <tbody>
-            {participants?.map((participantsData, i) => (
-              <tr key={i}>
-                <td>
-                  <Link
-                    target="_blank"
-                    to={`/preview/${participantsData?.participantId}`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="avatar">
-                        <div className="mask mask-squircle w-12 h-12">
-                          <img
-                            src={
-                              participantsData?.image
-                                ? participantsData?.image
-                                : man
-                            }
-                            alt="User Avatar"
-                          />
+        <div className="overflow-scroll">
+          <table className="table">
+            <thead>
+              <tr>
+                <th className="text-center">Name</th>
+                <th>Batch</th>
+                <th>Guest</th>
+                <th>Driver</th>
+                <th>Status</th>
+                <th className="text-center">Update</th>
+              </tr>
+            </thead>
+            <tbody>
+              {participants?.map((participantsData, i) => (
+                <tr key={i}>
+                  <td>
+                    <Link
+                      target="_blank"
+                      to={`/preview/${participantsData?.participantId}`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="avatar">
+                          <div className="mask mask-squircle w-12 h-12">
+                            <img
+                              src={
+                                participantsData?.image
+                                  ? participantsData?.image
+                                  : man
+                              }
+                              alt="User Avatar"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <p className="font-bold">
+                            {participantsData?.name_english} <br />
+                          </p>
+                          <span className="text-sm">
+                            {participantsData?.phone}
+                          </span>
                         </div>
                       </div>
-                      <div>
-                        <p className="font-bold">
-                          {participantsData?.name_english} <br />
-                        </p>
-                        <span className="text-sm">
-                          {participantsData?.phone}
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </td>
-                <td>
-                  {participantsData?.ssc_year
-                    ? participantsData?.ssc_year
-                    : "Not Defined"}
-                </td>
-                <td>{participantsData?.family_members}</td>
-                <td>{participantsData?.driver}</td>
-                <td>{participantsData?.status}</td>
-                <td className="text-center">
-                  <Link
-                    to={`/dashboard/registration/update/${participantsData?.participantId}`}
-                  >
-                    <button title="Update Form">
-                      <GoGear />
-                    </button>
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                    </Link>
+                  </td>
+                  <td>
+                    {participantsData?.ssc_year
+                      ? participantsData?.ssc_year
+                      : "Not Defined"}
+                  </td>
+                  <td>{participantsData?.family_members}</td>
+                  <td>{participantsData?.driver}</td>
+                  <td>{participantsData?.status}</td>
+                  {participantsData?.status === "Unpaid" ? (
+                    <td
+                      onClick={() => handleMakePaid(participantsData)}
+                      className="text-center"
+                    >
+                      <button className="bg-green-500 rounded text-white px-3 py-1 text-sm">
+                        Make Paid
+                      </button>
+                    </td>
+                  ) : null}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       <div className="flex justify-between" style={{ marginTop: "20px" }}>

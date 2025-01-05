@@ -82,7 +82,7 @@ const RegForm = ({ id }) => {
                 alt=""
               />
             </div>
-            <div className="mb:2 md:mb-5" style={{ textAlign: "center" }}>
+            <div className="mb:2 md:mb-4" style={{ textAlign: "center" }}>
               <h1 className="text-lg md:text-4xl lg:text-6xl text-[rgb(200,16,49)] font-bold">
                 শতবর্ষ উদযাপন পরিষদ
               </h1>
@@ -100,9 +100,9 @@ const RegForm = ({ id }) => {
             </div>
           </div>
 
-          <div className="flex text-[7px] md:text-sm md:gap-5 justify-around">
+          <div className="flex text-[7px] md:text-sm md:gap-x-5 justify-around">
             <p>Serial No:</p>
-            <div className="md:text-lg lg:text-2xl text-white bg-[rgb(42,46,151)] p-0.5 lg:p-2 px-2 lg:px-3 rounded-t-lg md:rounded-t-xl">
+            <div className="md:text-base lg:text-2xl text-white bg-[rgb(42,46,151)] p-0.5 lg:p-2 px-2 lg:px-3 rounded-t-lg md:rounded-t-xl">
               রেজিস্ট্রেশন ফর্ম
             </div>
             <p>Office Copy</p>
