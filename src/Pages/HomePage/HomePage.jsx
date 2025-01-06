@@ -48,7 +48,7 @@ const HomePage = () => {
     );
     const imageURL = await res.json();
     if (imageURL) {
-      setShowImagePreview(imageURL.url);
+      setShowImagePreview(imageURL?.secure_url);
       setImageLoading(false);
     }
   };

@@ -72,7 +72,7 @@ const Profile = () => {
         }
       );
       const imagefile = await res?.json();
-      const imageURL = imagefile?.url;
+      const imageURL = imagefile?.secure_url;
 
       updateUser(name, imageURL);
 

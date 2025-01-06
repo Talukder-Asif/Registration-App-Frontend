@@ -94,7 +94,7 @@ const Signin = () => {
 
       const userCredential = await signupEmailPassword(email, password);
       // Update user profile
-      updateUser(name, imageURL?.url);
+      updateUser(name, imageURL?.secure_url);
 
       const userData = {
         name,
@@ -142,7 +142,6 @@ const Signin = () => {
           batch: "",
           phone: "",
         };
-        console.log(userData);
         axiosPublic.post("/user", userData).then((res) => {
           console.log(res);
         });

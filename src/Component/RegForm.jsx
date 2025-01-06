@@ -7,49 +7,36 @@ import React, { useState } from "react";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import unpaid from "/src/assets/unpaid.png";
+import axios from "axios";
 const RegForm = ({ id }) => {
+  const [btnActive, setBtnActive] = useState(true);
   const [participant, isParticipantLoading] = useOneParticipant({
     id,
   });
 
-  const [responseMessage, setResponseMessage] = useState("");
-
-  const handlePayment = async () => {
+  const handleCreatePayment = async () => {
+    setBtnActive(false);
     const formData = {
-      merchantbillno: "12345",
       customername: participant?.name_english,
       customernumber: participant?.phone,
       amount: participant?.total_fee,
       invoicedescription: "Participant Registration",
+      driverFee: participant?.driverFee,
+      familyFee: participant?.familyFee,
     };
 
-    try {
-      const response = await fetch(
+    axios
+      .post(
         "https://api.registration.exstudentsforum-brghs.com/create-payment",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "API-Key": "6d6c0ede-c766-11ef-9701-5254d4781e09", // Replace with your actual API key
-          },
-          body: JSON.stringify(formData),
+        formData
+      )
+      .then((res) => {
+        const redirectURL = res?.data?.pay_url;
+        if (redirectURL) {
+          setBtnActive(true);
+          window.location.replace(redirectURL);
         }
-      );
-      const data = await response.json();
-      console.log(data);
-      if (data.error) {
-        setResponseMessage(`Error: ${data.error}`);
-      } else {
-        setResponseMessage("Payment created successfully!");
-        console.log("Payment Response:", data);
-        if (data.paymentURL) {
-          window.location.href = data.paymentURL; // Redirect to payment page if provided
-        }
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      setResponseMessage("Failed to create payment.");
-    }
+      });
   };
 
   const printRef = React.useRef(null);
@@ -104,8 +91,10 @@ const RegForm = ({ id }) => {
   };
   if (isParticipantLoading)
     return (
-      <div className="fixed w-full h-full -mt-24 flex -ml-3 z-50">
-        <div className="w-60 h-60 animate-[spin_1s_linear_infinite] rounded-full border-double border-4 border-r-0 border-l-0 border-b-sky-400 border-t-sky-700 m-auto"></div>
+      <div className="min-h-96">
+        <div className="fixed w-full h-full -mt-24 flex -ml-3 z-50">
+          <div className="w-60 h-60 animate-[spin_1s_linear_infinite] rounded-full border-double border-4 border-r-0 border-l-0 border-b-sky-400 border-t-sky-700 m-auto"></div>
+        </div>
       </div>
     );
   return (
@@ -373,7 +362,10 @@ const RegForm = ({ id }) => {
                   src={unpaid}
                 ></img>
               ) : (
-                <h3> QR Code</h3>
+                <h3 className="text-green-500 text-5xl p-2 border-4 border-green-500 font-black mb-2">
+                  {" "}
+                  PAID
+                </h3>
               )}
             </div>
           </div>
@@ -463,7 +455,10 @@ const RegForm = ({ id }) => {
                   src={unpaid}
                 ></img>
               ) : (
-                <h3> QR Code</h3>
+                <h3 className="text-green-500 text-5xl p-2 border-4 border-green-500 font-black mb-2">
+                  {" "}
+                  PAID
+                </h3>
               )}
             </div>
           </div>
@@ -478,18 +473,21 @@ const RegForm = ({ id }) => {
           Download PDF
         </button>
 
-        <button
-          disabled
-          onClick={handlePayment}
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium text-center rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5"
-          style={{ width: "30%" }}
-        >
-          Pay Now
-        </button>
+        {participant?.status === "Unpaid" ? (
+          <button
+            onClick={btnActive ? handleCreatePayment : undefined}
+            className={`text-white ${
+              btnActive
+                ? "bg-blue-700 hover:bg-blue-800"
+                : "bg-gray-400 cursor-not-allowed"
+            } focus:ring-4 focus:outline-none font-medium text-center rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5`}
+            style={{ width: "30%" }}
+            disabled={!btnActive}
+          >
+            Pay Now
+          </button>
+        ) : null}
       </div>
-      {responseMessage && (
-        <p className="text-red-500 m-auto">{responseMessage}</p>
-      )}
     </div>
   );
 };

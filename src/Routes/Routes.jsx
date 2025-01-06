@@ -10,7 +10,8 @@ import AdminRoute from "./AdminRoute";
 import PreviewPage from "../Pages/HomePage/PreviewPage";
 import ManageRegistration from "../Pages/Admin/ManageRegistration/ManageRegistration";
 import SearchPage from "../Pages/SearchPage/SearchPage";
-import Payment from "../Pages/Payment/Payment";
+import Success from "../Pages/Payment/Success";
+import Failed from "../Pages/Payment/Failed";
 
 const router = createBrowserRouter([
   {
@@ -26,8 +27,12 @@ const router = createBrowserRouter([
         element: <SearchPage></SearchPage>,
       },
       {
-        path: "/payment/:id",
-        element: <Payment></Payment>,
+        path: "/payment-success",
+        element: <Success></Success>,
+      },
+      {
+        path: "/payment-failed",
+        element: <Failed></Failed>,
       },
       {
         path: "/preview/:id",
