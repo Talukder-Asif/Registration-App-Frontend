@@ -291,7 +291,7 @@ const HomePage = () => {
                   type="text"
                   name="name_bengali"
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -304,7 +304,7 @@ const HomePage = () => {
                   type="text"
                   name="name_english"
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -317,7 +317,7 @@ const HomePage = () => {
                   type="date"
                   name="dob"
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -331,7 +331,7 @@ const HomePage = () => {
                   name="nationality"
                   required
                   defaultValue="Bangladeshi"
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -342,7 +342,7 @@ const HomePage = () => {
                   type="text"
                   name="religion"
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -354,7 +354,7 @@ const HomePage = () => {
                 <select
                   name="blood_group"
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 >
                   <option>A+</option>
                   <option>A-</option>
@@ -376,7 +376,7 @@ const HomePage = () => {
                   type="text"
                   name="father_name"
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -389,7 +389,7 @@ const HomePage = () => {
                   type="text"
                   name="mother_name"
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -400,7 +400,7 @@ const HomePage = () => {
                   type="text"
                   name="occupation"
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -413,7 +413,7 @@ const HomePage = () => {
                   type="tel"
                   name="phone"
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -423,7 +423,7 @@ const HomePage = () => {
                 <input
                   type="email"
                   name="email"
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -435,7 +435,7 @@ const HomePage = () => {
                 <select
                   name="family_members"
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                   onChange={handleFamily}
                 >
                   <option value="00">Participant only: (2000 BDT)</option>
@@ -467,7 +467,7 @@ const HomePage = () => {
                   type="text"
                   name="address"
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -481,19 +481,19 @@ const HomePage = () => {
                     type="text"
                     name="ssc_year"
                     required
-                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border bg-transparent"
+                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                   />
                 </div>
                 {/* Driver Attending */}
                 <div
                   style={{ marginBottom: "10px" }}
-                  className="md:flex gap-5 lg:gap-2"
+                  className="md:flex gap-5 lg:w-[32%] lg:gap-2"
                 >
                   <label className="md:w-36 lg:w-20 my-1 py-1">Driver:</label>
                   <select
                     name="driver"
                     required
-                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border bg-transparent"
+                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[200px] border border-black bg-transparent"
                     onChange={handleDriver}
                   >
                     <option value={"00"}>No</option>
@@ -515,7 +515,7 @@ const HomePage = () => {
                     type="text"
                     name="selfFee"
                     required
-                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border bg-transparent"
+                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
                     value={participantFee}
                     readOnly
                   />
@@ -528,7 +528,7 @@ const HomePage = () => {
                     type="text"
                     name="familyFee"
                     required
-                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border bg-transparent"
+                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
                     value={familyFee}
                     readOnly
                   />
@@ -541,7 +541,7 @@ const HomePage = () => {
                     type="text"
                     name="driverFee"
                     required
-                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border bg-transparent"
+                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
                     value={driverFee}
                     readOnly
                   />
@@ -552,6 +552,16 @@ const HomePage = () => {
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
                 <label className="md:w-36 lg:w-40 my-1 py-1">
                   T-Shirt Size:
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="tshirtSize"
+                    value="S"
+                    required // Make this field required
+                    style={{ marginLeft: "10px", marginTop: "15px" }}
+                  />{" "}
+                  S
                 </label>
                 <label>
                   <input
@@ -583,6 +593,26 @@ const HomePage = () => {
                   />{" "}
                   XL
                 </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="tshirtSize"
+                    value="XXL"
+                    required // Make this field required
+                    style={{ marginLeft: "10px", marginTop: "15px" }}
+                  />{" "}
+                  XXL
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="tshirtSize"
+                    value="3XL"
+                    required // Make this field required
+                    style={{ marginLeft: "10px", marginTop: "15px" }}
+                  />{" "}
+                  3XL
+                </label>
               </div>
 
               <div className="md:grid space-y-2 my-4 grid-cols-2 lg:grid-cols-3 gap-4">
@@ -592,7 +622,7 @@ const HomePage = () => {
                     type="Date"
                     name="date"
                     required
-                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border bg-transparent"
+                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
                     value={formattedDate}
                     readOnly
                   />
@@ -603,7 +633,7 @@ const HomePage = () => {
                     type="text"
                     name="total_fee"
                     required
-                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border bg-transparent"
+                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
                     value={participantFee + familyFee + driverFee}
                     readOnly
                   />

@@ -17,6 +17,7 @@ const RegForm = ({ id }) => {
   const handleCreatePayment = async () => {
     setBtnActive(false);
     const formData = {
+      merchantbillno: participant?.participantId,
       customername: participant?.name_english,
       customernumber: participant?.phone,
       amount: participant?.total_fee,
@@ -25,18 +26,13 @@ const RegForm = ({ id }) => {
       familyFee: participant?.familyFee,
     };
 
-    axios
-      .post(
-        "https://api.registration.exstudentsforum-brghs.com/create-payment",
-        formData
-      )
-      .then((res) => {
-        const redirectURL = res?.data?.pay_url;
-        if (redirectURL) {
-          setBtnActive(true);
-          window.location.replace(redirectURL);
-        }
-      });
+    axios.post("http://localhost:3000/create-payment", formData).then((res) => {
+      const redirectURL = res?.data?.pay_url;
+      if (redirectURL) {
+        setBtnActive(true);
+        window.location.replace(redirectURL);
+      }
+    });
   };
 
   const printRef = React.useRef(null);

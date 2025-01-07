@@ -27,8 +27,12 @@ const router = createBrowserRouter([
         element: <SearchPage></SearchPage>,
       },
       {
-        path: "/payment-success",
+        path: "/payment-success/:paymentId",
         element: <Success></Success>,
+      },
+      {
+        path: "/idcard/:id",
+        element: <div>This page will available soon</div>,
       },
       {
         path: "/payment-failed",
