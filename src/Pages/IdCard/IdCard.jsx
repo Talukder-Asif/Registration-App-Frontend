@@ -1,14 +1,18 @@
 import { useParams } from "react-router-dom";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import useOneParticipant from "../../Hooks/useOneParticipant";
 import leftLogo from "/src/assets/logo1.png";
 import rightLogo from "/src/assets/rigthLogo.png";
 import { QRCodeSVG } from "qrcode.react";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
+import React from "react";
 
-const Success = () => {
+const IdCard = () => {
+  const params = useParams();
+  const id = params.id;
+  const [participant, isParticipantLoading] = useOneParticipant({ id });
   const printRef = React.useRef(null);
+
   const handleDownloadPDF = async () => {
     try {
       const element = printRef.current;
@@ -59,21 +63,9 @@ const Success = () => {
     }
   };
 
-  const paymentId = useParams().paymentId;
-  const [paymentData, setPaymentData] = useState({});
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    axios.get(`http://localhost:3000/payment/${paymentId}`).then((res) => {
-      setPaymentData(res.data);
-      if (res?.data) {
-        setLoading(false);
-      }
-    });
-  }, [paymentId]);
-
   return (
     <div className="bg-[#f5f7fa]">
-      {loading ? (
+      {isParticipantLoading ? (
         <div className="grid min-h-screen content-center justify-center">
           <div className="text-center">
             <div role="status">
@@ -161,43 +153,43 @@ const Success = () => {
                           <h3 className="w-20 md:w-48 lg:w-60">
                             Participant ID:
                           </h3>
-                          <h3>{paymentData?.participantId}</h3>
+                          <h3>{participant?.participantId}</h3>
                         </div>
                         <div className="flex justify-start my-1 md:my-5 lg:my-6 gap-4">
                           <h3 className="w-20 md:w-48 lg:w-60">
                             Name in Bengali:
                           </h3>
-                          <h3>{paymentData?.name_bengali}</h3>
+                          <h3>{participant?.name_bengali}</h3>
                         </div>
                         <div className="flex justify-start my-1 md:my-5 lg:my-6 gap-4">
                           <h3 className="w-20 md:w-48 lg:w-60">
                             Name in English:
                           </h3>
-                          <h3>{paymentData?.name_english}</h3>
+                          <h3>{participant?.name_english}</h3>
                         </div>
                         <div className="flex justify-start my-1 md:my-5 lg:my-6 gap-4">
                           <h3 className="w-20 md:w-48 lg:w-60">Phone No:</h3>
-                          <h3>{paymentData?.phone}</h3>
+                          <h3>{participant?.phone}</h3>
                         </div>
                         <div className="flex justify-start my-1 md:my-5 lg:my-6 gap-4">
                           <h3 className="w-20 md:w-48 lg:w-60">Email:</h3>
-                          <h3>{paymentData?.email}</h3>
+                          <h3>{participant?.email}</h3>
                         </div>
                         <div className="flex justify-start my-1 md:my-5 lg:my-6 gap-4">
                           <h3 className="w-20 md:w-48 lg:w-60">Batch:</h3>
-                          <h3>{paymentData?.ssc_year}</h3>
+                          <h3>{participant?.ssc_year}</h3>
                         </div>
                         <div className="flex justify-start my-1 md:my-5 lg:my-6 gap-4">
                           <h3 className="w-20 md:w-48 lg:w-60">T-Shirt:</h3>
                           <h3 className="font-bold border md:border-4 border-black p-0.5 md:p-1">
-                            {paymentData?.tshirt_size}
+                            {participant?.tshirt_size}
                           </h3>
                         </div>
                       </div>
                       <div className="max-w-[80px] md:max-w-[150px] lg:max-w-[200px]">
                         <img
-                          src={paymentData?.image}
-                          alt={paymentData?.name_english}
+                          src={participant?.image}
+                          alt={participant?.name_english}
                         />
                       </div>
                     </div>
@@ -210,15 +202,15 @@ const Success = () => {
                           <h3 className="w-20 md:w-48 lg:w-60">
                             Payment Status:
                           </h3>
-                          <h3>{paymentData?.status}</h3>
+                          <h3>{participant?.status}</h3>
                         </div>
                         <div className="flex justify-start my-1 md:my-5 lg:my-6 gap-4">
                           <h3 className="w-20 md:w-48 lg:w-60">Total Paid:</h3>
                           <h3>
-                            {paymentData?.paidAmount
-                              ? paymentData.paidAmount
-                              : paymentData?.familyFee +
-                                paymentData?.driverFee +
+                            {participant?.paidAmount
+                              ? participant.paidAmount
+                              : participant?.familyFee +
+                                participant?.driverFee +
                                 2000}{" "}
                             BDT
                           </h3>
@@ -227,17 +219,17 @@ const Success = () => {
                           <h3 className="w-20 md:w-48 lg:w-60">
                             Family Member:
                           </h3>
-                          <h3>{paymentData?.family_members}</h3>
+                          <h3>{participant?.family_members}</h3>
                         </div>
                         <div className="flex justify-start my-1 md:my-5 lg:my-6 gap-4">
                           <h3 className="w-20 md:w-48 lg:w-60">Children:</h3>
                           <h3>
-                            {paymentData?.children ? paymentData?.children : 0}
+                            {participant?.children ? participant?.children : 0}
                           </h3>
                         </div>
                         <div className="flex justify-start my-1 md:my-5 lg:my-6 gap-4">
                           <h3 className="w-20 md:w-48 lg:w-60">Driver:</h3>
-                          <h3>{paymentData?.driver}</h3>
+                          <h3>{participant?.driver}</h3>
                         </div>
                       </div>
                       <div className="max-w-[100px] md:max-w-[180px] lg:max-w-[200px] mt-2 md:mt-10">
@@ -245,7 +237,7 @@ const Success = () => {
                         <QRCodeSVG
                           className="qr-code"
                           value={`https://registration.exstudentsforum-brghs.com/idcard/${
-                            paymentData?.participantId || ""
+                            participant?.participantId || ""
                           }`}
                         />
                       </div>
@@ -281,9 +273,8 @@ const Success = () => {
           </div>
         </div>
       )}
-      {!loading && !paymentData && <div>No payment found.</div>}
     </div>
   );
 };
 
-export default Success;
+export default IdCard;

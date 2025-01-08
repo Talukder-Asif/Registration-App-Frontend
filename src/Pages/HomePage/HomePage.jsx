@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAxios from "../../Hooks/useAxios";
 import { useNavigate } from "react-router-dom";
 import imageCompression from "browser-image-compression";
@@ -16,7 +16,14 @@ const HomePage = () => {
   const [showImagePreview, setShowImagePreview] = useState(null);
   const [err, setErr] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
+  const [children, setChildren] = useState(0);
+  const [totalFamilyFee, setTotalFamilyFee] = useState(0);
 
+  useEffect(() => {
+    if (familyFee - children * 500 >= 0) {
+      setTotalFamilyFee(familyFee - children * 500);
+    } else setTotalFamilyFee(0);
+  }, [children, familyFee]);
   const handleClear = () => {
     setShowImagePreview(null);
   };
@@ -56,6 +63,11 @@ const HomePage = () => {
     const member = e.target.value;
     setFamilyFee(parseInt(member));
   };
+  const handleChildren = (e) => {
+    const member = e.target.value;
+    setChildren(parseInt(member));
+  };
+  console.log(children);
 
   const handleDriver = (e) => {
     const driver = e.target.value;
@@ -78,6 +90,7 @@ const HomePage = () => {
     const phone = form.phone.value;
     const email = form.email.value;
     const address = form.address.value;
+    const children = form.children.value;
     const ssc_year = form.ssc_year.value;
     const driver =
       form.driver.value === "500"
@@ -105,6 +118,7 @@ const HomePage = () => {
       father_name,
       mother_name,
       occupation,
+      children,
       phone,
       email,
       address,
@@ -113,10 +127,10 @@ const HomePage = () => {
       tshirt_size,
       participantFee,
       family_members,
-      familyFee,
+      familyFee: totalFamilyFee,
       driver,
       driverFee,
-      total_fee: participantFee + familyFee + driverFee,
+      total_fee: participantFee + totalFamilyFee + driverFee,
       Date: formattedDate,
       status: "Unpaid",
     };
@@ -161,7 +175,7 @@ const HomePage = () => {
             </div>
             <div className="max-w-12 md:max-w-24 lg:max-w-40">
               <img
-                className="max-w-12 md:max-w-24 lg:max-md:w-36 lg:w-40"
+                className="max-w-12 md:max-w-24 lg:max-w-40 lg:w-40"
                 src={rightLogo}
                 alt=""
               />
@@ -284,7 +298,7 @@ const HomePage = () => {
               </div>
               {/* Name In Bengali */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="md:w-36 lg:w-40 my-1 py-1">
+                <label className="w-40 lg:w-40 my-1 py-1">
                   Name In Bengali
                 </label>
                 <input
@@ -297,7 +311,7 @@ const HomePage = () => {
 
               {/* Name in English */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="md:w-36 lg:w-40 my-1 py-1">
+                <label className="w-40 lg:w-40 my-1 py-1">
                   Name in English:
                 </label>
                 <input
@@ -310,9 +324,7 @@ const HomePage = () => {
 
               {/* Date of Birth */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="md:w-36 lg:w-40 my-1 py-1">
-                  Date of Birth:
-                </label>
+                <label className="w-40 lg:w-40 my-1 py-1">Date of Birth:</label>
                 <input
                   type="date"
                   name="dob"
@@ -323,9 +335,7 @@ const HomePage = () => {
 
               {/* Nationality */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="md:w-36 lg:w-40 my-1 py-1">
-                  Nationality:
-                </label>
+                <label className="w-40 lg:w-40 my-1 py-1">Nationality:</label>
                 <input
                   type="text"
                   name="nationality"
@@ -337,7 +347,7 @@ const HomePage = () => {
 
               {/* Religion */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="md:w-36 lg:w-40 my-1 py-1">Religion:</label>
+                <label className="w-40 lg:w-40 my-1 py-1">Religion:</label>
                 <input
                   type="text"
                   name="religion"
@@ -348,9 +358,7 @@ const HomePage = () => {
 
               {/* Blood Group */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="md:w-36 lg:w-40 my-1 py-1">
-                  Blood Group:
-                </label>
+                <label className="w-40 lg:w-40 my-1 py-1">Blood Group:</label>
                 <select
                   name="blood_group"
                   required
@@ -369,7 +377,7 @@ const HomePage = () => {
 
               {/* Father's Name */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="md:w-36 lg:w-40 my-1 py-1">
+                <label className="w-40 lg:w-40 my-1 py-1">
                   Father&apos;s Name:
                 </label>
                 <input
@@ -382,7 +390,7 @@ const HomePage = () => {
 
               {/* Mother's Name */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="md:w-36 lg:w-40 my-1 py-1">
+                <label className="w-40 lg:w-40 my-1 py-1">
                   Mother&apos;s Name:
                 </label>
                 <input
@@ -395,7 +403,7 @@ const HomePage = () => {
 
               {/* Occupation */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="md:w-36 lg:w-40 my-1 py-1">Occupation:</label>
+                <label className="w-40 lg:w-40 my-1 py-1">Occupation:</label>
                 <input
                   type="text"
                   name="occupation"
@@ -406,9 +414,7 @@ const HomePage = () => {
 
               {/* Phone Number */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="md:w-36 lg:w-40 my-1 py-1">
-                  Phone Number:
-                </label>
+                <label className="w-40 lg:w-40 my-1 py-1">Phone Number:</label>
                 <input
                   type="tel"
                   name="phone"
@@ -419,7 +425,7 @@ const HomePage = () => {
 
               {/* Email */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="md:w-36 lg:w-40 my-1 py-1">Email:</label>
+                <label className="w-40 lg:w-40 my-1 py-1">Email:</label>
                 <input
                   type="email"
                   name="email"
@@ -429,7 +435,7 @@ const HomePage = () => {
 
               {/* Family Members Attending */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="md:w-36 lg:w-40 my-1 py-1">
+                <label className="w-40 lg:w-40 my-1 py-1">
                   Family Members:
                 </label>
                 <select
@@ -460,9 +466,21 @@ const HomePage = () => {
                 </select>
               </div>
 
+              {/* Children */}
+              <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
+                <label className="w-40 lg:w-40 my-1 py-1">Children:</label>
+                <input
+                  onChange={handleChildren}
+                  type="number"
+                  name="children"
+                  required
+                  placeholder="Under 5 years of age"
+                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                />
+              </div>
               {/* Address */}
               <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="md:w-36 lg:w-40 my-1 py-1">Address:</label>
+                <label className="w-40 lg:w-40 my-1 py-1">Address:</label>
                 <input
                   type="text"
                   name="address"
@@ -474,7 +492,7 @@ const HomePage = () => {
               <div className="lg:flex justify-between gap-2">
                 {/* SSC Passing year */}
                 <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                  <label className="md:w-36 lg:w-40 my-1 py-1">
+                  <label className="w-40 lg:w-40 my-1 py-1">
                     SSC Passing Year:
                   </label>
                   <input
@@ -489,7 +507,7 @@ const HomePage = () => {
                   style={{ marginBottom: "10px" }}
                   className="md:flex gap-5 lg:w-[32%] lg:gap-2"
                 >
-                  <label className="md:w-36 lg:w-20 my-1 py-1">Driver:</label>
+                  <label className="w-40 lg:w-20 my-1 py-1">Driver:</label>
                   <select
                     name="driver"
                     required
@@ -529,7 +547,7 @@ const HomePage = () => {
                     name="familyFee"
                     required
                     className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
-                    value={familyFee}
+                    value={totalFamilyFee}
                     readOnly
                   />
                 </div>
@@ -549,70 +567,70 @@ const HomePage = () => {
               </div>
 
               {/* T-Shirt Size */}
-              <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
-                <label className="md:w-36 lg:w-40 my-1 py-1">
-                  T-Shirt Size:
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="tshirtSize"
-                    value="S"
-                    required // Make this field required
-                    style={{ marginLeft: "10px", marginTop: "15px" }}
-                  />{" "}
-                  S
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="tshirtSize"
-                    value="M"
-                    required // Make this field required
-                    style={{ marginLeft: "10px", marginTop: "15px" }}
-                  />{" "}
-                  M
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="tshirtSize"
-                    value="L"
-                    required // Make this field required
-                    style={{ marginLeft: "10px", marginTop: "15px" }}
-                  />{" "}
-                  L
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="tshirtSize"
-                    value="XL"
-                    required // Make this field required
-                    style={{ marginLeft: "10px", marginTop: "15px" }}
-                  />{" "}
-                  XL
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="tshirtSize"
-                    value="XXL"
-                    required // Make this field required
-                    style={{ marginLeft: "10px", marginTop: "15px" }}
-                  />{" "}
-                  XXL
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="tshirtSize"
-                    value="3XL"
-                    required // Make this field required
-                    style={{ marginLeft: "10px", marginTop: "15px" }}
-                  />{" "}
-                  3XL
-                </label>
+              <div style={{ marginTop: "10px" }} className="md:flex">
+                <label className="w-40 lg:w-40 mt-1 pt-1">T-Shirt Size:</label>
+                <div>
+                  <label>
+                    <input
+                      type="radio"
+                      name="tshirtSize"
+                      value="S"
+                      required // Make this field required
+                      style={{ marginLeft: "10px", marginTop: "15px" }}
+                    />{" "}
+                    S
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="tshirtSize"
+                      value="M"
+                      required // Make this field required
+                      style={{ marginLeft: "10px", marginTop: "15px" }}
+                    />{" "}
+                    M
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="tshirtSize"
+                      value="L"
+                      required // Make this field required
+                      style={{ marginLeft: "10px", marginTop: "15px" }}
+                    />{" "}
+                    L
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="tshirtSize"
+                      value="XL"
+                      required // Make this field required
+                      style={{ marginLeft: "10px", marginTop: "15px" }}
+                    />{" "}
+                    XL
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="tshirtSize"
+                      value="XXL"
+                      required // Make this field required
+                      style={{ marginLeft: "10px", marginTop: "15px" }}
+                    />{" "}
+                    XXL
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="tshirtSize"
+                      value="3XL"
+                      required // Make this field required
+                      style={{ marginLeft: "10px", marginTop: "15px" }}
+                    />{" "}
+                    3XL
+                  </label>
+                </div>
               </div>
 
               <div className="md:grid space-y-2 my-4 grid-cols-2 lg:grid-cols-3 gap-4">
@@ -634,7 +652,7 @@ const HomePage = () => {
                     name="total_fee"
                     required
                     className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
-                    value={participantFee + familyFee + driverFee}
+                    value={participantFee + totalFamilyFee + driverFee}
                     readOnly
                   />
                 </div>

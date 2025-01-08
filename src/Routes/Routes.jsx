@@ -12,6 +12,7 @@ import ManageRegistration from "../Pages/Admin/ManageRegistration/ManageRegistra
 import SearchPage from "../Pages/SearchPage/SearchPage";
 import Success from "../Pages/Payment/Success";
 import Failed from "../Pages/Payment/Failed";
+import IdCard from "../Pages/IdCard/IdCard";
 
 const router = createBrowserRouter([
   {
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/idcard/:id",
-        element: <div>This page will available soon</div>,
+        element: <IdCard></IdCard>,
       },
       {
         path: "/payment-failed",

@@ -289,6 +289,15 @@ const RegForm = ({ id }) => {
                 </label>
               </div>
 
+              {/* children */}
+              <div className="flex mb-0.5 lg:mb-1 gap-5">
+                <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
+                  Children:
+                </label>
+                <label className="my-0 md:my-1 md:py-0.5 lg:py-1">
+                  {participant?.children ? participant.children : 0}
+                </label>
+              </div>
               {/* Address */}
               <div className="flex mb-0.5 lg:mb-1 gap-5">
                 <label className="w-20 md:w-48 my-0 md:my-1 md:py-0.5 lg:py-1">
