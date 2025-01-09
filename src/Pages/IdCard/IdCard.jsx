@@ -207,12 +207,14 @@ const IdCard = () => {
                         <div className="flex justify-start my-1 md:my-5 lg:my-6 gap-4">
                           <h3 className="w-20 md:w-48 lg:w-60">Total Paid:</h3>
                           <h3>
-                            {participant?.paidAmount
-                              ? participant.paidAmount
-                              : participant?.familyFee +
-                                participant?.driverFee +
-                                2000}{" "}
-                            BDT
+                            {participant?.status !== "Unpaid"
+                              ? participant?.paidAmount
+                                ? participant.paidAmount + " BDT"
+                                : participant?.familyFee +
+                                  participant?.driverFee +
+                                  2000 +
+                                  " BDT"
+                              : null}
                           </h3>
                         </div>
                         <div className="flex justify-start my-1 md:my-5 lg:my-6 gap-4">
@@ -233,13 +235,14 @@ const IdCard = () => {
                         </div>
                       </div>
                       <div className="max-w-[100px] md:max-w-[180px] lg:max-w-[200px] mt-2 md:mt-10">
-                        {" "}
-                        <QRCodeSVG
-                          className="qr-code"
-                          value={`https://registration.exstudentsforum-brghs.com/idcard/${
-                            participant?.participantId || ""
-                          }`}
-                        />
+                        {participant?.status === "Paid" ? (
+                          <QRCodeSVG
+                            className="qr-code"
+                            value={`https://registration.exstudentsforum-brghs.com/idcard/${
+                              participant?.participantId || ""
+                            }`}
+                          />
+                        ) : null}
                       </div>
                     </div>
                     <div className="w-[90px] m-auto border-black border border-t-2" />
