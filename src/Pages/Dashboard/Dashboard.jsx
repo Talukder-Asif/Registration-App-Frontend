@@ -1,11 +1,28 @@
 import { FaUserAlt, FaUserCheck } from "react-icons/fa";
 import { NavLink, Outlet } from "react-router-dom";
+import { GrStatusInfo } from "react-icons/gr";
+
 const Dashboard = () => {
   return (
     <div>
       <div className="max-w-7xl m-auto relative lg:flex flex-nowrap flex-col md:flex-row my-3 lg:my-10 min-h-96">
         <div className="lg:w-[25%] px-3 overflow-y-auto bg-transparent dark:bg-gray-800">
           <ul className="lg:space-y-2 font-medium menu-horizontal gap-1 flex-wrap justify-center lg:menu">
+            <li>
+              <NavLink
+                to={"/dashboard/status"}
+                className={({ isActive }) =>
+                  `flex items-center py-0.5 px-1 md:py-3 md:px-6 text-xs md:text-sm font-medium uppercase tracking-widest duration-300 border-2 group border-[#002a3f] ${
+                    isActive
+                      ? "!bg-[#002a3f] !text-white hover:!bg-[#2ec4b6] hover:!text-[#002a3f] hover:!border-[#2ec4b6]"
+                      : "hover:bg-[#002a3f] hover:text-white hover:border-[#2ec4b6]"
+                  }`
+                }
+              >
+                <GrStatusInfo className="text-[#2ec4b6] text-base md:text-xl group-hover:text-white" />
+                <span className="ms-3">Status</span>
+              </NavLink>
+            </li>
             <li>
               <NavLink
                 to={"/dashboard/users"}
@@ -33,7 +50,7 @@ const Dashboard = () => {
                   }`
                 }
               >
-                <FaUserCheck className="text-[#2ec4b text-base md:text-xl group-hover:text-white" />
+                <FaUserCheck className="text-[#2ec4b6] text-base md:text-xl group-hover:text-white" />
                 <span className="ms-3">All Registration</span>
               </NavLink>
             </li>

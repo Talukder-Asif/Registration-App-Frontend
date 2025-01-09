@@ -220,6 +220,7 @@ const ManageRegistration = () => {
                     <th className="text-center">Name</th>
                     <th>Batch</th>
                     <th>Guest</th>
+                    <th>Child</th>
                     <th>Driver</th>
                     <th>Status</th>
                     <th className="text-center">Update</th>
@@ -263,6 +264,11 @@ const ManageRegistration = () => {
                           : "Not Defined"}
                       </td>
                       <td>{participantsData?.family_members}</td>
+                      <td>
+                        {participantsData?.children
+                          ? participantsData.children
+                          : 0}
+                      </td>
                       <td>{participantsData?.driver}</td>
                       <td>{participantsData?.status}</td>
                       {participantsData?.status === "Unpaid" ? (

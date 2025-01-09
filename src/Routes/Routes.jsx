@@ -13,6 +13,7 @@ import SearchPage from "../Pages/SearchPage/SearchPage";
 import Success from "../Pages/Payment/Success";
 import Failed from "../Pages/Payment/Failed";
 import IdCard from "../Pages/IdCard/IdCard";
+import Statistic from "../Pages/Executive/Statistic";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
           {
             path: "/dashboard",
             element: <Profile></Profile>,
+          },
+          {
+            path: "/dashboard/status",
+            element: <Statistic></Statistic>,
           },
           {
             path: "/dashboard/users",
