@@ -18,11 +18,21 @@ const HomePage = () => {
   const [imageLoading, setImageLoading] = useState(false);
   const [children, setChildren] = useState(0);
   const [totalFamilyFee, setTotalFamilyFee] = useState(0);
-
+  const [familyError, setFamilyError] = useState("");
+  console.log(familyError);
   useEffect(() => {
     if (familyFee - children * 500 >= 0) {
       setTotalFamilyFee(familyFee - children * 500);
     } else setTotalFamilyFee(0);
+
+    const familyMember = familyFee / 500;
+    if (familyMember < children) {
+      setFamilyError(
+        "Number of family members cannot be more than number of children"
+      );
+    } else {
+      setFamilyError("");
+    }
   }, [children, familyFee]);
   const handleClear = () => {
     setShowImagePreview(null);
@@ -66,8 +76,16 @@ const HomePage = () => {
   const handleChildren = (e) => {
     const member = e.target.value;
     setChildren(parseInt(member));
+
+    const familyMember = parseInt(member) / 500;
+    if (familyMember < children) {
+      setFamilyError(
+        "Number of family members cannot be more than number of children"
+      );
+    } else {
+      setFamilyError("");
+    }
   };
-  console.log(children);
 
   const handleDriver = (e) => {
     const driver = e.target.value;
@@ -657,15 +675,22 @@ const HomePage = () => {
                   />
                 </div>
               </div>
-              {err && (
+              {err ? (
                 <p className="text-red-500 text-center my-2 text-sm">{err}</p>
-              )}
+              ) : familyError ? (
+                <p className="text-red-500 text-center my-2 text-sm">
+                  {familyError}
+                </p>
+              ) : null}
               {/* Submit Button */}
               <div className="text-center">
                 <button
                   type="submit"
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5"
+                  className={`text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5 ${
+                    err || familyError ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                   style={{ width: "50%" }}
+                  disabled={!!err || !!familyError} // Disable the button if either err or familyError exists
                 >
                   Submit
                 </button>

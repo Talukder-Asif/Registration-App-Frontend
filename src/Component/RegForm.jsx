@@ -44,11 +44,11 @@ const RegForm = ({ id }) => {
       // Set high resolution scaling for better quality
       const canvas = await html2canvas(element, {
         useCORS: true,
-        scale: window.devicePixelRatio || 3, // Higher scale for better quality (3x or higher for Retina displays)
+        scale: window.devicePixelRatio || 3,
       });
 
-      const imgData = canvas.toDataURL("image/png"); // Get image data
-      const pdf = new jsPDF("p", "mm", "a4"); // Create jsPDF instance
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
 
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
@@ -59,20 +59,16 @@ const RegForm = ({ id }) => {
 
       let imgWidth, imgHeight;
 
-      // If the canvas aspect ratio is greater than the page, the width will fill the page and the height will be scaled.
       if (canvasRatio > pageRatio) {
         imgWidth = pageWidth;
         imgHeight = (canvas.height * imgWidth) / canvas.width;
       } else {
-        // If the canvas aspect ratio is smaller, the height will fill the page and the width will be scaled.
         imgHeight = pageHeight;
         imgWidth = (canvas.width * imgHeight) / canvas.height;
       }
 
-      // Add the first page with the image (adjusted for high resolution)
       pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
 
-      // If the image height exceeds the page, add more pages.
       let currentHeight = imgHeight;
       while (currentHeight > pageHeight) {
         pdf.addPage();
@@ -527,7 +523,7 @@ const RegForm = ({ id }) => {
   );
 };
 RegForm.propTypes = {
-  id: PropTypes.string.isRequired, // Ensure `id` is a required string
+  id: PropTypes.string.isRequired,
 };
 
 export default RegForm;
