@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import { Link } from "react-router-dom";
 
 const Statistic = () => {
   const [statisticData, setStatisticData] = useState({});
@@ -14,10 +15,13 @@ const Statistic = () => {
     <div className=" md:p-4">
       <h3 className="text-xl md:text-3xl underline pb-4">Basic Data:</h3>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-6">
-        <div className="text-center py-10 hover:scale-105 duration-200 bg-yellow-400 text-xs md:text-xl text-black">
+        <Link
+          to={"/dashboard/registration"}
+          className="text-center py-10 hover:scale-105 duration-200 bg-yellow-400 text-xs md:text-xl text-black"
+        >
           Total Registration <br />
           {statisticData?.formFillUp}
-        </div>
+        </Link>
         <div className="text-center py-10 hover:scale-105 duration-200 bg-green-500 text-xs md:text-xl text-white">
           Total Paid Guest
           <br />

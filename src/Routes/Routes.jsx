@@ -14,6 +14,7 @@ import Success from "../Pages/Payment/Success";
 import Failed from "../Pages/Payment/Failed";
 import IdCard from "../Pages/IdCard/IdCard";
 import Statistic from "../Pages/Executive/Statistic";
+import UpdateForm from "../Pages/Update/UpdateForm";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage></HomePage>,
+      },
+      {
+        path: "/update/:id",
+        element: <UpdateForm></UpdateForm>,
       },
       {
         path: "/participants",

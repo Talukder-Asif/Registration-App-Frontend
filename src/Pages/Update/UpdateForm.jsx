@@ -1,21 +1,33 @@
 import { useEffect, useState } from "react";
 import useAxios from "../../Hooks/useAxios";
-import { useNavigate } from "react-router-dom";
-import imageCompression from "browser-image-compression";
+import { useNavigate, useParams } from "react-router-dom";
 
 import leftLogo from "/src/assets/logo1.png";
 import rightLogo from "/src/assets/rigthLogo.png";
-import { CLOUD_NAME, Preset } from "../../Config/cloudinary.config";
-const HomePage = () => {
-  const today = new Date();
-  const formattedDate = today.toISOString().split("T")[0];
+import useOneParticipant from "../../Hooks/useOneParticipant";
+
+const UpdateForm = () => {
+  const id = useParams().id;
+
+  const [participant, isParticipantLoading] = useOneParticipant({ id });
+
+  const [selectedValue, setSelectedValue] = useState("00");
+
+  useEffect(() => {
+    if (participant?.family_members) {
+      setSelectedValue(`${participant.family_members * 500}`);
+    }
+  }, [participant]);
+
+  const handleFamilyMember = (e) => {
+    setSelectedValue(e.target.value);
+    setFamilyFee(parseInt(e.target.value));
+  };
   const participantFee = 2000;
   const [driverFee, setDriverFee] = useState(0);
   const [familyFee, setFamilyFee] = useState(0);
   const navigate = useNavigate();
-  const [showImagePreview, setShowImagePreview] = useState(null);
   const [err, setErr] = useState("");
-  const [imageLoading, setImageLoading] = useState(false);
   const [children, setChildren] = useState(0);
   const [totalFamilyFee, setTotalFamilyFee] = useState(0);
   const [familyError, setFamilyError] = useState("");
@@ -33,45 +45,7 @@ const HomePage = () => {
       setFamilyError("");
     }
   }, [children, familyFee]);
-  const handleClear = () => {
-    setShowImagePreview(null);
-  };
-  const handleImg = async (e) => {
-    const showImageFile = e.target.files[0];
-    if (!showImageFile) {
-      setErr("Please upload an image.");
-      return;
-    }
-    setImageLoading(true);
-    // Compress the image before uploading
-    const compressedImage = await imageCompression(showImageFile, {
-      maxSizeMB: 0.3,
-      maxWidthOrHeight: 500,
-      useWebWorker: true,
-    });
 
-    const data = new FormData();
-    data.append("file", compressedImage);
-    data.append("upload_preset", Preset);
-    data.append("cloud_name", CLOUD_NAME);
-
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-      {
-        method: "POST",
-        body: data,
-      }
-    );
-    const imageURL = await res.json();
-    if (imageURL) {
-      setShowImagePreview(imageURL?.secure_url);
-      setImageLoading(false);
-    }
-  };
-  const handleFamily = (e) => {
-    const member = e.target.value;
-    setFamilyFee(parseInt(member));
-  };
   const handleChildren = (e) => {
     const member = e.target.value;
     setChildren(parseInt(member));
@@ -115,14 +89,11 @@ const HomePage = () => {
         : form.driver.value === "1000"
         ? "Driver for 2 days"
         : "No driver";
-    const image = showImagePreview;
+
+    const image = participant?.image;
     const family_members = parseInt(form.family_members.value) / 500;
     const tshirt_size = form["tshirtSize"].value;
 
-    if (!showImagePreview) {
-      setErr("Please upload an image.");
-      return;
-    }
     // Log all form values
     const participantData = {
       participantId: null,
@@ -148,7 +119,7 @@ const HomePage = () => {
       driver,
       driverFee,
       total_fee: participantFee + totalFamilyFee + driverFee,
-      Date: formattedDate,
+      Date: participant?.Date,
       status: "Unpaid",
     };
 
@@ -164,12 +135,6 @@ const HomePage = () => {
 
   return (
     <div className=" md:py-10 md:px-3 max-w-screen-xl m-auto">
-      {imageLoading && (
-        <div className="fixed w-full h-full -mt-24 flex -ml-3 z-50">
-          <div className="w-60 h-60 animate-[spin_1s_linear_infinite] rounded-full border-double border-4 border-r-0 border-l-0 border-b-sky-400 border-t-sky-700 m-auto"></div>
-        </div>
-      )}
-
       <div style={{ fontFamily: "Arial, sans-serif", margin: "0px" }}>
         {/* Header */}
         <div className="bg-[rgba(255,245,248,0.99)] pt-1 md:pt-5">
@@ -230,87 +195,10 @@ const HomePage = () => {
             >
               {/* Image Box */}
               <div className="absolute max-w-20 md:max-w-32 lg:max-w-60 right-2 md:right-6">
-                {showImagePreview ? (
-                  <div className="relative">
-                    <img src={showImagePreview} alt="Image" />
-                    <div
-                      onClick={handleClear}
-                      className="md:px-2 px-1 lg:px-3 lg:py-1 rounded-full border border-black hover:border-red-500 hover:text-red-500 duration-300 absolute top-1 right-1 lg:top-3 lg:right-3"
-                    >
-                      X
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    {" "}
-                    <label htmlFor="file6">
-                      <div className="flex flex-col items-center justify-center gap-8 rounded-lg border border-dashed border-black/50 p-10">
-                        {" "}
-                        <svg
-                          width={35}
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="white"
-                        >
-                          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                          <g
-                            id="SVGRepo_tracerCarrier"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          ></g>
-                          <g id="SVGRepo_iconCarrier">
-                            <g id="Complete">
-                              <g id="upload">
-                                {" "}
-                                <g>
-                                  <path
-                                    d="M3,12.3v7a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2v-7"
-                                    fill="none"
-                                    stroke="#2E2E30"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                  ></path>
-                                  <g>
-                                    {" "}
-                                    <polyline
-                                      data-name="Right"
-                                      fill="none"
-                                      id="Right-2"
-                                      points="7.9 6.7 12 2.7 16.1 6.7"
-                                      stroke="black"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth="2"
-                                    ></polyline>{" "}
-                                    <line
-                                      fill="none"
-                                      stroke="black"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth="2"
-                                      x1="12"
-                                      x2="12"
-                                      y1="16.3"
-                                      y2="4.8"
-                                    ></line>
-                                  </g>
-                                </g>
-                              </g>
-                            </g>
-                          </g>
-                        </svg>
-                      </div>
-                    </label>
-                    <input
-                      onChange={handleImg}
-                      className="hidden"
-                      id="file6"
-                      type="file"
-                      name="img"
-                    />
-                  </>
-                )}
+                <div className="relative">
+                  <img src={participant?.image} alt="Image" />
+                </div>
+
                 <p className="text-center ">Photo</p>
               </div>
               {/* Name In Bengali */}
@@ -321,8 +209,9 @@ const HomePage = () => {
                 <input
                   type="text"
                   name="name_bengali"
+                  defaultValue={participant?.name_bengali}
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -335,7 +224,8 @@ const HomePage = () => {
                   type="text"
                   name="name_english"
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  defaultValue={participant?.name_english}
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -346,7 +236,8 @@ const HomePage = () => {
                   type="date"
                   name="dob"
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  defaultValue={participant?.dob}
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -357,8 +248,8 @@ const HomePage = () => {
                   type="text"
                   name="nationality"
                   required
-                  defaultValue="Bangladeshi"
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  defaultValue={participant?.nationality}
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -369,7 +260,8 @@ const HomePage = () => {
                   type="text"
                   name="religion"
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  defaultValue={participant?.religion}
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -379,8 +271,12 @@ const HomePage = () => {
                 <select
                   name="blood_group"
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  defaultValue={participant?.blood_group}
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 >
+                  <option value="" disabled>
+                    Select Blood Group
+                  </option>
                   <option>A+</option>
                   <option>A-</option>
                   <option>B+</option>
@@ -401,7 +297,8 @@ const HomePage = () => {
                   type="text"
                   name="father_name"
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  defaultValue={participant?.father_name}
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -413,8 +310,9 @@ const HomePage = () => {
                 <input
                   type="text"
                   name="mother_name"
+                  defaultValue={participant?.mother_name}
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -424,8 +322,9 @@ const HomePage = () => {
                 <input
                   type="text"
                   name="occupation"
+                  defaultValue={participant?.occupation}
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -435,8 +334,9 @@ const HomePage = () => {
                 <input
                   type="tel"
                   name="phone"
+                  defaultValue={participant?.phone}
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -446,7 +346,8 @@ const HomePage = () => {
                 <input
                   type="email"
                   name="email"
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  defaultValue={participant?.email}
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -458,8 +359,9 @@ const HomePage = () => {
                 <select
                   name="family_members"
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
-                  onChange={handleFamily}
+                  value={selectedValue}
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  onChange={handleFamilyMember}
                 >
                   <option value="00">Participant only: (2000 BDT)</option>
                   <option value="500">
@@ -491,8 +393,9 @@ const HomePage = () => {
                   type="number"
                   name="children"
                   required
+                  defaultValue={participant?.children}
                   placeholder="Under 5 years of age"
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
               {/* Address */}
@@ -502,7 +405,8 @@ const HomePage = () => {
                   type="text"
                   name="address"
                   required
-                  className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  defaultValue={participant?.address}
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
 
@@ -516,7 +420,8 @@ const HomePage = () => {
                     type="text"
                     name="ssc_year"
                     required
-                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                    defaultValue={participant?.ssc_year}
+                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                   />
                 </div>
                 {/* Driver Attending */}
@@ -528,7 +433,7 @@ const HomePage = () => {
                   <select
                     name="driver"
                     required
-                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[200px] border border-black bg-transparent"
+                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[200px] border border-black bg-transparent"
                     onChange={handleDriver}
                   >
                     <option value={"00"}>No</option>
@@ -550,7 +455,7 @@ const HomePage = () => {
                     type="text"
                     name="selfFee"
                     required
-                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
+                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
                     value={participantFee}
                     readOnly
                   />
@@ -563,7 +468,7 @@ const HomePage = () => {
                     type="text"
                     name="familyFee"
                     required
-                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
+                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
                     value={totalFamilyFee}
                     readOnly
                   />
@@ -576,7 +481,7 @@ const HomePage = () => {
                     type="text"
                     name="driverFee"
                     required
-                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
+                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
                     value={driverFee}
                     readOnly
                   />
@@ -657,8 +562,8 @@ const HomePage = () => {
                     type="Date"
                     name="date"
                     required
-                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
-                    value={formattedDate}
+                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
+                    value={participant?.Date}
                     readOnly
                   />
                 </div>
@@ -668,7 +573,7 @@ const HomePage = () => {
                     type="text"
                     name="total_fee"
                     required
-                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
+                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
                     value={participantFee + totalFamilyFee + driverFee}
                     readOnly
                   />
@@ -702,4 +607,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default UpdateForm;
