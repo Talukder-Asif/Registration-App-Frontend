@@ -513,8 +513,10 @@ const HomePage = () => {
                     SSC Passing Year:
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="ssc_year"
+                    min={1900}
+                    max={2030}
                     required
                     className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                   />

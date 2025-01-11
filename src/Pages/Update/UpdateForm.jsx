@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useAxios from "../../Hooks/useAxios";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import leftLogo from "/src/assets/logo1.png";
 import rightLogo from "/src/assets/rigthLogo.png";
@@ -13,6 +13,9 @@ const UpdateForm = () => {
   const [selectedDriver, setSelectedDriver] = useState("00");
   const [selectedValue, setSelectedValue] = useState("00");
 
+  const handleSizeChange = (event) => {
+    setSelectedSize(event.target.value); // Update the state with the selected size
+  };
   const handleFamilyMember = (e) => {
     setSelectedValue(e.target.value);
     setFamilyFee(parseInt(e.target.value));
@@ -25,6 +28,7 @@ const UpdateForm = () => {
   const [children, setChildren] = useState(0);
   const [totalFamilyFee, setTotalFamilyFee] = useState(0);
   const [familyError, setFamilyError] = useState("");
+  const [selectedSize, setSelectedSize] = useState("");
   useEffect(() => {
     if (familyFee - children * 500 >= 0) {
       setTotalFamilyFee(familyFee - children * 500);
@@ -60,6 +64,15 @@ const UpdateForm = () => {
     setSelectedDriver(parseInt(driver));
   };
   const axiosPublic = useAxios();
+  useEffect(() => {
+    if (participant?.family_members) {
+      setTotalFamilyFee(participant?.family_members * 500);
+      setSelectedValue(`${participant.family_members * 500}`);
+      setSelectedDriver(`${participant.driverFee}`);
+      setDriverFee(participant?.driverFee);
+      setSelectedSize(`${participant?.tshirt_size}`);
+    }
+  }, [participant]);
   const handleSubmit = async (e) => {
     setErr("");
     e.preventDefault();
@@ -91,7 +104,7 @@ const UpdateForm = () => {
 
     // Log all form values
     const participantData = {
-      participantId: null,
+      participantId: participant?.participantId,
       name_bengali,
       name_english,
       dob,
@@ -115,27 +128,48 @@ const UpdateForm = () => {
       driverFee,
       total_fee: participantFee + totalFamilyFee + driverFee,
       Date: participant?.Date,
-      status: "Unpaid",
+      status: participant?.status,
+      paidAmount: participant?.paidAmount ? participant?.paidAmount : null,
+      paymentID: participant?.paymentID ? participant?.paymentID : null,
     };
-
-    axiosPublic.post("/participant", participantData).then((res) => {
-      if (res.data.status === 500) {
-        setErr(res.data.message);
-        return;
-      } else {
-        navigate(`/preview/${res.data.participantId}`);
-      }
-    });
+    axiosPublic
+      .put(`/update/participant/${id}`, participantData)
+      .then((res) => {
+        if (res?.data?.modifiedCount > 0) {
+          navigate(`/preview/${id}`);
+        } else {
+          setErr(res.data.message);
+          return;
+        }
+      });
   };
-  useEffect(() => {
-    if (participant?.family_members) {
-      setTotalFamilyFee(participant?.family_members * 500);
-      setSelectedValue(`${participant.family_members * 500}`);
-      setSelectedDriver(`${participant.driverFee}`);
-      setDriverFee(participant?.driverFee);
-    }
-  }, [participant]);
-
+  if (isParticipantLoading)
+    return (
+      <div className="grid min-h-screen content-center justify-center">
+        <div className="text-center">
+          <div role="status">
+            <svg
+              aria-hidden="true"
+              className="inline w-32 h-32 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-[#012940]"
+              viewBox="0 0 100 101"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                fill="currentColor"
+              />
+              <path
+                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                fill="currentFill"
+              />
+            </svg>
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+        <h1 className="text-5xl md:text-7xl font-bold">Please Wait....</h1>
+      </div>
+    );
   return (
     <div className=" md:py-10 md:px-3 max-w-screen-xl m-auto">
       <div style={{ fontFamily: "Arial, sans-serif", margin: "0px" }}>
@@ -396,6 +430,8 @@ const UpdateForm = () => {
                   type="number"
                   name="children"
                   required
+                  min={0}
+                  max={6}
                   defaultValue={participant?.children}
                   placeholder="Under 5 years of age"
                   className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
@@ -420,8 +456,10 @@ const UpdateForm = () => {
                     SSC Passing Year:
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="ssc_year"
+                    min={1900}
+                    max={2030}
                     required
                     defaultValue={participant?.ssc_year}
                     className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
@@ -496,72 +534,20 @@ const UpdateForm = () => {
               <div style={{ marginTop: "10px" }} className="md:flex">
                 <label className="w-40 lg:w-40 mt-1 pt-1">T-Shirt Size:</label>
                 <div>
-                  <label>
-                    <input
-                      type="radio"
-                      name="tshirtSize"
-                      value="S"
-                      checked={participant?.tshirt_size === "S"}
-                      required
-                      style={{ marginLeft: "10px", marginTop: "15px" }}
-                    />{" "}
-                    S
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="tshirtSize"
-                      value="M"
-                      checked={participant?.tshirt_size === "M"}
-                      required
-                      style={{ marginLeft: "10px", marginTop: "15px" }}
-                    />{" "}
-                    M
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="tshirtSize"
-                      value="L"
-                      required
-                      checked={participant?.tshirt_size === "L"}
-                      style={{ marginLeft: "10px", marginTop: "15px" }}
-                    />{" "}
-                    L
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="tshirtSize"
-                      value="XL"
-                      required
-                      checked={participant?.tshirt_size === "XL"}
-                      style={{ marginLeft: "10px", marginTop: "15px" }}
-                    />{" "}
-                    XL
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="tshirtSize"
-                      value="XXL"
-                      required
-                      checked={participant?.tshirt_size === "XXL"}
-                      style={{ marginLeft: "10px", marginTop: "15px" }}
-                    />{" "}
-                    XXL
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="tshirtSize"
-                      value="3XL"
-                      required
-                      checked={participant?.tshirt_size === "3XL"}
-                      style={{ marginLeft: "10px", marginTop: "15px" }}
-                    />{" "}
-                    3XL
-                  </label>
+                  {["S", "M", "L", "XL", "XXL", "3XL"].map((size) => (
+                    <label key={size}>
+                      <input
+                        type="radio"
+                        name="tshirtSize"
+                        value={size}
+                        checked={selectedSize === size}
+                        onChange={handleSizeChange}
+                        required
+                        style={{ marginLeft: "10px", marginTop: "15px" }}
+                      />{" "}
+                      {size}
+                    </label>
+                  ))}
                 </div>
               </div>
 
@@ -597,17 +583,26 @@ const UpdateForm = () => {
                 </p>
               ) : null}
               {/* Submit Button */}
-              <div className="text-center">
+              <div className="text-center grid grid-cols-2 ">
                 <button
                   type="submit"
-                  className={`text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5 ${
+                  className={`text-white m-auto bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5 ${
                     err || familyError ? "opacity-50 cursor-not-allowed" : ""
                   }`}
-                  style={{ width: "50%" }}
+                  style={{ width: "80%" }}
                   disabled={!!err || !!familyError} // Disable the button if either err or familyError exists
                 >
-                  Submit
+                  Update
                 </button>
+                <Link
+                  to={`/preview/${id}`}
+                  className={`text-white m-auto bg-green-500 hover:bg-green-400 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-6 px-2.5 py-1.5 md:py-2.5  ${
+                    err || familyError ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  style={{ width: "80%" }}
+                >
+                  Skip
+                </Link>
               </div>
             </form>
           </div>

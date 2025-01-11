@@ -3,9 +3,7 @@ import leftLogo from "/src/assets/logo1.png";
 import rightLogo from "/src/assets/rigthLogo.png";
 import useOneParticipant from "../Hooks/useOneParticipant";
 import man from "/src/assets/Man1.png";
-import React, { useState } from "react";
-import html2canvas from "html2canvas-pro";
-import jsPDF from "jspdf";
+import { useState } from "react";
 import unpaid from "/src/assets/unpaid.png";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -36,52 +34,6 @@ const RegForm = ({ id }) => {
     });
   };
 
-  const printRef = React.useRef(null);
-  const handleDownloadPDF = async () => {
-    try {
-      const element = printRef.current;
-
-      // Set high resolution scaling for better quality
-      const canvas = await html2canvas(element, {
-        useCORS: true,
-        scale: window.devicePixelRatio || 3,
-      });
-
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-
-      // Calculate the aspect ratio of the canvas and the PDF page
-      const canvasRatio = canvas.width / canvas.height;
-      const pageRatio = pageWidth / pageHeight;
-
-      let imgWidth, imgHeight;
-
-      if (canvasRatio > pageRatio) {
-        imgWidth = pageWidth;
-        imgHeight = (canvas.height * imgWidth) / canvas.width;
-      } else {
-        imgHeight = pageHeight;
-        imgWidth = (canvas.width * imgHeight) / canvas.height;
-      }
-
-      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-
-      let currentHeight = imgHeight;
-      while (currentHeight > pageHeight) {
-        pdf.addPage();
-        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-        currentHeight -= pageHeight;
-      }
-
-      // Save the generated PDF with high-quality images
-      pdf.save("registration_form.pdf");
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-    }
-  };
   if (isParticipantLoading)
     return (
       <div className="grid min-h-screen content-center justify-center">
@@ -111,7 +63,7 @@ const RegForm = ({ id }) => {
     );
   return (
     <div className="md:py-10 md:px-3 max-w-screen-lg m-auto">
-      <div ref={printRef} style={{ fontFamily: "Arial, sans-serif" }}>
+      <div style={{ fontFamily: "Arial, sans-serif" }}>
         {/* Header Part */}
         <div className="bg-[rgba(255,245,248,0.99)] pt-1 md:pt-5">
           {/* Header */}
@@ -487,13 +439,13 @@ const RegForm = ({ id }) => {
       </div>
       <div className="mt-5 flex flex-wrap gap-5">
         {participant?.status === "Unpaid" ? (
-          <button
-            onClick={handleDownloadPDF}
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5"
+          <Link
+            to={`/update/${participant?.participantId}`}
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 text-center md:py-2.5"
             style={{ width: "30%" }}
           >
-            Download PDF
-          </button>
+            <button>Update Now</button>
+          </Link>
         ) : (
           <Link
             to={`/idcard/${participant?.participantId}`}
