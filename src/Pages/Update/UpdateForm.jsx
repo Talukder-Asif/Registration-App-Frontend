@@ -10,14 +10,8 @@ const UpdateForm = () => {
   const id = useParams().id;
 
   const [participant, isParticipantLoading] = useOneParticipant({ id });
-
+  const [selectedDriver, setSelectedDriver] = useState("00");
   const [selectedValue, setSelectedValue] = useState("00");
-
-  useEffect(() => {
-    if (participant?.family_members) {
-      setSelectedValue(`${participant.family_members * 500}`);
-    }
-  }, [participant]);
 
   const handleFamilyMember = (e) => {
     setSelectedValue(e.target.value);
@@ -63,6 +57,7 @@ const UpdateForm = () => {
   const handleDriver = (e) => {
     const driver = e.target.value;
     setDriverFee(parseInt(driver));
+    setSelectedDriver(parseInt(driver));
   };
   const axiosPublic = useAxios();
   const handleSubmit = async (e) => {
@@ -132,6 +127,14 @@ const UpdateForm = () => {
       }
     });
   };
+  useEffect(() => {
+    if (participant?.family_members) {
+      setTotalFamilyFee(participant?.family_members * 500);
+      setSelectedValue(`${participant.family_members * 500}`);
+      setSelectedDriver(`${participant.driverFee}`);
+      setDriverFee(participant?.driverFee);
+    }
+  }, [participant]);
 
   return (
     <div className=" md:py-10 md:px-3 max-w-screen-xl m-auto">
@@ -433,14 +436,15 @@ const UpdateForm = () => {
                   <select
                     name="driver"
                     required
+                    value={selectedDriver}
                     className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[200px] border border-black bg-transparent"
                     onChange={handleDriver}
                   >
-                    <option value={"00"}>No</option>
-                    <option value={"500"}>
+                    <option value="00">No</option>
+                    <option value="500">
                       Yes (500 Taka will charged for 1 day)
                     </option>
-                    <option value={"1000"}>
+                    <option value="1000">
                       Yes (1000 Taka will charged for 2 day)
                     </option>
                   </select>
@@ -456,7 +460,7 @@ const UpdateForm = () => {
                     name="selfFee"
                     required
                     className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
-                    value={participantFee}
+                    value={participant?.participantFee}
                     readOnly
                   />
                 </div>
@@ -497,7 +501,8 @@ const UpdateForm = () => {
                       type="radio"
                       name="tshirtSize"
                       value="S"
-                      required // Make this field required
+                      checked={participant?.tshirt_size === "S"}
+                      required
                       style={{ marginLeft: "10px", marginTop: "15px" }}
                     />{" "}
                     S
@@ -507,7 +512,8 @@ const UpdateForm = () => {
                       type="radio"
                       name="tshirtSize"
                       value="M"
-                      required // Make this field required
+                      checked={participant?.tshirt_size === "M"}
+                      required
                       style={{ marginLeft: "10px", marginTop: "15px" }}
                     />{" "}
                     M
@@ -517,7 +523,8 @@ const UpdateForm = () => {
                       type="radio"
                       name="tshirtSize"
                       value="L"
-                      required // Make this field required
+                      required
+                      checked={participant?.tshirt_size === "L"}
                       style={{ marginLeft: "10px", marginTop: "15px" }}
                     />{" "}
                     L
@@ -527,7 +534,8 @@ const UpdateForm = () => {
                       type="radio"
                       name="tshirtSize"
                       value="XL"
-                      required // Make this field required
+                      required
+                      checked={participant?.tshirt_size === "XL"}
                       style={{ marginLeft: "10px", marginTop: "15px" }}
                     />{" "}
                     XL
@@ -537,7 +545,8 @@ const UpdateForm = () => {
                       type="radio"
                       name="tshirtSize"
                       value="XXL"
-                      required // Make this field required
+                      required
+                      checked={participant?.tshirt_size === "XXL"}
                       style={{ marginLeft: "10px", marginTop: "15px" }}
                     />{" "}
                     XXL
@@ -547,7 +556,8 @@ const UpdateForm = () => {
                       type="radio"
                       name="tshirtSize"
                       value="3XL"
-                      required // Make this field required
+                      required
+                      checked={participant?.tshirt_size === "3XL"}
                       style={{ marginLeft: "10px", marginTop: "15px" }}
                     />{" "}
                     3XL
