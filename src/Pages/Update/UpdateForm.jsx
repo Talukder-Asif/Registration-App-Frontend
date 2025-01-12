@@ -19,6 +19,7 @@ const UpdateForm = () => {
   const handleFamilyMember = (e) => {
     setSelectedValue(e.target.value);
     setFamilyFee(parseInt(e.target.value));
+    setfamily_members(parseInt(e.target.value) / 500);
   };
   const participantFee = 2000;
   const [driverFee, setDriverFee] = useState(0);
@@ -29,33 +30,11 @@ const UpdateForm = () => {
   const [totalFamilyFee, setTotalFamilyFee] = useState(0);
   const [familyError, setFamilyError] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
-  useEffect(() => {
-    if (familyFee - children * 500 >= 0) {
-      setTotalFamilyFee(familyFee - children * 500);
-    } else setTotalFamilyFee(0);
-
-    const familyMember = familyFee / 500;
-    if (familyMember < children) {
-      setFamilyError(
-        "Number of family members cannot be more than number of children"
-      );
-    } else {
-      setFamilyError("");
-    }
-  }, [children, familyFee]);
+  const [family_members, setfamily_members] = useState(0);
 
   const handleChildren = (e) => {
     const member = e.target.value;
     setChildren(parseInt(member));
-
-    const familyMember = parseInt(member) / 500;
-    if (familyMember < children) {
-      setFamilyError(
-        "Number of family members cannot be more than number of children"
-      );
-    } else {
-      setFamilyError("");
-    }
   };
 
   const handleDriver = (e) => {
@@ -65,14 +44,33 @@ const UpdateForm = () => {
   };
   const axiosPublic = useAxios();
   useEffect(() => {
-    if (participant?.family_members) {
-      setTotalFamilyFee(participant?.family_members * 500);
+    if (participant) {
+      setTotalFamilyFee(
+        participant?.family_members * 500 - participant?.children * 500
+      );
       setSelectedValue(`${participant.family_members * 500}`);
       setSelectedDriver(`${participant.driverFee}`);
       setDriverFee(participant?.driverFee);
       setSelectedSize(`${participant?.tshirt_size}`);
+      setChildren(participant?.children);
+      setfamily_members(participant?.family_members);
     }
   }, [participant]);
+
+  useEffect(() => {
+    if (familyFee - children * 500 >= 0) {
+      setTotalFamilyFee(familyFee - children * 500);
+    } else setTotalFamilyFee(0);
+
+    if (!(family_members >= parseInt(children))) {
+      setFamilyError(
+        "Number of family members cannot be more than number of children"
+      );
+    } else {
+      setFamilyError("");
+    }
+  }, [children, familyFee, family_members, totalFamilyFee]);
+
   const handleSubmit = async (e) => {
     setErr("");
     e.preventDefault();
@@ -99,7 +97,6 @@ const UpdateForm = () => {
         : "No driver";
 
     const image = participant?.image;
-    const family_members = parseInt(form.family_members.value) / 500;
     const tshirt_size = form["tshirtSize"].value;
 
     // Log all form values
@@ -138,7 +135,7 @@ const UpdateForm = () => {
         if (res?.data?.modifiedCount > 0) {
           navigate(`/preview/${id}`);
         } else {
-          setErr(res.data.message);
+          console.log(res.data);
           return;
         }
       });
