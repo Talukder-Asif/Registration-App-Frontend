@@ -66,6 +66,7 @@ const HomePage = () => {
     if (imageURL) {
       setShowImagePreview(imageURL?.secure_url);
       setImageLoading(false);
+      setErr("");
     }
   };
   const handleFamily = (e) => {
@@ -308,6 +309,7 @@ const HomePage = () => {
                       id="file6"
                       type="file"
                       name="img"
+                      accept="image/*"
                     />
                   </>
                 )}

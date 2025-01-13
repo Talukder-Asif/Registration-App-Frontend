@@ -167,6 +167,15 @@ const UpdateForm = () => {
         <h1 className="text-5xl md:text-7xl font-bold">Please Wait....</h1>
       </div>
     );
+  if (participant?.status === "Paid")
+    return (
+      <div className="text-center min-h-96 flex justify-center items-center">
+        <h1 className="text-5xl text-center mb-4 font-extrabold dark:text-white">
+          Can not modify after Payment,
+          <br /> Please with Contact us
+        </h1>
+      </div>
+    );
   return (
     <div className=" md:py-10 md:px-3 max-w-screen-xl m-auto">
       <div style={{ fontFamily: "Arial, sans-serif", margin: "0px" }}>
