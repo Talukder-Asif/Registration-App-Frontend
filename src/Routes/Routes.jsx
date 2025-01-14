@@ -15,6 +15,7 @@ import Failed from "../Pages/Payment/Failed";
 import IdCard from "../Pages/IdCard/IdCard";
 import Statistic from "../Pages/Executive/Statistic";
 import UpdateForm from "../Pages/Update/UpdateForm";
+import PaidRegistration from "../Pages/Admin/PaidRegistration/PaidRegistration";
 
 const router = createBrowserRouter([
   {
@@ -82,6 +83,14 @@ const router = createBrowserRouter([
             element: (
               <AdminRoute>
                 <ManageRegistration></ManageRegistration>
+              </AdminRoute>
+            ),
+          },
+          {
+            path: "/dashboard/paid",
+            element: (
+              <AdminRoute>
+                <PaidRegistration></PaidRegistration>
               </AdminRoute>
             ),
           },

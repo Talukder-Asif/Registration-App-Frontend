@@ -391,7 +391,7 @@ const ManageRegistration = () => {
           ) : (
             <div className="text-center min-h-96 flex justify-center items-center">
               <h1 className="text-5xl text-center mb-4 font-extrabold dark:text-white">
-                No food Found
+                No Registration Found
               </h1>
             </div>
           )}

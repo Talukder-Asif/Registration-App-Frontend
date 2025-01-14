@@ -70,7 +70,6 @@ const HomePage = () => {
         setImageLoading(false);
         setErr("");
       }
-      console.log(imageURL);
     } catch (error) {
       console.error("Upload failed:", error);
     }
