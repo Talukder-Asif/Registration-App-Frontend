@@ -1,28 +1,30 @@
 import { useEffect, useState } from "react";
 import useAxios from "../../../Hooks/useAxios";
 import { Link } from "react-router-dom";
-
-const PaidRegistration = () => {
+import axios from "axios";
+import Swal from "sweetalert2";
+const NotPaid = () => {
   const [batches, setBatches] = useState([]);
+  const [updateLoading, setUpdateLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(null);
   const [participants, setParticipants] = useState(null);
   const [participantLoading, setParticipantLoading] = useState(false);
+  const [openModal, setOpenModal] = useState();
   const [loading, setLoading] = useState(true);
   const [shirtSize, setShirtSize] = useState(null);
-
   const axiosPublic = useAxios();
   useEffect(() => {
-    axiosPublic.get("/allSscYears/paid").then((res) => {
+    axiosPublic.get("/allSscYears/unpaid").then((res) => {
       setBatches(res?.data);
       setLoading(false);
     });
-  }, [axiosPublic]);
+  }, [axiosPublic, updateLoading]);
 
   const toggle = async (idx, batch) => {
     setParticipantLoading(true);
     setIsOpen((prevIdx) => (prevIdx === idx ? null : idx));
     const targetBatch = batch?._id;
-    const status = "Paid";
+    const status = "Unpaid";
     try {
       const response = await axiosPublic.get(`/filtered/registration`, {
         params: { status, targetBatch },
@@ -34,7 +36,66 @@ const PaidRegistration = () => {
       console.error(error);
     }
   };
-
+  const handleUpdate = (e, participantData) => {
+    setUpdateLoading(true);
+    const form = e.target;
+    e.preventDefault();
+    const updateData = {
+      participantId: form?.participantId.value,
+      name_bengali: participantData?.name_bengali,
+      name_english: participantData?.name_english,
+      dob: participantData?.dob,
+      nationality: participantData?.nationality,
+      religion: participantData?.religion,
+      blood_group: participantData?.blood_group,
+      father_name: participantData?.father_name,
+      mother_name: participantData?.mother_name,
+      occupation: participantData?.occupation,
+      phone: participantData?.phone,
+      email: participantData?.email,
+      address: participantData?.address,
+      ssc_year: participantData?.ssc_year,
+      image: participantData?.image,
+      tshirt_size: participantData?.tshirt_size,
+      participantFee: participantData?.participantFee,
+      family_members: participantData?.family_members,
+      familyFee: participantData?.familyFee,
+      driver: participantData?.driver,
+      driverFee: participantData?.driverFee,
+      total_fee: participantData?.total_fee,
+      Date: participantData?.Date,
+      status: form["status"].value,
+    };
+    Swal.fire({
+      title: "Are you sure?",
+      text: `Is ${participantData?.name_english} paid his due?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#012940",
+      cancelButtonColor: "#28b392",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .put(
+            `http://localhost:3000/participant/${participantData?.participantId}`,
+            updateData
+          )
+          .then((res) => {
+            if (res?.data?.modifiedCount > 0) {
+              setOpenModal(false);
+              setUpdateLoading(false);
+              Swal.fire({
+                icon: "success",
+                title: `${participantData?.name_english} has been modified`,
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          });
+      }
+    });
+  };
   if (loading)
     return (
       <div className="grid min-h-screen content-center justify-center">
@@ -62,7 +123,6 @@ const PaidRegistration = () => {
         <h1 className="text-5xl md:text-7xl font-bold">Please Wait....</h1>
       </div>
     );
-
   return (
     <div className="mx-auto w-full rounded-lg">
       {batches?.map((batch, idx) => (
@@ -172,7 +232,6 @@ const PaidRegistration = () => {
                       {shirtSize?._3XL || 0}
                     </div>
                   </div>
-
                   <table className="table">
                     <thead>
                       <tr>
@@ -182,6 +241,7 @@ const PaidRegistration = () => {
                         <th>Child</th>
                         <th>Driver</th>
                         <th>Status</th>
+                        <th className="text-center">Update</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -229,6 +289,123 @@ const PaidRegistration = () => {
                           </td>
                           <td>{participantsData?.driver}</td>
                           <td>{participantsData?.status}</td>
+                          {participantsData?.status === "Unpaid" ? (
+                            <td>
+                              <div className="mx-auto w-fit">
+                                <button
+                                  onClick={() => setOpenModal(participantsData)}
+                                  className="rounded-md border border-zinc-500 px-5 py-[6px] text-zinc-500 hover:bg-zinc-200"
+                                >
+                                  Update
+                                </button>
+                                <div
+                                  onClick={() => setOpenModal(false)}
+                                  className={`fixed z-[100] w-screen ${
+                                    openModal
+                                      ? "visible opacity-100"
+                                      : "invisible opacity-0"
+                                  } inset-0 grid place-items-center bg-black/20 backdrop-blur-sm duration-100 dark:bg-transparent`}
+                                >
+                                  <div
+                                    onClick={(e_) => e_.stopPropagation()}
+                                    className={`absolute max-w-md rounded-lg bg-white p-6 drop-shadow-lg dark:bg-zinc-900 dark:text-white ${
+                                      openModal
+                                        ? "opacity-1 duration-300"
+                                        : "scale-110 opacity-0 duration-150"
+                                    }`}
+                                  >
+                                    <svg
+                                      onClick={() => setOpenModal(false)}
+                                      className="absolute right-3 top-3 w-6 cursor-pointer fill-zinc-600 dark:fill-white"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path d="M6.99486 7.00636C6.60433 7.39689 6.60433 8.03005 6.99486 8.42058L10.58 12.0057L6.99486 15.5909C6.60433 15.9814 6.60433 16.6146 6.99486 17.0051C7.38538 17.3956 8.01855 17.3956 8.40907 17.0051L11.9942 13.4199L15.5794 17.0051C15.9699 17.3956 16.6031 17.3956 16.9936 17.0051C17.3841 16.6146 17.3841 15.9814 16.9936 15.5909L13.4084 12.0057L16.9936 8.42059C17.3841 8.03007 17.3841 7.3969 16.9936 7.00638C16.603 6.61585 15.9699 6.61585 15.5794 7.00638L11.9942 10.5915L8.40907 7.00636C8.01855 6.61584 7.38538 6.61584 6.99486 7.00636Z"></path>
+                                    </svg>
+                                    <h1 className="mb-2 text-2xl font-semibold">
+                                      Update {openModal?.name_english}&apos;s
+                                      data
+                                    </h1>
+                                    <form
+                                      onSubmit={(e) =>
+                                        handleUpdate(e, openModal)
+                                      }
+                                    >
+                                      {/* participant Id */}
+                                      <div
+                                        style={{ marginBottom: "10px" }}
+                                        className="md:flex gap-5"
+                                      >
+                                        <label className="md:w-36 lg:w-40 my-1 py-1">
+                                          Participant ID:
+                                        </label>
+                                        <input
+                                          type="text"
+                                          name="participantId"
+                                          required
+                                          defaultValue={
+                                            openModal?.participantId
+                                          }
+                                          className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
+                                        />
+                                      </div>
+                                      <div
+                                        style={{ marginBottom: "10px" }}
+                                        className="md:flex gap-5"
+                                      >
+                                        <label className="md:w-36 lg:w-40 my-1 py-1">
+                                          Payment:
+                                        </label>
+                                        <label>
+                                          <input
+                                            type="radio"
+                                            name="status"
+                                            value="Paid"
+                                            defaultChecked={openModal?.status}
+                                            required // Make this field required
+                                            style={{
+                                              marginLeft: "10px",
+                                              marginTop: "15px",
+                                            }}
+                                          />{" "}
+                                          Paid
+                                        </label>
+                                        <label>
+                                          <input
+                                            type="radio"
+                                            name="status"
+                                            value="Unpaid"
+                                            defaultChecked={openModal?.status}
+                                            required // Make this field required
+                                            style={{
+                                              marginLeft: "10px",
+                                              marginTop: "15px",
+                                            }}
+                                          />{" "}
+                                          Unpaid
+                                        </label>
+                                      </div>
+                                      <div className="flex justify-end gap-2">
+                                        <button
+                                          type="submit"
+                                          className="rounded-md bg-emerald-600 px-6 py-[6px] text-white hover:bg-emerald-700"
+                                        >
+                                          Ok
+                                        </button>
+                                        <div
+                                          onClick={() => setOpenModal(false)}
+                                          className="rounded-md border border-rose-600 px-6 py-[6px] text-rose-600 duration-150 hover:bg-rose-600 hover:text-white"
+                                        >
+                                          Cancel
+                                        </div>
+                                      </div>
+                                    </form>
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                          ) : null}
                         </tr>
                       ))}
                     </tbody>
@@ -243,4 +420,4 @@ const PaidRegistration = () => {
   );
 };
 
-export default PaidRegistration;
+export default NotPaid;

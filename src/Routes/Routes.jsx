@@ -16,6 +16,7 @@ import IdCard from "../Pages/IdCard/IdCard";
 import Statistic from "../Pages/Executive/Statistic";
 import UpdateForm from "../Pages/Update/UpdateForm";
 import PaidRegistration from "../Pages/Admin/PaidRegistration/PaidRegistration";
+import NotPaid from "../Pages/Admin/NotPaid/NotPaid";
 
 const router = createBrowserRouter([
   {
@@ -91,6 +92,14 @@ const router = createBrowserRouter([
             element: (
               <AdminRoute>
                 <PaidRegistration></PaidRegistration>
+              </AdminRoute>
+            ),
+          },
+          {
+            path: "/dashboard/notpaid",
+            element: (
+              <AdminRoute>
+                <NotPaid></NotPaid>
               </AdminRoute>
             ),
           },

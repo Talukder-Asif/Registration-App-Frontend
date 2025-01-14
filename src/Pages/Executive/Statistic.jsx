@@ -50,15 +50,22 @@ const Statistic = () => {
           Total Registration <br />
           {statisticData?.formFillUp}
         </Link>
-        <div className="text-center py-10 hover:scale-105 duration-200 bg-green-500 text-xs md:text-xl text-white">
+
+        <Link
+          to={"/dashboard/paid"}
+          className="text-center py-10 hover:scale-105 duration-200 bg-green-500 text-xs md:text-xl text-white"
+        >
           Total Paid Guest
           <br />
           {statisticData?.totalPaidGuests}
-        </div>
-        <div className="text-center py-10 hover:scale-105 duration-200 bg-red-500 text-xs md:text-xl text-white">
+        </Link>
+        <Link
+          to={"/dashboard/notpaid"}
+          className="text-center py-10 hover:scale-105 duration-200 bg-red-500 text-xs md:text-xl text-white"
+        >
           Not Paid <br />
           {statisticData?.formFillUp - statisticData?.totalPaidGuests}
-        </div>
+        </Link>
 
         <div className="text-center py-10 hover:scale-105 duration-200 bg-slate-500 text-xs md:text-xl text-white">
           Adult Family Member
