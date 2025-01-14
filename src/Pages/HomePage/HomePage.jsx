@@ -5,7 +5,7 @@ import imageCompression from "browser-image-compression";
 
 import leftLogo from "/src/assets/logo1.png";
 import rightLogo from "/src/assets/rigthLogo.png";
-import { CLOUD_NAME, Preset } from "../../Config/cloudinary.config";
+import axios from "axios";
 const HomePage = () => {
   const today = new Date();
   const formattedDate = today.toISOString().split("T")[0];
@@ -36,37 +36,43 @@ const HomePage = () => {
   const handleClear = () => {
     setShowImagePreview(null);
   };
-  const handleImg = async (e) => {
-    const showImageFile = e.target.files[0];
-    if (!showImageFile) {
-      setErr("Please upload an image.");
+  const upload = async (file) => {
+    if (!file) {
+      console.log("No file selected");
       return;
     }
     setImageLoading(true);
     // Compress the image before uploading
-    const compressedImage = await imageCompression(showImageFile, {
+    const compressedImage = await imageCompression(file, {
       maxSizeMB: 0.3,
       maxWidthOrHeight: 500,
       useWebWorker: true,
     });
+    const formData = {
+      file: compressedImage, // Include the file directly
+    };
 
-    const data = new FormData();
-    data.append("file", compressedImage);
-    data.append("upload_preset", Preset);
-    data.append("cloud_name", CLOUD_NAME);
+    const headers = {
+      "Content-Type": "multipart/form-data",
+    };
 
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-      {
-        method: "POST",
-        body: data,
+    try {
+      const response = await axios.post(
+        "https://interior.inforsix.com/upload",
+        formData,
+        {
+          headers,
+        }
+      );
+      const imageURL = await response.data.url;
+      if (imageURL) {
+        setShowImagePreview(imageURL);
+        setImageLoading(false);
+        setErr("");
       }
-    );
-    const imageURL = await res.json();
-    if (imageURL) {
-      setShowImagePreview(imageURL?.secure_url);
-      setImageLoading(false);
-      setErr("");
+      console.log(imageURL);
+    } catch (error) {
+      console.error("Upload failed:", error);
     }
   };
   const handleFamily = (e) => {
@@ -304,7 +310,7 @@ const HomePage = () => {
                       </div>
                     </label>
                     <input
-                      onChange={handleImg}
+                      onChange={(e) => upload(e.target.files[0])}
                       className="hidden"
                       id="file6"
                       type="file"
