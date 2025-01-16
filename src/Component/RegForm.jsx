@@ -25,13 +25,18 @@ const RegForm = ({ id }) => {
       familyFee: participant?.familyFee,
     };
 
-    axios.post("http://localhost:3000/create-payment", formData).then((res) => {
-      const redirectURL = res?.data?.pay_url;
-      if (redirectURL) {
-        setBtnActive(true);
-        window.location.replace(redirectURL);
-      }
-    });
+    axios
+      .post(
+        "https://api.registration.exstudentsforum-brghs.com/create-payment",
+        formData
+      )
+      .then((res) => {
+        const redirectURL = res?.data?.pay_url;
+        if (redirectURL) {
+          setBtnActive(true);
+          window.location.replace(redirectURL);
+        }
+      });
   };
 
   if (isParticipantLoading)

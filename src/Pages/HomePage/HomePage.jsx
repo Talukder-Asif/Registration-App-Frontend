@@ -20,8 +20,8 @@ const HomePage = () => {
   const [totalFamilyFee, setTotalFamilyFee] = useState(0);
   const [familyError, setFamilyError] = useState("");
   useEffect(() => {
-    if (familyFee - children * 500 >= 0) {
-      setTotalFamilyFee(familyFee - children * 500);
+    if (familyFee - (children * 500 || 0 * 500) >= 0) {
+      setTotalFamilyFee(familyFee - (children * 500 || 0 * 500));
     } else setTotalFamilyFee(0);
 
     const familyMember = familyFee / 500;
@@ -498,6 +498,8 @@ const HomePage = () => {
                   type="number"
                   name="children"
                   required
+                  min={0}
+                  max={5}
                   placeholder="Under 5 years of age"
                   className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />

@@ -21,19 +21,21 @@ const NotPaid = () => {
   }, [axiosPublic, updateLoading]);
 
   const toggle = async (idx, batch) => {
-    setParticipantLoading(true);
     setIsOpen((prevIdx) => (prevIdx === idx ? null : idx));
-    const targetBatch = batch?._id;
-    const status = "Unpaid";
-    try {
-      const response = await axiosPublic.get(`/filtered/registration`, {
-        params: { status, targetBatch },
-      });
-      setShirtSize(response?.data?.tshirtSizes);
-      setParticipants(response?.data?.result);
-      setParticipantLoading(false);
-    } catch (error) {
-      console.error(error);
+    if (isOpen !== idx) {
+      setParticipantLoading(true);
+      const targetBatch = batch?._id;
+      const status = "Unpaid";
+      try {
+        const response = await axiosPublic.get(`/filtered/registration`, {
+          params: { status, targetBatch },
+        });
+        setShirtSize(response?.data?.tshirtSizes);
+        setParticipants(response?.data?.result);
+        setParticipantLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
   const handleUpdate = (e, participantData) => {
@@ -78,7 +80,7 @@ const NotPaid = () => {
       if (result.isConfirmed) {
         axios
           .put(
-            `http://localhost:3000/participant/${participantData?.participantId}`,
+            `https://api.registration.exstudentsforum-brghs.com/participant/${participantData?.participantId}`,
             updateData
           )
           .then((res) => {

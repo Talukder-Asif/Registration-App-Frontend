@@ -45,8 +45,10 @@ const UpdateForm = () => {
   const axiosPublic = useAxios();
   useEffect(() => {
     if (participant) {
+      console.log(participant);
       setTotalFamilyFee(
-        participant?.family_members * 500 - participant?.children * 500
+        participant?.family_members * 500 -
+          (participant?.children * 500 || 0 * 500)
       );
       setSelectedValue(`${participant.family_members * 500}`);
       setSelectedDriver(`${participant.driverFee}`);
@@ -54,15 +56,17 @@ const UpdateForm = () => {
       setSelectedSize(`${participant?.tshirt_size}`);
       setChildren(participant?.children);
       setfamily_members(participant?.family_members);
+      setFamilyFee(participant?.family_members * 500);
     }
   }, [participant]);
 
   useEffect(() => {
-    if (familyFee - children * 500 >= 0) {
-      setTotalFamilyFee(familyFee - children * 500);
+    console.log(family_members);
+    if (familyFee - (children * 500 || 0 * 500) >= 0) {
+      setTotalFamilyFee(familyFee - (children * 500 || 0 * 500));
     } else setTotalFamilyFee(0);
 
-    if (!(family_members >= parseInt(children))) {
+    if (!(family_members >= parseInt(children || 0))) {
       setFamilyError(
         "Number of family members cannot be more than number of children"
       );
