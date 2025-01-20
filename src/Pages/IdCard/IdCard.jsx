@@ -15,40 +15,37 @@ const IdCard = () => {
 
   const handleDownloadPDF = async () => {
     try {
-      const element = printRef.current;
+      const element = document.getElementById("printElement"); // Use the ID here
+      if (!element) {
+        throw new Error("Element with the specified ID not found");
+      }
 
-      // Set high resolution scaling for better quality
       const canvas = await html2canvas(element, {
         useCORS: true,
-        scale: window.devicePixelRatio || 3, // Higher scale for better quality (3x or higher for Retina displays)
+        scale: window.devicePixelRatio || 3,
       });
 
-      const imgData = canvas.toDataURL("image/png"); // Get image data
-      const pdf = new jsPDF("p", "mm", "a4"); // Create jsPDF instance
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
 
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
 
-      // Calculate the aspect ratio of the canvas and the PDF page
       const canvasRatio = canvas.width / canvas.height;
       const pageRatio = pageWidth / pageHeight;
 
       let imgWidth, imgHeight;
 
-      // If the canvas aspect ratio is greater than the page, the width will fill the page and the height will be scaled.
       if (canvasRatio > pageRatio) {
         imgWidth = pageWidth;
         imgHeight = (canvas.height * imgWidth) / canvas.width;
       } else {
-        // If the canvas aspect ratio is smaller, the height will fill the page and the width will be scaled.
         imgHeight = pageHeight;
         imgWidth = (canvas.width * imgHeight) / canvas.height;
       }
 
-      // Add the first page with the image (adjusted for high resolution)
       pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
 
-      // If the image height exceeds the page, add more pages.
       let currentHeight = imgHeight;
       while (currentHeight > pageHeight) {
         pdf.addPage();
@@ -93,6 +90,7 @@ const IdCard = () => {
       ) : (
         <div className="max-w-screen-lg mt-5 lg:p-5 m-auto">
           <div
+            id="printElement"
             ref={printRef}
             className="max-w-screen-md m-auto border border-black a4-page"
             style={{
@@ -147,7 +145,7 @@ const IdCard = () => {
                   {/* Information */}
                   <div className="text-[9px] md:text-xl lg:text-3xl">
                     {/* Additional Information */}
-                    <div className="flex justify-between">
+                    <div className="flex items-start justify-between">
                       <div>
                         <div className="flex justify-start my-1 md:my-5 lg:my-6 gap-4">
                           <h3 className="w-20 md:w-48 lg:w-60">
@@ -186,12 +184,11 @@ const IdCard = () => {
                           </h3>
                         </div>
                       </div>
-                      <div className="max-w-[80px] md:max-w-[150px] lg:max-w-[200px]">
-                        <img
-                          src={participant?.image}
-                          alt={participant?.name_english}
-                        />
-                      </div>
+                      <img
+                        className="max-w-[70px] h-auto md:max-w-[130px] lg:max-w-[180px]"
+                        src={participant?.image}
+                        alt={participant?.name_english}
+                      />
                     </div>
 
                     {/* Payment Information */}

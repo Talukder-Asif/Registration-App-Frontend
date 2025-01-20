@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import man from "/src/assets/Man1.png";
 import Swal from "sweetalert2";
+import { IoSettingsOutline } from "react-icons/io5";
+import { AiOutlineDelete } from "react-icons/ai";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const ManageRegistration = () => {
   const [participants, setParticipants] = useState([]);
@@ -15,6 +18,7 @@ const ManageRegistration = () => {
   const [searching, setsearching] = useState(false);
   const [searchLoading, setSearchingLoading] = useState(false);
   const [searchingItem, setsearchingItem] = useState(true);
+  const axiosPrivate = useAxiosSecure();
   const handleUpdate = (e, participantData) => {
     const form = e.target;
     e.preventDefault();
@@ -68,6 +72,33 @@ const ManageRegistration = () => {
                 title: `${participantData?.name_english} has been modified`,
                 showConfirmButton: false,
                 timer: 1500,
+              });
+            }
+          });
+      }
+    });
+  };
+
+  const handleDelete = (participantId) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosPrivate
+          .delete(`/delete-participant/${participantId}`)
+          .then((res) => {
+            if (res.data.deletedCount > 0) {
+              setUpdateLoading(!updateLoading);
+              Swal.fire({
+                title: "Deleted!",
+                text: "Successfully deleted.",
+                icon: "success",
               });
             }
           });
@@ -226,7 +257,7 @@ const ManageRegistration = () => {
                     <th>Child</th>
                     <th>Driver</th>
                     <th>Status</th>
-                    <th className="text-center">Update</th>
+                    <th className="text-center">Buttons</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -275,13 +306,13 @@ const ManageRegistration = () => {
                       <td>{participantsData?.driver}</td>
                       <td>{participantsData?.status}</td>
                       {participantsData?.status === "Unpaid" ? (
-                        <td>
+                        <td className="flex gap-1 items-center">
                           <div className="mx-auto w-fit">
                             <button
                               onClick={() => setOpenModal(participantsData)}
-                              className="rounded-md border border-zinc-500 px-5 py-[6px] text-zinc-500 hover:bg-zinc-200"
+                              className="p-2 bg-green-500 text-white rounded-full"
                             >
-                              Update
+                              <IoSettingsOutline className="text-lg md:text-xl" />
                             </button>
                             <div
                               onClick={() => setOpenModal(false)}
@@ -384,6 +415,12 @@ const ManageRegistration = () => {
                               </div>
                             </div>
                           </div>
+                          <button
+                            onClick={() => handleDelete(participantsData?._id)}
+                            className="p-2 bg-red-500 text-white rounded-full"
+                          >
+                            <AiOutlineDelete className="text-lg md:text-xl" />
+                          </button>
                         </td>
                       ) : null}
                     </tr>

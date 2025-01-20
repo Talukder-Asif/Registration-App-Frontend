@@ -28,7 +28,10 @@ const RegForm = ({ id }) => {
     axios
       .post(
         "https://api.registration.exstudentsforum-brghs.com/create-payment",
-        formData
+        formData,
+        {
+          withCredentials: true,
+        }
       )
       .then((res) => {
         const redirectURL = res?.data?.pay_url;
