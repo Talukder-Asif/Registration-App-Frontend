@@ -37,6 +37,7 @@ const Signin = () => {
           timer: 1500,
         });
         navigate("/dashboard");
+        window.location.reload();
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -120,6 +121,7 @@ const Signin = () => {
         timer: 1500,
       });
       navigate("/");
+      window.location.reload();
     } catch (error) {
       console.error("Error during signup:", error.message);
       Swal.fire({
@@ -153,6 +155,7 @@ const Signin = () => {
           timer: 1500,
         });
         navigate("/dashboard");
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);

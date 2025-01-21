@@ -61,7 +61,7 @@ const IdCard = () => {
   };
 
   return (
-    <div className="bg-[#f5f7fa]">
+    <div className="bg-[#f5f7fa] pt-5">
       {isParticipantLoading ? (
         <div className="grid min-h-screen content-center justify-center">
           <div className="text-center">
@@ -88,7 +88,7 @@ const IdCard = () => {
           <h1 className="text-5xl md:text-7xl font-bold">Please Wait....</h1>
         </div>
       ) : (
-        <div className="max-w-screen-lg mt-5 lg:p-5 m-auto">
+        <div className="max-w-screen-lg lg:p-5 m-auto">
           <div
             id="printElement"
             ref={printRef}
@@ -258,15 +258,15 @@ const IdCard = () => {
               </div>
             </div>
           </div>
-          <div className="px-8 pb-5 ">
+          <div className="px-3 md:px-8 pb-5 ">
             <button
               onClick={handleDownloadPDF}
-              className="text-white mt-7 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5"
+              className="text-white mt-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5"
             >
               Download PDF
             </button>
             <a href="https://www.exstudentsforum-brghs.com/">
-              <button className="text-white mt-7 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 ml-5 md:py-2.5">
+              <button className="text-white mt-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 ml-5 md:py-2.5">
                 Go Home
               </button>
             </a>

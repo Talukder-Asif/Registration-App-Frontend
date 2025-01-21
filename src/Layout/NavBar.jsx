@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import Logo from "/src/assets/logo1.png";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../AuthProvider/AuthProvider";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,12 @@ import man from "/src/assets/Man1.png";
 const NavBar = () => {
   const navigate = useNavigate();
   const { signout, User } = useContext(AuthContext);
+  const [isOpen, setOpen] = useState(false);
+  const [navigateSignin, setNavigateSignin] = useState(0);
+  if (navigateSignin === 5) {
+    navigate("/signin");
+    setNavigateSignin(0);
+  }
   const handleSignOut = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -84,6 +90,7 @@ const NavBar = () => {
     <>
       <li className="group flex flex-col">
         <NavLink
+          onClick={() => setOpen(!isOpen)}
           to={"/"}
           className={({ isActive, isPending }) =>
             isActive
@@ -99,6 +106,7 @@ const NavBar = () => {
       </li>
       <li className="group flex flex-col">
         <NavLink
+          onClick={() => setOpen(!isOpen)}
           to={"/participants"}
           className={({ isActive, isPending }) =>
             isActive
@@ -115,6 +123,7 @@ const NavBar = () => {
 
       <li className="group flex flex-col">
         <NavLink
+          onClick={() => setOpen(!isOpen)}
           to={"https://www.exstudentsforum-brghs.com/contact/"}
           className={({ isActive, isPending }) =>
             isActive
@@ -131,10 +140,10 @@ const NavBar = () => {
     </>
   );
   return (
-    <div className=" bg-[#002a3f] px-3">
+    <div className=" bg-[#002a3f] px-0 md:px-3">
       <div className="navbar max-w-screen-xl m-auto">
         <div className="navbar-start">
-          <div className="dropdown">
+          <div className="dropdown" onClick={() => setOpen(!isOpen)}>
             <div
               tabIndex={0}
               role="button"
@@ -157,13 +166,17 @@ const NavBar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-md z-[1] mt-3 w-52 p-2 shadow-lg"
+              className={
+                isOpen
+                  ? "menu menu-sm dropdown-content bg-base-100 rounded-md z-[1] mt-3 w-52 p-2 shadow-lg"
+                  : "hidden"
+              }
             >
               {mobileNav}
             </ul>
           </div>
           <NavLink to={"/"}>
-            <img src={Logo} className="w-[120px]" />
+            <img src={Logo} className="w-[80px] md:w-[120px]" />
           </NavLink>
         </div>
         <div className="navbar-center hidden lg:flex">
@@ -176,7 +189,9 @@ const NavBar = () => {
             <>
               {" "}
               <li onClick={handleSignOut} className="group mr-4 flex flex-col">
-                <button className="text-red-500 font-bold">Log Out</button>
+                <button className="text-red-500 text-sm md:text-base font-bold">
+                  Log Out
+                </button>
                 <span className="mt-[2px] h-[3px] w-[0px] rounded-full bg-red-500 transition-all duration-300 group-hover:w-full hidden lg:inline z-50"></span>
               </li>
               <div
@@ -194,7 +209,14 @@ const NavBar = () => {
                 </div>
               </div>
             </>
-          ) : null}
+          ) : (
+            <div
+              onClick={() => setNavigateSignin(navigateSignin + 1)}
+              className="h-max bg-transparent p-6 w-10"
+            >
+              {" "}
+            </div>
+          )}
         </div>
       </div>
     </div>

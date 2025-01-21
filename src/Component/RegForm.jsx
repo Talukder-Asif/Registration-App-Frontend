@@ -343,7 +343,7 @@ const RegForm = ({ id }) => {
                   src={unpaid}
                 ></img>
               ) : (
-                <h3 className="text-green-500 text-5xl p-2 border-4 border-green-500 font-black mb-2">
+                <h3 className="text-green-500 text-xl md:text-5xl p-1 md:p-2 border-4 border-green-500 font-black mb-2">
                   {" "}
                   PAID
                 </h3>
@@ -436,7 +436,7 @@ const RegForm = ({ id }) => {
                   src={unpaid}
                 ></img>
               ) : (
-                <h3 className="text-green-500 text-5xl p-2 border-4 border-green-500 font-black mb-2">
+                <h3 className="text-green-500 text-xl md:text-5xl p-1 md:p-2 border-4 border-green-500 font-black mb-2">
                   {" "}
                   PAID
                 </h3>
@@ -449,16 +449,14 @@ const RegForm = ({ id }) => {
         {participant?.status === "Unpaid" ? (
           <Link
             to={`/update/${participant?.participantId}`}
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 text-center md:py-2.5"
-            style={{ width: "30%" }}
+            className="text-white ml-3 mb-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 text-center md:py-2.5"
           >
             <button>Update Now</button>
           </Link>
         ) : (
           <Link
             to={`/idcard/${participant?.participantId}`}
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 text-center md:py-2.5"
-            style={{ width: "30%" }}
+            className="text-white ml-3 mb-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 text-center md:py-2.5"
           >
             <button>Show ID Card</button>
           </Link>
@@ -471,8 +469,7 @@ const RegForm = ({ id }) => {
               btnActive
                 ? "bg-blue-700 hover:bg-blue-800"
                 : "bg-gray-400 cursor-not-allowed"
-            } focus:ring-4 focus:outline-none font-medium text-center rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5`}
-            style={{ width: "30%" }}
+            } focus:ring-4 focus: ml-3 mb-5 outline-none font-medium text-center rounded text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5`}
             disabled={!btnActive}
           >
             Pay Now
