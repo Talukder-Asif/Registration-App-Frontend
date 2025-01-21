@@ -265,8 +265,7 @@ const ManageRegistration = () => {
                     <tr key={i}>
                       <td>
                         <Link
-                          target="_blank"
-                          to={`/preview/${participantsData?.participantId}`}
+                          to={`/dashboard/registration/${participantsData?.participantId}`}
                         >
                           <div className="flex items-center gap-3">
                             <div className="avatar">
@@ -357,6 +356,7 @@ const ManageRegistration = () => {
                                       type="text"
                                       name="participantId"
                                       disabled
+                                      readOnly
                                       value={openModal?.participantId}
                                       className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
                                     />

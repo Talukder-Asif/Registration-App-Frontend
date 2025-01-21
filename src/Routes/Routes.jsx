@@ -18,6 +18,7 @@ import UpdateForm from "../Pages/Update/UpdateForm";
 import PaidRegistration from "../Pages/Admin/PaidRegistration/PaidRegistration";
 import NotPaid from "../Pages/Admin/NotPaid/NotPaid";
 import UpdateParticipant from "../Pages/Admin/UpdateParticipant/UpdateParticipant";
+import ManageSingleRegistration from "../Pages/Admin/ManageSingleRegistration/ManageSingleRegistration";
 
 const router = createBrowserRouter([
   {
@@ -85,6 +86,14 @@ const router = createBrowserRouter([
             element: (
               <AdminRoute>
                 <ManageRegistration></ManageRegistration>
+              </AdminRoute>
+            ),
+          },
+          {
+            path: "/dashboard/registration/:id",
+            element: (
+              <AdminRoute>
+                <ManageSingleRegistration></ManageSingleRegistration>
               </AdminRoute>
             ),
           },

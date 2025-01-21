@@ -149,12 +149,12 @@ const UpdateParticipant = () => {
             .then((res) => {
               if (res?.data?.modifiedCount > 0) {
                 Swal.fire("Saved!", "", "success");
-                navigate(`/preview/${id}`);
+                navigate(`/dashboard/registration/${id}`);
               } else {
                 Swal.fire({
-                  icon: "error",
+                  icon: "question",
                   title: "Oops...",
-                  text: "Something went wrong!",
+                  text: "No Change Found!",
                 });
                 return;
               }
@@ -210,12 +210,12 @@ const UpdateParticipant = () => {
             .then((res) => {
               if (res?.data?.modifiedCount > 0) {
                 Swal.fire("Saved!", "", "success");
-                navigate(`/preview/${id}`);
+                navigate(`/dashboard/registration/${id}`);
               } else {
                 Swal.fire({
-                  icon: "error",
+                  icon: "question",
                   title: "Oops...",
-                  text: "Something went wrong!",
+                  text: "No Change Found!",
                 });
                 return;
               }
@@ -259,12 +259,12 @@ const UpdateParticipant = () => {
         .then((res) => {
           if (res?.data?.modifiedCount > 0) {
             Swal.fire("Saved!", "", "success");
-            navigate(`/preview/${id}`);
+            navigate(`/dashboard/registration/${id}`);
           } else {
             Swal.fire({
-              icon: "error",
+              icon: "question",
               title: "Oops...",
-              text: "Something went wrong!",
+              text: "No Change Found!",
             });
             return;
           }
