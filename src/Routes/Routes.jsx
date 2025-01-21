@@ -17,6 +17,7 @@ import Statistic from "../Pages/Executive/Statistic";
 import UpdateForm from "../Pages/Update/UpdateForm";
 import PaidRegistration from "../Pages/Admin/PaidRegistration/PaidRegistration";
 import NotPaid from "../Pages/Admin/NotPaid/NotPaid";
+import UpdateParticipant from "../Pages/Admin/UpdateParticipant/UpdateParticipant";
 
 const router = createBrowserRouter([
   {
@@ -100,6 +101,14 @@ const router = createBrowserRouter([
             element: (
               <AdminRoute>
                 <NotPaid></NotPaid>
+              </AdminRoute>
+            ),
+          },
+          {
+            path: "/dashboard/update/participant/:id",
+            element: (
+              <AdminRoute>
+                <UpdateParticipant></UpdateParticipant>
               </AdminRoute>
             ),
           },

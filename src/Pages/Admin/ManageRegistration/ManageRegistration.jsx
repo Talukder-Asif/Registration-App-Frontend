@@ -356,8 +356,8 @@ const ManageRegistration = () => {
                                     <input
                                       type="text"
                                       name="participantId"
-                                      required
-                                      defaultValue={openModal?.participantId}
+                                      disabled
+                                      value={openModal?.participantId}
                                       className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
                                     />
                                   </div>
@@ -398,6 +398,13 @@ const ManageRegistration = () => {
                                     </label>
                                   </div>
                                   <div className="flex justify-end gap-2">
+                                    <Link
+                                      to={`/dashboard/update/participant/${openModal?.participantId}`}
+                                    >
+                                      <button className="p-2 bg-green-500 text-white rounded-md">
+                                        More Modification
+                                      </button>
+                                    </Link>
                                     <button
                                       type="submit"
                                       className="rounded-md bg-emerald-600 px-6 py-[6px] text-white hover:bg-emerald-700"
@@ -422,7 +429,17 @@ const ManageRegistration = () => {
                             <AiOutlineDelete className="text-lg md:text-xl" />
                           </button>
                         </td>
-                      ) : null}
+                      ) : (
+                        <td>
+                          <Link
+                            to={`/dashboard/update/participant/${participantsData?.participantId}`}
+                          >
+                            <button className="p-2 bg-green-500 text-white rounded-full">
+                              <IoSettingsOutline className="text-lg md:text-xl" />
+                            </button>
+                          </Link>
+                        </td>
+                      )}
                     </tr>
                   ))}
                 </tbody>

@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import useAxios from "../../Hooks/useAxios";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
 import leftLogo from "/src/assets/logo1.png";
 import rightLogo from "/src/assets/rigthLogo.png";
-import useOneParticipant from "../../Hooks/useOneParticipant";
+import useOneParticipant from "../../../Hooks/useOneParticipant";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 
-const UpdateForm = () => {
+const UpdateParticipant = () => {
   const id = useParams().id;
 
   const [participant, isParticipantLoading] = useOneParticipant({ id });
@@ -43,7 +42,7 @@ const UpdateForm = () => {
     setDriverFee(parseInt(driver));
     setSelectedDriver(parseInt(driver));
   };
-  const axiosPublic = useAxios();
+  const axiosPublic = useAxiosSecure();
   useEffect(() => {
     if (participant) {
       setTotalFamilyFee(
@@ -101,51 +100,176 @@ const UpdateForm = () => {
 
     const image = participant?.image;
     const tshirt_size = form["tshirtSize"].value;
+    const newStatus = form["status"].value;
+    const total_fee = participantFee + totalFamilyFee + driverFee;
 
-    // Log all form values
-    const participantData = {
-      participantId: participant?.participantId,
-      name_bengali,
-      name_english,
-      dob,
-      nationality,
-      religion,
-      blood_group,
-      father_name,
-      mother_name,
-      occupation,
-      children,
-      phone,
-      email,
-      address,
-      ssc_year,
-      image,
-      tshirt_size,
-      participantFee,
-      family_members,
-      familyFee: totalFamilyFee,
-      driver,
-      driverFee,
-      total_fee: participantFee + totalFamilyFee + driverFee,
-      Date: participant?.Date,
-      status: participant?.status,
-      paidAmount: participant?.paidAmount ? participant?.paidAmount : null,
-      paymentID: participant?.paymentID ? participant?.paymentID : null,
-    };
-    axiosPublic
-      .put(`/update/participant/${id}`, participantData)
-      .then((res) => {
-        if (res?.data?.modifiedCount > 0) {
-          navigate(`/preview/${id}`);
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Something went wrong!",
-          });
-          return;
+    if (newStatus === "Paid" && participant?.status === "Unpaid") {
+      Swal.fire({
+        title: `Is he complete his payment?`,
+        text: `${participant?.name_english} need to pay ${total_fee} BDT and He payed 0 BDT`,
+        showDenyButton: true,
+        confirmButtonText: "Yes, I'm Sure",
+        denyButtonText: `No, Not sure`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          // Log all form values
+          const participantData = {
+            participantId: participant?.participantId,
+            name_bengali,
+            name_english,
+            dob,
+            nationality,
+            religion,
+            blood_group,
+            father_name,
+            mother_name,
+            occupation,
+            children,
+            phone,
+            email,
+            address,
+            ssc_year,
+            image,
+            tshirt_size,
+            participantFee,
+            family_members,
+            familyFee: totalFamilyFee,
+            driver,
+            driverFee,
+            total_fee,
+            Date: participant?.Date,
+            status: newStatus,
+            paidAmount: (total_fee * 1.030915).toFixed(2),
+            paymentID: participant?.paymentID ? participant?.paymentID : null,
+          };
+
+          axiosPublic
+            .put(`/update/participant/${id}`, participantData)
+            .then((res) => {
+              if (res?.data?.modifiedCount > 0) {
+                Swal.fire("Saved!", "", "success");
+                navigate(`/preview/${id}`);
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Something went wrong!",
+                });
+                return;
+              }
+            });
+        } else if (result.isDenied) {
+          Swal.fire("Changes are not saved", "", "info");
         }
       });
+    } else if (
+      parseFloat(total_fee) > parseFloat(participant?.paidAmount) &&
+      newStatus === "Paid"
+    ) {
+      Swal.fire({
+        title: `Is he complete his payment?`,
+        text: `${participant?.name_english} need to pay ${total_fee} BDT and He payed ${participant?.paidAmount} BDT`,
+        showDenyButton: true,
+        confirmButtonText: "Yes, I'm Sure",
+        denyButtonText: `No, Not sure`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Log all form values
+          const participantData = {
+            participantId: participant?.participantId,
+            name_bengali,
+            name_english,
+            dob,
+            nationality,
+            religion,
+            blood_group,
+            father_name,
+            mother_name,
+            occupation,
+            children,
+            phone,
+            email,
+            address,
+            ssc_year,
+            image,
+            tshirt_size,
+            participantFee,
+            family_members,
+            familyFee: totalFamilyFee,
+            driver,
+            driverFee,
+            total_fee,
+            Date: participant?.Date,
+            status: newStatus,
+            paidAmount: (total_fee * 1.030915).toFixed(2),
+            paymentID: participant?.paymentID ? participant?.paymentID : null,
+          };
+          axiosPublic
+            .put(`/update/participant/${id}`, participantData)
+            .then((res) => {
+              if (res?.data?.modifiedCount > 0) {
+                Swal.fire("Saved!", "", "success");
+                navigate(`/preview/${id}`);
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Something went wrong!",
+                });
+                return;
+              }
+            });
+        } else if (result.isDenied) {
+          Swal.fire("Changes are not saved", "", "info");
+        }
+      });
+    } else {
+      const participantData = {
+        participantId: participant?.participantId,
+        name_bengali,
+        name_english,
+        dob,
+        nationality,
+        religion,
+        blood_group,
+        father_name,
+        mother_name,
+        occupation,
+        children,
+        phone,
+        email,
+        address,
+        ssc_year,
+        image,
+        tshirt_size,
+        participantFee,
+        family_members,
+        familyFee: totalFamilyFee,
+        driver,
+        driverFee,
+        total_fee,
+        Date: participant?.Date,
+        status: participant?.status,
+        paidAmount: participant?.paidAmount ? participant?.paidAmount : null,
+        paymentID: participant?.paymentID ? participant?.paymentID : null,
+      };
+      axiosPublic
+        .put(`/update/participant/${id}`, participantData)
+        .then((res) => {
+          if (res?.data?.modifiedCount > 0) {
+            Swal.fire("Saved!", "", "success");
+            navigate(`/preview/${id}`);
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Something went wrong!",
+            });
+            return;
+          }
+        });
+    }
   };
   if (isParticipantLoading)
     return (
@@ -174,49 +298,33 @@ const UpdateForm = () => {
         <h1 className="text-5xl md:text-7xl font-bold">Please Wait....</h1>
       </div>
     );
-  if (participant?.status === "Paid")
-    return (
-      <div className="text-center min-h-96 flex justify-center items-center">
-        <h1 className="text-5xl text-center mb-4 font-extrabold dark:text-white">
-          Can not modify after Payment,
-          <br /> Please with Contact us
-        </h1>
-      </div>
-    );
+
   return (
-    <div className=" md:py-10 md:px-3 max-w-screen-xl m-auto">
+    <div className="max-w-screen-xl m-auto">
       <div style={{ fontFamily: "Arial, sans-serif", margin: "0px" }}>
         {/* Header */}
         <div className="bg-[rgba(255,245,248,0.99)] pt-1 md:pt-5">
-          <div className="flex md:gap-4 p-1 md:p-2 lg:p-4 justify-between">
-            <div className="max-w-12 md:max-w-24 lg:max-w-40">
-              <img
-                className="max-w-12 md:max-w-24 lg:max-w-40"
-                src={leftLogo}
-                alt=""
-              />
+          <div className="flex md:gap-4 p-1 md:p-2 justify-between">
+            <div className="max-w-12 md:max-w-24">
+              <img className="max-w-12 md:max-w-24" src={leftLogo} alt="" />
             </div>
             <div className="mb:2 md:mb-5" style={{ textAlign: "center" }}>
-              <h1 className="text-lg md:text-4xl lg:text-6xl text-[rgb(200,16,49)] font-bold">
+              <h1 className="text-lg md:text-4xl text-[rgb(200,16,49)] font-bold">
                 শতবর্ষ উদযাপন পরিষদ
               </h1>
-              <h2 className="text-[7px] md:text-base lg:text-lg font-semibold">
+              <h2 className="text-[7px] md:text-base font-semibold">
                 বাংলাদেশ রেলওয়ে সরকারি উচ্চ বিদ্যালয়,
                 <br /> পাহাড়তলী, চট্টগ্রাম
               </h2>
             </div>
-            <div className="max-w-12 md:max-w-24 lg:max-w-40">
-              <img
-                className="max-w-12 md:max-w-24 lg:max-w-40 lg:w-40"
-                src={rightLogo}
-                alt=""
-              />
+            <div className="max-w-12 md:max-w-24">
+              <img className="max-w-12 md:max-w-24" src={rightLogo} alt="" />
             </div>
           </div>
 
           <div className="flex text-[7px] md:text-sm md:gap-5 justify-around">
             <p>Serial No:</p>
-            <div className="md:text-lg lg:text-2xl text-white bg-[rgb(42,46,151)] p-0.5 lg:p-2 px-2 lg:px-3 rounded-t-lg md:rounded-t-xl">
+            <div className="md:text-lg text-white bg-[rgb(42,46,151)] p-0.5 px-2 rounded-t-lg md:rounded-t-xl">
               রেজিস্ট্রেশন ফর্ম
             </div>
             <p>Office Copy</p>
@@ -244,7 +352,7 @@ const UpdateForm = () => {
               className="p-2 md:p-10"
             >
               {/* Image Box */}
-              <div className="absolute max-w-20 md:max-w-32 lg:max-w-60 right-2 md:right-6">
+              <div className="absolute max-w-20 md:max-w-32 lg:max-w-40 right-2 md:right-6">
                 <div className="relative">
                   <img src={participant?.image} alt="Image" />
                 </div>
@@ -261,7 +369,7 @@ const UpdateForm = () => {
                   name="name_bengali"
                   defaultValue={participant?.name_bengali}
                   required
-                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[280px] border border-black bg-transparent"
                 />
               </div>
 
@@ -275,7 +383,7 @@ const UpdateForm = () => {
                   name="name_english"
                   required
                   defaultValue={participant?.name_english}
-                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[280px] border border-black bg-transparent"
                 />
               </div>
 
@@ -287,7 +395,7 @@ const UpdateForm = () => {
                   name="dob"
                   required
                   defaultValue={participant?.dob}
-                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[280px] border border-black bg-transparent"
                 />
               </div>
 
@@ -299,7 +407,7 @@ const UpdateForm = () => {
                   name="nationality"
                   required
                   defaultValue={participant?.nationality}
-                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[280px] border border-black bg-transparent"
                 />
               </div>
 
@@ -311,7 +419,7 @@ const UpdateForm = () => {
                   name="religion"
                   required
                   defaultValue={participant?.religion}
-                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[280px] border border-black bg-transparent"
                 />
               </div>
 
@@ -322,7 +430,7 @@ const UpdateForm = () => {
                   name="blood_group"
                   required
                   defaultValue={participant?.blood_group}
-                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[280px] border border-black bg-transparent"
                 >
                   <option value="" disabled>
                     Select Blood Group
@@ -348,7 +456,7 @@ const UpdateForm = () => {
                   name="father_name"
                   required
                   defaultValue={participant?.father_name}
-                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[280px] border border-black bg-transparent"
                 />
               </div>
 
@@ -362,7 +470,7 @@ const UpdateForm = () => {
                   name="mother_name"
                   defaultValue={participant?.mother_name}
                   required
-                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[280px] border border-black bg-transparent"
                 />
               </div>
 
@@ -374,7 +482,7 @@ const UpdateForm = () => {
                   name="occupation"
                   defaultValue={participant?.occupation}
                   required
-                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[280px] border border-black bg-transparent"
                 />
               </div>
 
@@ -386,7 +494,7 @@ const UpdateForm = () => {
                   name="phone"
                   defaultValue={participant?.phone}
                   required
-                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[280px] border border-black bg-transparent"
                 />
               </div>
 
@@ -397,7 +505,7 @@ const UpdateForm = () => {
                   type="email"
                   name="email"
                   defaultValue={participant?.email}
-                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[280px] border border-black bg-transparent"
                 />
               </div>
 
@@ -410,7 +518,7 @@ const UpdateForm = () => {
                   name="family_members"
                   required
                   value={selectedValue}
-                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[280px] border border-black bg-transparent"
                   onChange={handleFamilyMember}
                 >
                   <option value="00">Participant only: (2000 BDT)</option>
@@ -445,9 +553,11 @@ const UpdateForm = () => {
                   required
                   min={0}
                   max={6}
-                  defaultValue={participant?.children}
+                  defaultValue={
+                    participant?.children ? participant?.children : 0
+                  }
                   placeholder="Under 5 years of age"
-                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[280px] border border-black bg-transparent"
                 />
               </div>
               {/* Address */}
@@ -458,7 +568,7 @@ const UpdateForm = () => {
                   name="address"
                   required
                   defaultValue={participant?.address}
-                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                  className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[280px] border border-black bg-transparent"
                 />
               </div>
 
@@ -475,7 +585,7 @@ const UpdateForm = () => {
                     max={2030}
                     required
                     defaultValue={participant?.ssc_year}
-                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
+                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[280px] border border-black bg-transparent"
                   />
                 </div>
                 {/* Driver Attending */}
@@ -510,7 +620,7 @@ const UpdateForm = () => {
                     type="text"
                     name="selfFee"
                     required
-                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
+                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[200px]  border border-black bg-transparent"
                     value={participant?.participantFee}
                     readOnly
                   />
@@ -523,7 +633,7 @@ const UpdateForm = () => {
                     type="text"
                     name="familyFee"
                     required
-                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
+                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[200px] border border-black bg-transparent"
                     value={totalFamilyFee}
                     readOnly
                   />
@@ -536,7 +646,7 @@ const UpdateForm = () => {
                     type="text"
                     name="driverFee"
                     required
-                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
+                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[200px] border border-black bg-transparent"
                     value={driverFee}
                     readOnly
                   />
@@ -571,7 +681,7 @@ const UpdateForm = () => {
                     type="Date"
                     name="date"
                     required
-                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
+                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[200px] border border-black bg-transparent"
                     value={participant?.Date}
                     readOnly
                   />
@@ -582,10 +692,56 @@ const UpdateForm = () => {
                     type="text"
                     name="total_fee"
                     required
-                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] border border-black bg-transparent"
+                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[200px] border border-black bg-transparent"
                     value={participantFee + totalFamilyFee + driverFee}
                     readOnly
                   />
+                </div>
+                <div>
+                  <label className="text-center m-auto">Fee Paid</label>
+                  <input
+                    type="text"
+                    name="paidAmount"
+                    required
+                    readOnly
+                    className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[200px] border border-black bg-transparent"
+                    value={
+                      participant?.paidAmount && participant.status === "Paid"
+                        ? participant?.paidAmount
+                        : 0
+                    }
+                  />
+                </div>
+                <div style={{ marginBottom: "10px" }} className="md:flex gap-5">
+                  <label className="md:w-36 lg:w-40 my-1 py-1">Payment:</label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="status"
+                      value="Paid"
+                      defaultChecked={participant?.status === "Paid"}
+                      required
+                      style={{
+                        marginLeft: "10px",
+                        marginTop: "15px",
+                      }}
+                    />{" "}
+                    Paid
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="status"
+                      value="Unpaid"
+                      defaultChecked={participant?.status === "Unpaid"}
+                      required
+                      style={{
+                        marginLeft: "10px",
+                        marginTop: "15px",
+                      }}
+                    />{" "}
+                    Unpaid
+                  </label>
                 </div>
               </div>
               {err ? (
@@ -599,7 +755,7 @@ const UpdateForm = () => {
               <div className="text-center grid grid-cols-2 ">
                 <button
                   type="submit"
-                  className={`text-white m-auto bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5 ${
+                  className={`text-white m-auto bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm md:px-5 px-2.5 py-1.5 md:py-2.5 ${
                     err || familyError ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                   style={{ width: "80%" }}
@@ -608,8 +764,8 @@ const UpdateForm = () => {
                   Update
                 </button>
                 <Link
-                  to={`/preview/${id}`}
-                  className={`text-white m-auto bg-green-500 hover:bg-green-400 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-6 px-2.5 py-1.5 md:py-2.5  ${
+                  to={`/dashboard/registration`}
+                  className={`text-white m-auto bg-green-500 hover:bg-green-400 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm  md:px-6 px-2.5 py-1.5 md:py-2.5  ${
                     err || familyError ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                   style={{ width: "80%" }}
@@ -625,4 +781,4 @@ const UpdateForm = () => {
   );
 };
 
-export default UpdateForm;
+export default UpdateParticipant;
