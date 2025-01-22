@@ -251,7 +251,12 @@ const UpdateParticipant = () => {
         total_fee,
         Date: participant?.Date,
         status: participant?.status,
-        paidAmount: participant?.paidAmount ? participant?.paidAmount : null,
+        paidAmount:
+          participant?.status === "Paid"
+            ? (total_fee * 1.030915).toFixed(2)
+            : participant?.paidAmount
+            ? participant?.paidAmount
+            : null,
         paymentID: participant?.paymentID ? participant?.paymentID : null,
       };
       axiosPublic
