@@ -6,6 +6,7 @@ import imageCompression from "browser-image-compression";
 import leftLogo from "/src/assets/logo1.png";
 import rightLogo from "/src/assets/rigthLogo.png";
 import axios from "axios";
+import Swal from "sweetalert2";
 const HomePage = () => {
   const today = new Date();
   const formattedDate = today.toISOString().split("T")[0];
@@ -19,6 +20,7 @@ const HomePage = () => {
   const [children, setChildren] = useState(0);
   const [totalFamilyFee, setTotalFamilyFee] = useState(0);
   const [familyError, setFamilyError] = useState("");
+  const [formData, setFormData] = useState({});
   useEffect(() => {
     if (familyFee - (children * 500 || 0 * 500) >= 0) {
       setTotalFamilyFee(familyFee - (children * 500 || 0 * 500));
@@ -81,6 +83,7 @@ const HomePage = () => {
   const handleChildren = (e) => {
     const member = e.target.value;
     setChildren(parseInt(member));
+    handleChange(e);
 
     const familyMember = parseInt(member) / 500;
     if (familyMember < children) {
@@ -96,6 +99,38 @@ const HomePage = () => {
     const driver = e.target.value;
     setDriverFee(parseInt(driver));
   };
+
+  useEffect(() => {
+    const savedData = localStorage.getItem("registrationFormData");
+    if (savedData) {
+      setFormData(JSON.parse(savedData));
+    }
+  }, []);
+
+  // Handle input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const updatedData = { ...formData, [name]: value };
+    setFormData(updatedData);
+
+    // Save data to localStorage
+    localStorage.setItem("registrationFormData", JSON.stringify(updatedData));
+  };
+  const handleClearStorage = () => {
+    localStorage.removeItem("registrationFormData");
+  };
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
+
   const axiosPublic = useAxios();
   const handleSubmit = async (e) => {
     setErr("");
@@ -163,6 +198,11 @@ const HomePage = () => {
         setErr(res.data.message);
         return;
       } else {
+        Toast.fire({
+          icon: "success",
+          title: "Registration successful! Welcome aboard!",
+        });
+        handleClearStorage();
         navigate(`/preview/${res.data.participantId}`);
       }
     });
@@ -329,6 +369,8 @@ const HomePage = () => {
                   type="text"
                   name="name_bengali"
                   required
+                  onChange={handleChange}
+                  defaultValue={formData?.name_bengali || ""}
                   className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
@@ -342,6 +384,8 @@ const HomePage = () => {
                   type="text"
                   name="name_english"
                   required
+                  onChange={handleChange}
+                  defaultValue={formData?.name_english || ""}
                   className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
@@ -353,6 +397,8 @@ const HomePage = () => {
                   type="date"
                   name="dob"
                   required
+                  onChange={handleChange}
+                  defaultValue={formData?.dob || ""}
                   className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
@@ -364,7 +410,8 @@ const HomePage = () => {
                   type="text"
                   name="nationality"
                   required
-                  defaultValue="Bangladeshi"
+                  defaultValue={formData?.nationality || "Bangladeshi"}
+                  onChange={handleChange}
                   className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
@@ -376,6 +423,8 @@ const HomePage = () => {
                   type="text"
                   name="religion"
                   required
+                  onChange={handleChange}
+                  defaultValue={formData?.religion || ""}
                   className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
@@ -386,16 +435,21 @@ const HomePage = () => {
                 <select
                   name="blood_group"
                   required
+                  onChange={handleChange}
+                  value={formData?.blood_group || ""}
                   className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 >
-                  <option>A+</option>
-                  <option>A-</option>
-                  <option>B+</option>
-                  <option>B-</option>
-                  <option>AB+</option>
-                  <option>AB-</option>
-                  <option>O+</option>
-                  <option>O-</option>
+                  <option value="" disabled>
+                    Select Blood Group
+                  </option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
                 </select>
               </div>
 
@@ -408,6 +462,8 @@ const HomePage = () => {
                   type="text"
                   name="father_name"
                   required
+                  onChange={handleChange}
+                  defaultValue={formData?.father_name || ""}
                   className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
@@ -421,6 +477,8 @@ const HomePage = () => {
                   type="text"
                   name="mother_name"
                   required
+                  onChange={handleChange}
+                  defaultValue={formData?.mother_name || ""}
                   className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
@@ -432,6 +490,8 @@ const HomePage = () => {
                   type="text"
                   name="occupation"
                   required
+                  onChange={handleChange}
+                  defaultValue={formData?.occupation || ""}
                   className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
@@ -443,6 +503,8 @@ const HomePage = () => {
                   type="tel"
                   name="phone"
                   required
+                  onChange={handleChange}
+                  defaultValue={formData?.phone || ""}
                   className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
@@ -453,6 +515,8 @@ const HomePage = () => {
                 <input
                   type="email"
                   name="email"
+                  onChange={handleChange}
+                  defaultValue={formData?.email || ""}
                   className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
@@ -501,6 +565,7 @@ const HomePage = () => {
                   min={0}
                   max={5}
                   placeholder="Under 5 years of age"
+                  defaultValue={formData?.children || null}
                   className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
@@ -511,6 +576,8 @@ const HomePage = () => {
                   type="text"
                   name="address"
                   required
+                  onChange={handleChange}
+                  defaultValue={formData?.address || ""}
                   className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                 />
               </div>
@@ -527,6 +594,8 @@ const HomePage = () => {
                     min={1900}
                     max={2030}
                     required
+                    onChange={handleChange}
+                    defaultValue={formData?.ssc_year || null}
                     className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                   />
                 </div>
