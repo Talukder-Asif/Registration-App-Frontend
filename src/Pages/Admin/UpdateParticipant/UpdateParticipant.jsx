@@ -5,6 +5,8 @@ import rightLogo from "/src/assets/rigthLogo.png";
 import useOneParticipant from "../../../Hooks/useOneParticipant";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import axios from "axios";
+import imageCompression from "browser-image-compression";
 
 const UpdateParticipant = () => {
   const id = useParams().id;
@@ -12,6 +14,54 @@ const UpdateParticipant = () => {
   const [participant, isParticipantLoading] = useOneParticipant({ id });
   const [selectedDriver, setSelectedDriver] = useState("00");
   const [selectedValue, setSelectedValue] = useState("00");
+  const [imageURL, setImageURL] = useState("");
+  const [isImageChange, setIsImageChange] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
+
+  const handleClear = () => {
+    setImageURL(participant?.image);
+    setIsImageChange(false);
+  };
+
+  const upload = async (file) => {
+    if (!file) {
+      alert("No file selected");
+      return;
+    }
+    setImageLoading(true);
+    // Compress the image before uploading
+    const compressedImage = await imageCompression(file, {
+      maxSizeMB: 0.1,
+      maxWidthOrHeight: 250,
+      useWebWorker: true,
+    });
+    const formData = {
+      file: compressedImage, // Include the file directly
+    };
+
+    const headers = {
+      "Content-Type": "multipart/form-data",
+    };
+
+    try {
+      const response = await axios.post(
+        "https://interior.inforsix.com/upload",
+        formData,
+        {
+          headers,
+        }
+      );
+      const imageURL = await response.data.url;
+      if (imageURL) {
+        setImageURL(imageURL);
+        setImageLoading(false);
+        setIsImageChange(true);
+        setErr("");
+      }
+    } catch (error) {
+      alert("Upload failed:", error);
+    }
+  };
 
   const handleSizeChange = (event) => {
     setSelectedSize(event.target.value); // Update the state with the selected size
@@ -56,6 +106,7 @@ const UpdateParticipant = () => {
       setChildren(participant?.children);
       setfamily_members(participant?.family_members);
       setFamilyFee(participant?.family_members * 500);
+      setImageURL(participant?.image);
     }
   }, [participant]);
 
@@ -98,7 +149,7 @@ const UpdateParticipant = () => {
         ? "Driver for 2 days"
         : "No driver";
 
-    const image = participant?.image;
+    const image = imageURL;
     const tshirt_size = form["tshirtSize"].value;
     const newStatus = form["status"].value;
     const total_fee = participantFee + totalFamilyFee + driverFee;
@@ -306,6 +357,11 @@ const UpdateParticipant = () => {
 
   return (
     <div className="max-w-screen-xl m-auto">
+      {imageLoading && (
+        <div className="fixed w-full h-full -mt-24 flex -ml-3 z-50">
+          <div className="w-60 h-60 animate-[spin_1s_linear_infinite] rounded-full border-double border-4 border-r-0 border-l-0 border-b-sky-400 border-t-sky-700 m-auto"></div>
+        </div>
+      )}
       <div style={{ fontFamily: "Arial, sans-serif", margin: "0px" }}>
         {/* Header */}
         <div className="bg-[rgba(255,245,248,0.99)] pt-1 md:pt-5">
@@ -359,7 +415,22 @@ const UpdateParticipant = () => {
               {/* Image Box */}
               <div className="absolute max-w-20 md:max-w-32 lg:max-w-40 right-2 md:right-6">
                 <div className="relative">
-                  <img src={participant?.image} alt="Image" />
+                  <img src={imageURL} alt="Image" />
+                  {isImageChange && (
+                    <div
+                      onClick={handleClear}
+                      className="md:px-2 px-1 lg:px-3 bg-[#ffffff7b] lg:py-1 rounded-full border-2 border-black hover:border-white hover:bg-[#0000009b] hover:text-white duration-300 absolute top-1 right-1 lg:top-3 lg:right-3"
+                    >
+                      X
+                    </div>
+                  )}
+
+                  <input
+                    onChange={(e) => upload(e.target.files[0])}
+                    accept="image/*"
+                    type="file"
+                    className="file-input file-input-bordered file-input-xs w-full my-2 max-w-xs"
+                  />
                 </div>
 
                 <p className="text-center ">Photo</p>

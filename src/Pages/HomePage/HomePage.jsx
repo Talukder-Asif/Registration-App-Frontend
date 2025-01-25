@@ -35,19 +35,21 @@ const HomePage = () => {
       setFamilyError("");
     }
   }, [children, familyFee]);
+
   const handleClear = () => {
     setShowImagePreview(null);
   };
+
   const upload = async (file) => {
     if (!file) {
-      console.log("No file selected");
+      alert("No file selected");
       return;
     }
     setImageLoading(true);
     // Compress the image before uploading
     const compressedImage = await imageCompression(file, {
-      maxSizeMB: 0.3,
-      maxWidthOrHeight: 500,
+      maxSizeMB: 0.1,
+      maxWidthOrHeight: 250,
       useWebWorker: true,
     });
     const formData = {
@@ -73,7 +75,7 @@ const HomePage = () => {
         setErr("");
       }
     } catch (error) {
-      console.error("Upload failed:", error);
+      alert("Upload failed:", error);
     }
   };
   const handleFamily = (e) => {
