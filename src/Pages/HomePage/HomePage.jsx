@@ -114,6 +114,7 @@ const HomePage = () => {
     const { name, value } = e.target;
     const updatedData = { ...formData, [name]: value };
     setFormData(updatedData);
+    setErr(null);
 
     // Save data to localStorage
     localStorage.setItem("registrationFormData", JSON.stringify(updatedData));
@@ -757,12 +758,19 @@ const HomePage = () => {
                 </div>
               </div>
               {err ? (
-                <p className="text-red-500 text-center my-2 text-sm">{err}</p>
+                <p
+                  className="text-red-500 text-center my-2 text-sm"
+                  dangerouslySetInnerHTML={{
+                    __html: err.replace(
+                      /<a([^>]+)>/g,
+                      "<a class='text-blue-500 underline font-bold' $1>"
+                    ),
+                  }}
+                />
               ) : familyError ? (
-                <p className="text-red-500 text-center my-2 text-sm">
-                  {familyError}
-                </p>
+                <p>{familyError}</p>
               ) : null}
+
               {/* Submit Button */}
               <div className="text-center">
                 <button

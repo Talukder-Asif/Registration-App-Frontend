@@ -63,16 +63,12 @@ const Success = () => {
   const [paymentData, setPaymentData] = useState({});
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    axios
-      .get(
-        `https://api.registration.exstudentsforum-brghs.com/payment/${paymentId}`
-      )
-      .then((res) => {
-        setPaymentData(res.data);
-        if (res?.data) {
-          setLoading(false);
-        }
-      });
+    axios.get(`http://localhost:3000/payment/${paymentId}`).then((res) => {
+      setPaymentData(res.data);
+      if (res?.data) {
+        setLoading(false);
+      }
+    });
   }, [paymentId]);
 
   return (
