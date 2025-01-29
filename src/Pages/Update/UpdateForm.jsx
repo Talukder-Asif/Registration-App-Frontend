@@ -73,6 +73,17 @@ const UpdateForm = () => {
       setFamilyError("");
     }
   }, [children, familyFee, family_members, totalFamilyFee]);
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
 
   const handleSubmit = async (e) => {
     setErr("");
@@ -136,6 +147,11 @@ const UpdateForm = () => {
       .put(`/update/participant/${id}`, participantData)
       .then((res) => {
         if (res?.data?.modifiedCount > 0) {
+          e.target.reset();
+          Toast.fire({
+            icon: "success",
+            title: "Registration updated successfully",
+          });
           navigate(`/preview/${id}`);
         } else {
           Swal.fire({

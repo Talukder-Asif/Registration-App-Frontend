@@ -111,6 +111,7 @@ const Signin = () => {
 
       const user = userCredential.user;
       console.log(user);
+
       form.reset();
       setPasswordError("");
       Swal.fire({

@@ -200,6 +200,7 @@ const UpdateParticipant = () => {
             .then((res) => {
               if (res?.data?.modifiedCount > 0) {
                 Swal.fire("Saved!", "", "success");
+                e.target.reset();
                 navigate(`/dashboard/registration/${id}`);
               } else {
                 Swal.fire({
@@ -261,6 +262,7 @@ const UpdateParticipant = () => {
             .then((res) => {
               if (res?.data?.modifiedCount > 0) {
                 Swal.fire("Saved!", "", "success");
+                e.target.reset();
                 navigate(`/dashboard/registration/${id}`);
               } else {
                 Swal.fire({
@@ -315,6 +317,7 @@ const UpdateParticipant = () => {
         .then((res) => {
           if (res?.data?.modifiedCount > 0) {
             Swal.fire("Saved!", "", "success");
+            e.target.reset();
             navigate(`/dashboard/registration/${id}`);
           } else {
             Swal.fire({

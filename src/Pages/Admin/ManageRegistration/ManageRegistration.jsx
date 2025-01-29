@@ -60,11 +60,12 @@ const ManageRegistration = () => {
       if (result.isConfirmed) {
         axios
           .put(
-            `https://api.registration.exstudentsforum-brghs.com/participant/${participantData?.participantId}`,
+            `http://localhost:3000/participant/${participantData?.participantId}`,
             updateData
           )
           .then((res) => {
             if (res?.data?.modifiedCount > 0) {
+              e.target.reset();
               setOpenModal(false);
               setUpdateLoading(!updateLoading);
               Swal.fire({
@@ -111,7 +112,7 @@ const ManageRegistration = () => {
     const fetchTotalParticipants = async () => {
       try {
         const response = await axios.get(
-          "https://api.registration.exstudentsforum-brghs.com/totalParticipant"
+          "http://localhost:3000/totalParticipant"
         );
         setTotalParticipants(response?.data);
       } catch (error) {
@@ -127,7 +128,7 @@ const ManageRegistration = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          "https://api.registration.exstudentsforum-brghs.com/allParticipant",
+          "http://localhost:3000/allParticipant",
           {
             params: { page, size },
           }
@@ -155,14 +156,11 @@ const ManageRegistration = () => {
     setSearchingLoading(true);
     setsearching(true);
     axios
-      .get(
-        "https://api.registration.exstudentsforum-brghs.com/participants/search",
-        {
-          params: {
-            query: e.target.search.value.toLowerCase(),
-          },
-        }
-      )
+      .get("http://localhost:3000/participants/search", {
+        params: {
+          query: e.target.search.value.toLowerCase(),
+        },
+      })
       .then((response) => {
         setParticipants(response?.data);
         setSearchingLoading(false);

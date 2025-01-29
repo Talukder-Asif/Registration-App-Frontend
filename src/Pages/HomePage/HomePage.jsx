@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 const HomePage = () => {
   const today = new Date();
   const formattedDate = today.toISOString().split("T")[0];
-  const participantFee = 2000;
+  const [participantFee, setParticipantFee] = useState(2000);
   const [driverFee, setDriverFee] = useState(0);
   const [familyFee, setFamilyFee] = useState(0);
   const navigate = useNavigate();
@@ -21,6 +21,7 @@ const HomePage = () => {
   const [totalFamilyFee, setTotalFamilyFee] = useState(0);
   const [familyError, setFamilyError] = useState("");
   const [formData, setFormData] = useState({});
+
   useEffect(() => {
     if (familyFee - (children * 500 || 0 * 500) >= 0) {
       setTotalFamilyFee(familyFee - (children * 500 || 0 * 500));
@@ -36,6 +37,14 @@ const HomePage = () => {
     }
   }, [children, familyFee]);
 
+  const handleBatch = (e) => {
+    const batch = parseInt(e.target.value);
+    if (batch >= 2018 && batch <= 2024) {
+      setParticipantFee(1500);
+    } else {
+      setParticipantFee(2000);
+    }
+  };
   const handleClear = () => {
     setShowImagePreview(null);
   };
@@ -135,6 +144,7 @@ const HomePage = () => {
   });
 
   const axiosPublic = useAxios();
+
   const handleSubmit = async (e) => {
     setErr("");
     e.preventDefault();
@@ -201,6 +211,8 @@ const HomePage = () => {
         setErr(res.data.message);
         return;
       } else {
+        e.target.reset();
+
         Toast.fire({
           icon: "success",
           title: "Registration successful! Welcome aboard!",
@@ -595,10 +607,10 @@ const HomePage = () => {
                     type="number"
                     name="ssc_year"
                     min={1900}
-                    max={2030}
+                    max={2025}
                     required
-                    onChange={handleChange}
-                    defaultValue={formData?.ssc_year || null}
+                    onChange={handleBatch}
+                    // defaultValue={formData?.ssc_year || null}
                     className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                   />
                 </div>

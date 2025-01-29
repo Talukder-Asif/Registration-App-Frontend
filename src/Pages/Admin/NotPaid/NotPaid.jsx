@@ -80,13 +80,15 @@ const NotPaid = () => {
       if (result.isConfirmed) {
         axios
           .put(
-            `https://api.registration.exstudentsforum-brghs.com/participant/${participantData?.participantId}`,
+            `http://localhost:3000/participant/${participantData?.participantId}`,
             updateData
           )
           .then((res) => {
             if (res?.data?.modifiedCount > 0) {
               setOpenModal(false);
               setUpdateLoading(false);
+              e.target.reset();
+
               Swal.fire({
                 icon: "success",
                 title: `${participantData?.name_english} has been modified`,
