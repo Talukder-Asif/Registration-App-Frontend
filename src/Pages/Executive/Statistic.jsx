@@ -67,20 +67,26 @@ const Statistic = () => {
           {statisticData?.formFillUp - statisticData?.totalPaidGuests}
         </Link>
 
+        <div className="text-center py-10 hover:scale-105 duration-200 bg-blue-400 text-xs md:text-xl text-white">
+          Total Money Received
+          <br />
+          {(statisticData?.totalFamilyMembers - statisticData?.totalChildren) *
+            500 +
+            statisticData?.totalPaidGuests * 2000 +
+            statisticData?.driversOneDay * 500 +
+            statisticData?.driversTwoDays * 1000}{" "}
+          BDT
+        </div>
+
         <div className="text-center py-10 hover:scale-105 duration-200 bg-slate-500 text-xs md:text-xl text-white">
           Adult Family Member
           <br />
-          {statisticData?.totalChildren}
+          {statisticData?.totalFamilyMembers - statisticData?.totalChildren}
         </div>
         <div className="text-center py-10 hover:scale-105 duration-200 bg-teal-400 text-xs md:text-xl text-black">
           Total Children
           <br />
-          {statisticData?.totalFamilyMembers - statisticData?.totalChildren}
-        </div>
-        <div className="text-center py-10 hover:scale-105 duration-200 bg-slate-400 text-xs md:text-xl text-white">
-          Total Family Members
-          <br />
-          {statisticData?.totalFamilyMembers}
+          {statisticData?.totalChildren}
         </div>
       </div>
       <h3 className="text-xl md:text-3xl underline pb-4 mt-5">Driver:</h3>

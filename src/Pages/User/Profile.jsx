@@ -141,7 +141,7 @@ const Profile = () => {
 
   return (
     <div>
-      <h3 className="mb-5 text-4xl md:text-5xl lg:text-5xl text-gray-900 font-bold">
+      <h3 className="mb-5 text-4xl md:text-5xl lg:text-5xl text-gray-900 dark:text-[#8f8f8f] font-bold">
         My Profile
       </h3>
       <div className="flex gap-10 flex-wrap">
@@ -151,26 +151,26 @@ const Profile = () => {
           alt=""
         />
         <div>
-          <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
+          <h3 className="text-lg mb-5 md:text-xl text-gray-900 dark:text-[#8f8f8f] lg:text-3xl font-bold">
             Full Name: {user?.name}
           </h3>
-          <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
+          <h3 className="text-lg mb-5 md:text-xl text-gray-900 dark:text-[#8f8f8f] lg:text-3xl font-bold">
             Email: {user?.email}
           </h3>
-          <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
+          <h3 className="text-lg mb-5 md:text-xl text-gray-900 dark:text-[#8f8f8f] lg:text-3xl font-bold">
             Phone: {user?.phone}
           </h3>
-          <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
+          <h3 className="text-lg mb-5 md:text-xl text-gray-900 dark:text-[#8f8f8f] lg:text-3xl font-bold">
             Batch: {user?.batch}
           </h3>
-          <h3 className="text-lg mb-5 md:text-xl text-gray-900 lg:text-3xl font-bold">
+          <h3 className="text-lg mb-5 md:text-xl text-gray-900 dark:text-[#8f8f8f] lg:text-3xl font-bold">
             Role:{" "}
             <span className="border-b-4 border-b-[#012940]">{user?.role}</span>
           </h3>
         </div>
       </div>
 
-      <h3 className="my-5 text-4xl md:text-5xl lg:text-5xl text-gray-900 font-bold">
+      <h3 className="my-5 text-4xl md:text-5xl lg:text-5xl text-gray-900 dark:text-[#8f8f8f] font-bold">
         Update Profile
       </h3>
       <form onSubmit={handleUpdate} className="h-full duration-300">

@@ -60,7 +60,7 @@ const ManageRegistration = () => {
       if (result.isConfirmed) {
         axios
           .put(
-            `http://localhost:3000/participant/${participantData?.participantId}`,
+            `https://api.registration.exstudentsforum-brghs.com/participant/${participantData?.participantId}`,
             updateData
           )
           .then((res) => {
@@ -111,7 +111,7 @@ const ManageRegistration = () => {
     const fetchTotalParticipants = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/totalParticipant"
+          "https://api.registration.exstudentsforum-brghs.com/totalParticipant"
         );
         setTotalParticipants(response?.data);
       } catch (error) {
@@ -127,7 +127,7 @@ const ManageRegistration = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          "http://localhost:3000/allParticipant",
+          "https://api.registration.exstudentsforum-brghs.com/allParticipant",
           {
             params: { page, size },
           }
@@ -155,11 +155,14 @@ const ManageRegistration = () => {
     setSearchingLoading(true);
     setsearching(true);
     axios
-      .get("http://localhost:3000/participants/search", {
-        params: {
-          query: e.target.search.value.toLowerCase(),
-        },
-      })
+      .get(
+        "https://api.registration.exstudentsforum-brghs.com/participants/search",
+        {
+          params: {
+            query: e.target.search.value.toLowerCase(),
+          },
+        }
+      )
       .then((response) => {
         setParticipants(response?.data);
         setSearchingLoading(false);
@@ -461,7 +464,7 @@ const ManageRegistration = () => {
             <button
               onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
               disabled={page === 0}
-              className="text-[#002A3F]"
+              className="text-[#002A3F] dark:text-gray-400"
             >
               Previous
             </button>
@@ -473,7 +476,7 @@ const ManageRegistration = () => {
                 setPage((prev) => (prev + 1 < totalPages ? prev + 1 : prev))
               }
               disabled={page + 1 === totalPages}
-              className="text-[#002A3F]"
+              className="text-[#002A3F] dark:text-gray-400"
             >
               Next
             </button>

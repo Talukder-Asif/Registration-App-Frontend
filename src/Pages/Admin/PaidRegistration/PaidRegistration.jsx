@@ -75,7 +75,7 @@ const PaidRegistration = () => {
         >
           <button
             onClick={() => toggle(idx, batch)}
-            className="flex h-full p-3 w-full items-center justify-between font-medium text-black outline-none"
+            className="flex h-full p-3 w-full items-center justify-between font-medium text-black dark:text-gray-400 outline-none"
           >
             <div>
               <span>{batch?._id}</span>
@@ -83,7 +83,7 @@ const PaidRegistration = () => {
             </div>
             <span className="rounded-full">
               <svg
-                className="ml-8 size-3 shrink-0 fill-black"
+                className="ml-8 size-3 shrink-0 fill-black dark:fill-gray-400"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <rect

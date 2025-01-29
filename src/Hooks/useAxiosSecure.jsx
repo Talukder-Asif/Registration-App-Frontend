@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://api.registration.exstudentsforum-brghs.com",
+
   // withCredentials: true,
 });
 const useAxiosSecure = () => {
