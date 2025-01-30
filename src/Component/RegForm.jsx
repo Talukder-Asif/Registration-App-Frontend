@@ -19,7 +19,7 @@ const RegForm = ({ id }) => {
       merchantbillno: participant?.participantId,
       customername: participant?.name_english,
       customernumber: participant?.phone,
-      amount: participant?.total_fee,
+      amount: participant?.participantFee,
       invoicedescription: "Participant Registration",
       driverFee: participant?.driverFee,
       familyFee: participant?.familyFee,

@@ -22,7 +22,7 @@ const UpdateForm = () => {
     setFamilyFee(parseInt(e.target.value));
     setfamily_members(parseInt(e.target.value) / 500);
   };
-  const participantFee = 2000;
+  const [participantFee, setParticipantFee] = useState(2000);
   const [driverFee, setDriverFee] = useState(0);
   const [familyFee, setFamilyFee] = useState(0);
   const navigate = useNavigate();
@@ -32,6 +32,15 @@ const UpdateForm = () => {
   const [familyError, setFamilyError] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
   const [family_members, setfamily_members] = useState(0);
+
+  const handleBatch = (e) => {
+    const batch = parseInt(e.target.value);
+    if (batch >= 2018 && batch <= 2024) {
+      setParticipantFee(1500);
+    } else {
+      setParticipantFee(2000);
+    }
+  };
 
   const handleChildren = (e) => {
     const member = e.target.value;
@@ -57,6 +66,7 @@ const UpdateForm = () => {
       setChildren(participant?.children);
       setfamily_members(participant?.family_members);
       setFamilyFee(participant?.family_members * 500);
+      setParticipantFee(parseInt(participant?.participantFee));
     }
   }, [participant]);
 
@@ -488,8 +498,9 @@ const UpdateForm = () => {
                     type="number"
                     name="ssc_year"
                     min={1900}
-                    max={2030}
+                    max={2025}
                     required
+                    onChange={handleBatch}
                     defaultValue={participant?.ssc_year}
                     className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border border-black bg-transparent"
                   />

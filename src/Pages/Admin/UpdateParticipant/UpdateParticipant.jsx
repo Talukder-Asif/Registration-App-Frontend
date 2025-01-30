@@ -71,7 +71,7 @@ const UpdateParticipant = () => {
     setFamilyFee(parseInt(e.target.value));
     setfamily_members(parseInt(e.target.value) / 500);
   };
-  const participantFee = 2000;
+  const [participantFee, setParticipantFee] = useState(2000);
   const [driverFee, setDriverFee] = useState(0);
   const [familyFee, setFamilyFee] = useState(0);
   const navigate = useNavigate();
@@ -107,6 +107,7 @@ const UpdateParticipant = () => {
       setfamily_members(participant?.family_members);
       setFamilyFee(participant?.family_members * 500);
       setImageURL(participant?.image);
+      setParticipantFee(parseInt(participant?.participantFee));
     }
   }, [participant]);
 
@@ -123,6 +124,15 @@ const UpdateParticipant = () => {
       setFamilyError("");
     }
   }, [children, familyFee, family_members, totalFamilyFee]);
+
+  const handleBatch = (e) => {
+    const batch = parseInt(e.target.value);
+    if (batch >= 2018 && batch <= 2024) {
+      setParticipantFee(1500);
+    } else {
+      setParticipantFee(2000);
+    }
+  };
 
   const handleSubmit = async (e) => {
     setErr("");
@@ -663,6 +673,7 @@ const UpdateParticipant = () => {
                     min={1900}
                     max={2030}
                     required
+                    onChange={handleBatch}
                     defaultValue={participant?.ssc_year}
                     className="pl-2 rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[280px] border border-black bg-transparent"
                   />
