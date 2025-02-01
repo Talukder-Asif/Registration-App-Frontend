@@ -133,34 +133,31 @@ const Signin = () => {
     }
   };
 
-  // Signin with google
-  const handleGoogle = () => {
-    googleSignin()
-      .then((res) => {
-        const userData = {
-          name: res?.user?.displayName,
-          email: res?.user?.email,
-          photoURL: res.user.photoURL,
-          role: "User",
-          batch: "",
-          phone: "",
-        };
-        axiosPublic.post("/user", userData).then((res) => {
-          console.log(res);
-        });
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Sign in successfully",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        navigate("/dashboard");
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.log(error);
+  const handleGoogle = async () => {
+    try {
+      const res = await googleSignin();
+      const userData = {
+        name: res?.user?.displayName,
+        email: res?.user?.email,
+        photoURL: res?.user?.photoURL,
+        role: "User",
+        batch: "",
+        phone: "",
+      };
+
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Sign in successfully",
+        showConfirmButton: false,
+        timer: 1500,
       });
+      const response = await axiosPublic.post("/user", userData);
+      navigate("/dashboard");
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const togglePasswordVisibility = () => {

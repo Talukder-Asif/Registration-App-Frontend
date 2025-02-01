@@ -839,14 +839,14 @@ const TimeOut = () => {
             </div>
           </div>
         ) : (
-          <div className="my-5 min-h-[400px] grid items-center">
+          <div className="my-5 p-3 min-h-[250px] md:min-h-[400px] grid items-center">
             <div>
-              <LuTimerOff className="text-7xl m-auto text-[rgb(200,16,49)]" />
-              <h1 className="text-center my-5 uppercase text-3xl">
+              <LuTimerOff className="text-5xl md:text-7xl m-auto text-[rgb(200,16,49)]" />
+              <h1 className="text-center my-5 uppercase text-xs md:text-3xl">
                 Registration for this event is now closed. <br />
                 Stay tuned for future updates.
               </h1>
-              <p className="text-center text-lg">
+              <p className="text-center text-xs md:text-lg">
                 For any query please{" "}
                 <a
                   className="text-blue-700"

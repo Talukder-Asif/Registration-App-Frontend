@@ -96,8 +96,8 @@ const NavBar = () => {
             isActive
               ? "text-[#2ec4b6] font-medium"
               : isPending
-              ? "text-black font-normal"
-              : "text-black font-normal"
+              ? "text-black dark:text-gray-300 font-normal"
+              : "text-black font-normal dark:text-gray-300"
           }
         >
           Form
@@ -112,8 +112,8 @@ const NavBar = () => {
             isActive
               ? "text-[#2ec4b6] font-medium"
               : isPending
-              ? "text-black font-normal"
-              : "text-black font-normal"
+              ? "text-black font-normal dark:text-gray-300"
+              : "text-black font-normal dark:text-gray-300"
           }
         >
           View Participants
@@ -129,8 +129,8 @@ const NavBar = () => {
             isActive
               ? "text-[#2ec4b6] font-medium"
               : isPending
-              ? "text-black font-normal"
-              : "text-black font-normal"
+              ? "text-black font-normal dark:text-gray-300"
+              : "text-black font-normal dark:text-gray-300"
           }
         >
           Contact Us
@@ -212,7 +212,7 @@ const NavBar = () => {
           ) : (
             <div
               onClick={() => setNavigateSignin(navigateSignin + 1)}
-              className="h-max bg-[#2888e203] p-6 w-10"
+              className="h-max bg-[#2888e20e] p-6 w-10"
             >
               {" "}
             </div>
