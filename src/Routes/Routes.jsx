@@ -21,6 +21,7 @@ import UpdateParticipant from "../Pages/Admin/UpdateParticipant/UpdateParticipan
 import ManageSingleRegistration from "../Pages/Admin/ManageSingleRegistration/ManageSingleRegistration";
 import UserRoute from "./UserRoute";
 import TimeOut from "../Pages/HomePage/TimeOut";
+import Batch from "../Pages/BatchView/Batch";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: "/payment-success/:paymentId",
         element: <Success></Success>,
+      },
+      {
+        path: "/batch",
+        element: <Batch></Batch>,
       },
       {
         path: "/idcard/:id",
