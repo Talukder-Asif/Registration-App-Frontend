@@ -1,9 +1,21 @@
 import { Navigate } from "react-router-dom";
 import useUserDetails from "../Hooks/useUserDetails";
+import Swal from "sweetalert2";
 
 // eslint-disable-next-line react/prop-types
 const AdminRoute = ({ children }) => {
   const [adminUser, isUsersLoading] = useUserDetails();
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
   if (isUsersLoading)
     return (
       <div className="grid min-h-[400px] content-center justify-center">
@@ -32,7 +44,13 @@ const AdminRoute = ({ children }) => {
       </div>
     );
 
-  if (adminUser?.role != "Admin") return <Navigate to="/signin"></Navigate>;
+  if (adminUser?.role != "Admin") {
+    Toast.fire({
+      icon: "error",
+      title: "Only Admins can view this page",
+    });
+    return <Navigate to="/signin"></Navigate>;
+  }
 
   return children;
 };

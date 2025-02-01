@@ -3,7 +3,7 @@ import MainLayout from "../Layout/MainLayout";
 import ManageSingleUser from "../Pages/Admin/ManageSingleUser/ManageSingleUser";
 import ManageUser from "../Pages/Admin/ManageUser/ManageUser";
 import Dashboard from "../Pages/Dashboard/Dashboard";
-import HomePage from "../Pages/HomePage/HomePage";
+// import HomePage from "../Pages/HomePage/HomePage";
 import Signin from "../Pages/SIgnin/Signin";
 import Profile from "../Pages/User/Profile";
 import AdminRoute from "./AdminRoute";
@@ -19,6 +19,8 @@ import PaidRegistration from "../Pages/Admin/PaidRegistration/PaidRegistration";
 import NotPaid from "../Pages/Admin/NotPaid/NotPaid";
 import UpdateParticipant from "../Pages/Admin/UpdateParticipant/UpdateParticipant";
 import ManageSingleRegistration from "../Pages/Admin/ManageSingleRegistration/ManageSingleRegistration";
+import UserRoute from "./UserRoute";
+import TimeOut from "../Pages/HomePage/TimeOut";
 
 const router = createBrowserRouter([
   {
@@ -27,7 +29,8 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomePage></HomePage>,
+        // element: <HomePage></HomePage>,
+        element: <TimeOut></TimeOut>,
       },
       {
         path: "/update/:id",
@@ -67,7 +70,11 @@ const router = createBrowserRouter([
           },
           {
             path: "/dashboard/status",
-            element: <Statistic></Statistic>,
+            element: (
+              <UserRoute>
+                <Statistic></Statistic>
+              </UserRoute>
+            ),
           },
           {
             path: "/dashboard/users",

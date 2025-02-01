@@ -192,7 +192,6 @@ const PaidRegistration = () => {
                         <tr key={i}>
                           <td>
                             <Link
-                              target="_blank"
                               to={`/preview/${participantsData?.participantId}`}
                             >
                               <div className="flex items-center gap-3">

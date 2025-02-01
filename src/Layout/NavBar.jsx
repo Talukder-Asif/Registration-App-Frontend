@@ -212,7 +212,7 @@ const NavBar = () => {
           ) : (
             <div
               onClick={() => setNavigateSignin(navigateSignin + 1)}
-              className="h-max bg-transparent p-6 w-10"
+              className="h-max bg-[#2888e203] p-6 w-10"
             >
               {" "}
             </div>

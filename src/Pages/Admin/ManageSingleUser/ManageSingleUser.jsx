@@ -5,7 +5,6 @@ import man from "/src/assets/Man1.png";
 
 const ManageSingleUser = () => {
   const params = useParams();
-  console.log(params);
   const axiosPrivate = useAxiosSecure();
   const { data: User, isPending: isUsersLoading } = useQuery({
     queryKey: ["User"],

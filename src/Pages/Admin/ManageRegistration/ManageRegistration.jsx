@@ -262,8 +262,8 @@ const ManageRegistration = () => {
                   {participants?.map((participantsData, i) => (
                     <tr key={i}>
                       <td>
-                        <Link
-                          to={`/dashboard/registration/${participantsData?.participantId}`}
+                        <a
+                          href={`/dashboard/registration/${participantsData?.participantId}`}
                         >
                           <div className="flex items-center gap-3">
                             <div className="avatar">
@@ -287,7 +287,7 @@ const ManageRegistration = () => {
                               </span>
                             </div>
                           </div>
-                        </Link>
+                        </a>
                       </td>
                       <td>
                         {participantsData?.ssc_year
@@ -429,13 +429,13 @@ const ManageRegistration = () => {
                         </td>
                       ) : (
                         <td>
-                          <Link
-                            to={`/dashboard/update/participant/${participantsData?.participantId}`}
+                          <a
+                            href={`/dashboard/update/participant/${participantsData?.participantId}`}
                           >
                             <button className="p-2 bg-green-500 text-white rounded-full">
                               <IoSettingsOutline className="text-lg md:text-xl" />
                             </button>
-                          </Link>
+                          </a>
                         </td>
                       )}
                     </tr>

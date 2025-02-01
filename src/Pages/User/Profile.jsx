@@ -101,7 +101,6 @@ const Profile = () => {
         }
       });
     } catch (error) {
-      console.error("Error during update:", error.message);
       Swal.fire({
         title: "Error during update",
         text: error.message,

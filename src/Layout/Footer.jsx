@@ -9,11 +9,7 @@ const Footer = () => {
           <p>
             Copyright © {new Date().getFullYear()} - All right reserved and
             Developed By{" "}
-            <a
-              className="text-[#2ec4b6]"
-              target="_blank"
-              href="https://inforsix.com/"
-            >
+            <a className="text-[#2ec4b6]" href="https://inforsix.com/">
               Inforsix LTD
             </a>
           </p>

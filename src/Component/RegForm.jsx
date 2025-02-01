@@ -7,11 +7,13 @@ import { useState } from "react";
 import unpaid from "/src/assets/unpaid.png";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import useUserDetails from "../Hooks/useUserDetails";
 const RegForm = ({ id }) => {
   const [btnActive, setBtnActive] = useState(true);
   const [participant, isParticipantLoading] = useOneParticipant({
     id,
   });
+  const [adminUser, isUsersLoading] = useUserDetails();
 
   const handleCreatePayment = async () => {
     setBtnActive(false);
@@ -38,7 +40,7 @@ const RegForm = ({ id }) => {
       });
   };
 
-  if (isParticipantLoading)
+  if (isParticipantLoading || isUsersLoading)
     return (
       <div className="grid min-h-screen content-center justify-center">
         <div className="text-center">
@@ -443,12 +445,14 @@ const RegForm = ({ id }) => {
       </div>
       <div className="mt-5 flex flex-wrap gap-5">
         {participant?.status === "Unpaid" ? (
-          <Link
-            to={`/update/${participant?.participantId}`}
-            className="text-white ml-3 mb-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 text-center md:py-2.5"
-          >
-            <button>Update Now</button>
-          </Link>
+          adminUser.role === "Admin" || adminUser.role === "Executive" ? (
+            <Link
+              to={`/update/${participant?.participantId}`}
+              className="text-white ml-3 mb-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 text-center md:py-2.5"
+            >
+              <button>Update Now</button>
+            </Link>
+          ) : null
         ) : (
           <Link
             to={`/idcard/${participant?.participantId}`}
@@ -458,7 +462,7 @@ const RegForm = ({ id }) => {
           </Link>
         )}
 
-        {participant?.status === "Unpaid" ? (
+        {participant?.status === "Unpaid" && adminUser.role === "Admin" ? (
           <button
             onClick={btnActive ? handleCreatePayment : undefined}
             className={`text-white ${

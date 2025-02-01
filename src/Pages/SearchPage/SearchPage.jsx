@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import man from "/src/assets/Man1.png";
 
 const SearchPage = () => {
@@ -168,10 +167,7 @@ const SearchPage = () => {
                   {participants?.map((participantsData, i) => (
                     <tr key={i}>
                       <td>
-                        <Link
-                          target="_blank"
-                          to={`/preview/${participantsData?.participantId}`}
-                        >
+                        <a href={`/preview/${participantsData?.participantId}`}>
                           <div className="flex items-center gap-3">
                             <div className="avatar">
                               <div className="mask mask-squircle w-12 h-12">
@@ -194,7 +190,7 @@ const SearchPage = () => {
                               </span>
                             </div>
                           </div>
-                        </Link>
+                        </a>
                       </td>
                       <td>
                         {participantsData?.ssc_year
