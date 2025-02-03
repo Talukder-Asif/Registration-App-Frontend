@@ -29,7 +29,7 @@ const RegForm = ({ id }) => {
 
     axios
       .post(
-        "https://api.registration.exstudentsforum-brghs.com/create-payment",
+        "https://api2.registration.exstudentsforum-brghs.com/create-payment",
         formData,
         {
           withCredentials: true,

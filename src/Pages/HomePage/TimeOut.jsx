@@ -299,7 +299,7 @@ const TimeOut = () => {
           </div>
         </div>
 
-        {adminUser?.role === "Admin" || adminUser.role === "Executive" ? (
+        {adminUser?.role === "Admin" || adminUser?.role === "Executive" ? (
           <div
             style={{
               backgroundImage: `url(${leftLogo})`,
