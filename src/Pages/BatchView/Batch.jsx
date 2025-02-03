@@ -151,18 +151,11 @@ const Batch = () => {
                           <th>Guest</th>
                           <th>Child</th>
                           <th>Driver</th>
-                          <th>Status</th>
                         </tr>
                       </thead>
                       <tbody>
                         {participants?.map((participantsData, i) => (
-                          <tr
-                            key={i}
-                            className={
-                              participantsData.status === "Unpaid" &&
-                              `bg-red-100`
-                            }
-                          >
+                          <tr key={i}>
                             <td>
                               <Link
                                 to={`/preview/${participantsData?.participantId}`}
@@ -203,7 +196,6 @@ const Batch = () => {
                                 : 0}
                             </td>
                             <td>{participantsData?.driver}</td>
-                            <td>{participantsData?.status}</td>
                           </tr>
                         ))}
                       </tbody>
