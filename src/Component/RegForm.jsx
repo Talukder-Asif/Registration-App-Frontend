@@ -28,9 +28,13 @@ const RegForm = ({ id }) => {
     };
 
     axios
-      .post("http://localhost:3000/create-payment", formData, {
-        withCredentials: true,
-      })
+      .post(
+        "https://api2.registration.exstudentsforum-brghs.com/create-payment",
+        formData,
+        {
+          withCredentials: true,
+        }
+      )
       .then((res) => {
         const redirectURL = res?.data?.pay_url;
         if (redirectURL) {
@@ -445,7 +449,7 @@ const RegForm = ({ id }) => {
       </div>
       <div className="mt-5 flex flex-wrap gap-5">
         {participant?.status === "Unpaid" ? (
-          adminUser.role === "Admin" || adminUser.role === "Executive" ? (
+          adminUser?.role === "Admin" || adminUser?.role === "Executive" ? (
             <Link
               to={`/update/${participant?.participantId}`}
               className="text-white ml-3 mb-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 text-center md:py-2.5"
@@ -462,7 +466,7 @@ const RegForm = ({ id }) => {
           </Link>
         )}
 
-        {participant?.status === "Unpaid" && adminUser.role === "Admin" ? (
+        {participant?.status === "Unpaid" && adminUser?.role === "Admin" ? (
           <button
             onClick={btnActive ? handleCreatePayment : undefined}
             className={`text-white ${

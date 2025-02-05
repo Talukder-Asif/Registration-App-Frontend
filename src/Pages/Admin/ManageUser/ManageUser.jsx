@@ -18,7 +18,10 @@ const ManageUser = () => {
       phone: user?.phone,
     };
     axios
-      .put(`http://localhost:3000/user/${user?.email}`, updateData)
+      .put(
+        `https://api2.registration.exstudentsforum-brghs.com/user/${user?.email}`,
+        updateData
+      )
       .then((res) => {
         if (res.data.modifiedCount > 0) {
           refetch();
@@ -43,17 +46,21 @@ const ManageUser = () => {
       confirmButtonText: "Yes",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:3000/user/${user?._id}`).then((res) => {
-          if (res.data.deletedCount > 0) {
-            refetch();
-            Swal.fire({
-              icon: "success",
-              title: `${user.name} has been deleted from the database`,
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          }
-        });
+        axios
+          .delete(
+            `https://api2.registration.exstudentsforum-brghs.com/user/${user?._id}`
+          )
+          .then((res) => {
+            if (res.data.deletedCount > 0) {
+              refetch();
+              Swal.fire({
+                icon: "success",
+                title: `${user.name} has been deleted from the database`,
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          });
       }
     });
   };

@@ -45,7 +45,7 @@ const UserRoute = ({ children }) => {
       </div>
     );
 
-  if (adminUser.role === "Executive" || adminUser.role === "Admin") {
+  if (adminUser?.role === "Executive" || adminUser?.role === "Admin") {
     return children;
   } else {
     Toast.fire({

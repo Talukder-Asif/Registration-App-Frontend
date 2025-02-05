@@ -55,7 +55,7 @@ const Dashboard = () => {
                 <span className="ms-3">Status</span>
               </NavLink>
             </li>
-            {adminUser.role == "Admin" && (
+            {adminUser?.role == "Admin" && (
               <>
                 <li>
                   <NavLink

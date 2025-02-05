@@ -15,12 +15,12 @@ const ManageRegistration = () => {
   const [updateLoading, setUpdateLoading] = useState(false);
   const [openModal, setOpenModal] = useState();
   const [searching, setsearching] = useState(false);
-  const [searchLoading, setSearchingLoading] = useState(false);
   const [searchingItem, setsearchingItem] = useState(true);
   const axiosPrivate = useAxiosSecure();
   const [batches, setBatches] = useState([]);
   const [selectedBatch, setSelectedBatch] = useState("");
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
   const handleUpdate = (e, participantData) => {
     const form = e.target;
     e.preventDefault();
@@ -62,7 +62,7 @@ const ManageRegistration = () => {
       if (result.isConfirmed) {
         axios
           .put(
-            `http://localhost:3000/participant/${participantData?.participantId}`,
+            `https://api2.registration.exstudentsforum-brghs.com/participant/${participantData?.participantId}`,
             updateData
           )
           .then((res) => {
@@ -113,7 +113,9 @@ const ManageRegistration = () => {
   useEffect(() => {
     const fetchTotalBatch = async () => {
       try {
-        const batchs = await axios.get("http://localhost:3000/allSscYears");
+        const batchs = await axios.get(
+          "https://api2.registration.exstudentsforum-brghs.com/allSscYears"
+        );
         setBatches(batchs?.data);
       } catch (error) {
         console.error("Error fetching total participants:", error);
@@ -126,7 +128,7 @@ const ManageRegistration = () => {
     const fetchTotalParticipants = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/totalParticipant",
+          "https://api2.registration.exstudentsforum-brghs.com/totalParticipant",
           {
             params: { selectedBatch, search },
           }
@@ -140,16 +142,20 @@ const ManageRegistration = () => {
   }, [selectedBatch, search]);
 
   useEffect(() => {
+    setLoading(true);
+
     const fetchParticipants = async () => {
       try {
         setsearchingItem(true);
         const response = await axios.get(
-          "http://localhost:3000/allParticipant",
+          "https://api2.registration.exstudentsforum-brghs.com/allParticipant",
           {
             params: { page, size, selectedBatch, search },
           }
         );
         setParticipants(response?.data);
+        setLoading(false);
+
         if (response?.data.length == 0) {
           setsearchingItem(false);
         } else {
@@ -168,17 +174,18 @@ const ManageRegistration = () => {
     e.preventDefault();
 
     if (e?.target?.search?.value === "") {
-      setSearchingLoading(false);
       setsearching(false);
       setSize(20);
       setSearch("");
       return;
     }
     setSearch(e?.target?.search?.value);
+    setLoading(true);
+
     // setSearchingLoading(true);
     // setsearching(true);
     // axios
-    //   .get("http://localhost:3000/participants/search", {
+    //   .get("https://api2.registration.exstudentsforum-brghs.com/participants/search", {
     //     params: {
     //       query: e.target.search.value.toLowerCase(),
     //       selectedBatch,
@@ -198,15 +205,8 @@ const ManageRegistration = () => {
     //   });
   };
   return (
-    <div className="max-w-screen-xl m-auto my-5">
-      {searchLoading && (
-        <div className="fixed w-full h-full -mt-24 flex -ml-3 z-50">
-          <div className="w-60 h-60 animate-[spin_1s_linear_infinite] rounded-full border-double border-4 border-r-0 border-l-0 border-b-sky-400 border-t-sky-700 m-auto"></div>
-        </div>
-      )}
-
+    <div className="max-w-screen-xl m-auto">
       <div>
-        {" "}
         <div className="w-3/4 max-w-4xl m-auto my-10">
           <form onSubmit={handleSearch} className="md:flex gap-4 items-center">
             <div>
@@ -258,202 +258,231 @@ const ManageRegistration = () => {
         </div>
         {searchingItem ? (
           <div className="overflow-scroll">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th className="text-center">Name</th>
-                  <th>Batch</th>
-                  <th>Guest</th>
-                  <th>Child</th>
-                  <th>Driver</th>
-                  <th>Status</th>
-                  <th className="text-center">Buttons</th>
-                </tr>
-              </thead>
-              <tbody>
-                {participants?.map((participantsData, i) => (
-                  <tr key={i}>
-                    <td>
-                      <a
-                        href={`/dashboard/registration/${participantsData?.participantId}`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="avatar">
-                            <div className="mask mask-squircle w-12 h-12">
-                              <img
-                                src={
-                                  participantsData?.image
-                                    ? participantsData?.image
-                                    : man
-                                }
-                                alt="User Avatar"
-                              />
-                            </div>
-                          </div>
-                          <div>
-                            <p className="font-bold">
-                              {participantsData?.name_english} <br />
-                            </p>
-                            <span className="text-sm">
-                              {participantsData?.phone}
-                            </span>
-                          </div>
-                        </div>
-                      </a>
-                    </td>
-                    <td>
-                      {participantsData?.ssc_year
-                        ? participantsData?.ssc_year
-                        : "Not Defined"}
-                    </td>
-                    <td>{participantsData?.family_members}</td>
-                    <td>
-                      {participantsData?.children
-                        ? participantsData.children
-                        : 0}
-                    </td>
-                    <td>{participantsData?.driver}</td>
-                    <td>{participantsData?.status}</td>
-                    {participantsData?.status === "Unpaid" ? (
-                      <td className="flex gap-1 items-center">
-                        <div className="mx-auto w-fit">
-                          <button
-                            onClick={() => setOpenModal(participantsData)}
-                            className="p-2 bg-green-500 text-white rounded-full"
-                          >
-                            <IoSettingsOutline className="text-lg md:text-xl" />
-                          </button>
-                          <div
-                            onClick={() => setOpenModal(false)}
-                            className={`fixed z-[100] w-screen ${
-                              openModal
-                                ? "visible opacity-100"
-                                : "invisible opacity-0"
-                            } inset-0 grid place-items-center bg-black/20 backdrop-blur-sm duration-100 dark:bg-transparent`}
-                          >
-                            <div
-                              onClick={(e_) => e_.stopPropagation()}
-                              className={`absolute max-w-md rounded-lg bg-white p-6 drop-shadow-lg dark:bg-zinc-900 dark:text-white ${
-                                openModal
-                                  ? "opacity-1 duration-300"
-                                  : "scale-110 opacity-0 duration-150"
-                              }`}
-                            >
-                              <svg
-                                onClick={() => setOpenModal(false)}
-                                className="absolute right-3 top-3 w-6 cursor-pointer fill-zinc-600 dark:fill-white"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path d="M6.99486 7.00636C6.60433 7.39689 6.60433 8.03005 6.99486 8.42058L10.58 12.0057L6.99486 15.5909C6.60433 15.9814 6.60433 16.6146 6.99486 17.0051C7.38538 17.3956 8.01855 17.3956 8.40907 17.0051L11.9942 13.4199L15.5794 17.0051C15.9699 17.3956 16.6031 17.3956 16.9936 17.0051C17.3841 16.6146 17.3841 15.9814 16.9936 15.5909L13.4084 12.0057L16.9936 8.42059C17.3841 8.03007 17.3841 7.3969 16.9936 7.00638C16.603 6.61585 15.9699 6.61585 15.5794 7.00638L11.9942 10.5915L8.40907 7.00636C8.01855 6.61584 7.38538 6.61584 6.99486 7.00636Z"></path>
-                              </svg>
-                              <h1 className="mb-2 text-2xl font-semibold">
-                                Update {openModal?.name_english}&apos;s data
-                              </h1>
-                              <form
-                                onSubmit={(e) => handleUpdate(e, openModal)}
-                              >
-                                {/* participant Id */}
-                                <div
-                                  style={{ marginBottom: "10px" }}
-                                  className="md:flex gap-5"
-                                >
-                                  <label className="md:w-36 lg:w-40 my-1 py-1">
-                                    Participant ID:
-                                  </label>
-                                  <input
-                                    type="text"
-                                    name="participantId"
-                                    disabled
-                                    readOnly
-                                    value={openModal?.participantId}
-                                    className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
-                                  />
-                                </div>
-                                <div
-                                  style={{ marginBottom: "10px" }}
-                                  className="md:flex gap-5"
-                                >
-                                  <label className="md:w-36 lg:w-40 my-1 py-1">
-                                    Payment:
-                                  </label>
-                                  <label>
-                                    <input
-                                      type="radio"
-                                      name="status"
-                                      value="Paid"
-                                      defaultChecked={openModal?.status}
-                                      required // Make this field required
-                                      style={{
-                                        marginLeft: "10px",
-                                        marginTop: "15px",
-                                      }}
-                                    />{" "}
-                                    Paid
-                                  </label>
-                                  <label>
-                                    <input
-                                      type="radio"
-                                      name="status"
-                                      value="Unpaid"
-                                      defaultChecked={openModal?.status}
-                                      required // Make this field required
-                                      style={{
-                                        marginLeft: "10px",
-                                        marginTop: "15px",
-                                      }}
-                                    />{" "}
-                                    Unpaid
-                                  </label>
-                                </div>
-                                <div className="flex justify-end gap-2">
-                                  <Link
-                                    to={`/dashboard/update/participant/${openModal?.participantId}`}
-                                  >
-                                    <button className="p-2 bg-green-500 text-white rounded-md">
-                                      More Modification
-                                    </button>
-                                  </Link>
-                                  <button
-                                    type="submit"
-                                    className="rounded-md bg-emerald-600 px-6 py-[6px] text-white hover:bg-emerald-700"
-                                  >
-                                    Ok
-                                  </button>
-                                  <div
-                                    onClick={() => setOpenModal(false)}
-                                    className="rounded-md border border-rose-600 px-6 py-[6px] text-rose-600 duration-150 hover:bg-rose-600 hover:text-white"
-                                  >
-                                    Cancel
-                                  </div>
-                                </div>
-                              </form>
-                            </div>
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => handleDelete(participantsData?._id)}
-                          className="p-2 bg-red-500 text-white rounded-full"
-                        >
-                          <AiOutlineDelete className="text-lg md:text-xl" />
-                        </button>
-                      </td>
-                    ) : (
+            {loading ? (
+              <div className="grid min-h-[30vh] content-center justify-center">
+                <div className="text-center">
+                  <div role="status">
+                    <svg
+                      aria-hidden="true"
+                      className="inline w-32 h-32 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-[#012940]"
+                      viewBox="0 0 100 101"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                        fill="currentColor"
+                      />
+                      <path
+                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                        fill="currentFill"
+                      />
+                    </svg>
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                </div>
+                <h1 className="text-5xl md:text-7xl font-bold">
+                  Please Wait....
+                </h1>
+              </div>
+            ) : (
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th className="text-center">Name</th>
+                    <th>Batch</th>
+                    <th>Guest</th>
+                    <th>Child</th>
+                    <th>Driver</th>
+                    <th>Status</th>
+                    <th className="text-center">Buttons</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {participants?.map((participantsData, i) => (
+                    <tr key={i}>
                       <td>
                         <a
-                          href={`/dashboard/update/participant/${participantsData?.participantId}`}
+                          href={`/dashboard/registration/${participantsData?.participantId}`}
                         >
-                          <button className="p-2 bg-green-500 text-white rounded-full">
-                            <IoSettingsOutline className="text-lg md:text-xl" />
-                          </button>
+                          <div className="flex items-center gap-3">
+                            <div className="avatar">
+                              <div className="mask mask-squircle w-12 h-12">
+                                <img
+                                  src={
+                                    participantsData?.image
+                                      ? participantsData?.image
+                                      : man
+                                  }
+                                  alt="User Avatar"
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <p className="font-bold">
+                                {participantsData?.name_english} <br />
+                              </p>
+                              <span className="text-sm">
+                                {participantsData?.phone}
+                              </span>
+                            </div>
+                          </div>
                         </a>
                       </td>
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                      <td>
+                        {participantsData?.ssc_year
+                          ? participantsData?.ssc_year
+                          : "Not Defined"}
+                      </td>
+                      <td>{participantsData?.family_members}</td>
+                      <td>
+                        {participantsData?.children
+                          ? participantsData.children
+                          : 0}
+                      </td>
+                      <td>{participantsData?.driver}</td>
+                      <td>{participantsData?.status}</td>
+                      {participantsData?.status === "Unpaid" ? (
+                        <td className="flex gap-1 items-center">
+                          <div className="mx-auto w-fit">
+                            <button
+                              onClick={() => setOpenModal(participantsData)}
+                              className="p-2 bg-green-500 text-white rounded-full"
+                            >
+                              <IoSettingsOutline className="text-lg md:text-xl" />
+                            </button>
+                            <div
+                              onClick={() => setOpenModal(false)}
+                              className={`fixed z-[100] w-screen ${
+                                openModal
+                                  ? "visible opacity-100"
+                                  : "invisible opacity-0"
+                              } inset-0 grid place-items-center bg-black/20 backdrop-blur-sm duration-100 dark:bg-transparent`}
+                            >
+                              <div
+                                onClick={(e_) => e_.stopPropagation()}
+                                className={`absolute max-w-md rounded-lg bg-white p-6 drop-shadow-lg dark:bg-zinc-900 dark:text-white ${
+                                  openModal
+                                    ? "opacity-1 duration-300"
+                                    : "scale-110 opacity-0 duration-150"
+                                }`}
+                              >
+                                <svg
+                                  onClick={() => setOpenModal(false)}
+                                  className="absolute right-3 top-3 w-6 cursor-pointer fill-zinc-600 dark:fill-white"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path d="M6.99486 7.00636C6.60433 7.39689 6.60433 8.03005 6.99486 8.42058L10.58 12.0057L6.99486 15.5909C6.60433 15.9814 6.60433 16.6146 6.99486 17.0051C7.38538 17.3956 8.01855 17.3956 8.40907 17.0051L11.9942 13.4199L15.5794 17.0051C15.9699 17.3956 16.6031 17.3956 16.9936 17.0051C17.3841 16.6146 17.3841 15.9814 16.9936 15.5909L13.4084 12.0057L16.9936 8.42059C17.3841 8.03007 17.3841 7.3969 16.9936 7.00638C16.603 6.61585 15.9699 6.61585 15.5794 7.00638L11.9942 10.5915L8.40907 7.00636C8.01855 6.61584 7.38538 6.61584 6.99486 7.00636Z"></path>
+                                </svg>
+                                <h1 className="mb-2 text-2xl font-semibold">
+                                  Update {openModal?.name_english}&apos;s data
+                                </h1>
+                                <form
+                                  onSubmit={(e) => handleUpdate(e, openModal)}
+                                >
+                                  {/* participant Id */}
+                                  <div
+                                    style={{ marginBottom: "10px" }}
+                                    className="md:flex gap-5"
+                                  >
+                                    <label className="md:w-36 lg:w-40 my-1 py-1">
+                                      Participant ID:
+                                    </label>
+                                    <input
+                                      type="text"
+                                      name="participantId"
+                                      disabled
+                                      readOnly
+                                      value={openModal?.participantId}
+                                      className="rounded-md block h-6 md:h-auto w-[180px] md:w-[300px] lg:w-[400px] border bg-transparent"
+                                    />
+                                  </div>
+                                  <div
+                                    style={{ marginBottom: "10px" }}
+                                    className="md:flex gap-5"
+                                  >
+                                    <label className="md:w-36 lg:w-40 my-1 py-1">
+                                      Payment:
+                                    </label>
+                                    <label>
+                                      <input
+                                        type="radio"
+                                        name="status"
+                                        value="Paid"
+                                        defaultChecked={openModal?.status}
+                                        required // Make this field required
+                                        style={{
+                                          marginLeft: "10px",
+                                          marginTop: "15px",
+                                        }}
+                                      />{" "}
+                                      Paid
+                                    </label>
+                                    <label>
+                                      <input
+                                        type="radio"
+                                        name="status"
+                                        value="Unpaid"
+                                        defaultChecked={openModal?.status}
+                                        required // Make this field required
+                                        style={{
+                                          marginLeft: "10px",
+                                          marginTop: "15px",
+                                        }}
+                                      />{" "}
+                                      Unpaid
+                                    </label>
+                                  </div>
+                                  <div className="flex justify-end gap-2">
+                                    <Link
+                                      to={`/dashboard/update/participant/${openModal?.participantId}`}
+                                    >
+                                      <button className="p-2 bg-green-500 text-white rounded-md">
+                                        More Modification
+                                      </button>
+                                    </Link>
+                                    <button
+                                      type="submit"
+                                      className="rounded-md bg-emerald-600 px-6 py-[6px] text-white hover:bg-emerald-700"
+                                    >
+                                      Ok
+                                    </button>
+                                    <div
+                                      onClick={() => setOpenModal(false)}
+                                      className="rounded-md border border-rose-600 px-6 py-[6px] text-rose-600 duration-150 hover:bg-rose-600 hover:text-white"
+                                    >
+                                      Cancel
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => handleDelete(participantsData?._id)}
+                            className="p-2 bg-red-500 text-white rounded-full"
+                          >
+                            <AiOutlineDelete className="text-lg md:text-xl" />
+                          </button>
+                        </td>
+                      ) : (
+                        <td>
+                          <a
+                            href={`/dashboard/update/participant/${participantsData?.participantId}`}
+                          >
+                            <button className="p-2 bg-green-500 text-white rounded-full">
+                              <IoSettingsOutline className="text-lg md:text-xl" />
+                            </button>
+                          </a>
+                        </td>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         ) : (
           <div className="text-center min-h-96 flex justify-center items-center">

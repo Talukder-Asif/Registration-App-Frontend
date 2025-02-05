@@ -68,7 +68,7 @@ const NavBar = () => {
         </NavLink>
         <span className="mt-[2px] h-[3px] w-[0px] rounded-full bg-[#2ec4b6] transition-all duration-300 group-hover:w-full hidden lg:inline z-50"></span>
       </li>
-      <li className="group flex flex-col">
+      {/* <li className="group flex flex-col">
         <NavLink
           to={"/batch"}
           className={({ isActive, isPending }) =>
@@ -82,7 +82,7 @@ const NavBar = () => {
           View Batch
         </NavLink>
         <span className="mt-[2px] h-[3px] w-[0px] rounded-full bg-[#2ec4b6] transition-all duration-300 group-hover:w-full hidden lg:inline z-50"></span>
-      </li>
+      </li> */}
 
       <li className="group flex flex-col">
         <NavLink
@@ -135,7 +135,7 @@ const NavBar = () => {
         </NavLink>
         <span className="mt-[2px] h-[3px] w-[0px] rounded-full bg-[#2ec4b6] transition-all duration-300 group-hover:w-full hidden lg:inline z-50"></span>
       </li>
-      <li className="group flex flex-col">
+      {/* <li className="group flex flex-col">
         <NavLink
           onClick={() => setOpen(!isOpen)}
           to={"/batch"}
@@ -150,7 +150,7 @@ const NavBar = () => {
           View Batch
         </NavLink>
         <span className="mt-[2px] h-[3px] w-[0px] rounded-full bg-[#2ec4b6] transition-all duration-300 group-hover:w-full hidden lg:inline z-50"></span>
-      </li>
+      </li> */}
 
       <li className="group flex flex-col">
         <NavLink

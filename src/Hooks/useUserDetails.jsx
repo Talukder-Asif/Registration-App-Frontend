@@ -14,7 +14,7 @@ const useUserDetails = () => {
     queryKey: ["adminUser"],
     enabled: !UserLoad,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/user/${User?.email}`);
+      const res = await axiosSecure?.get(`/user/${User?.email}`);
       return res?.data;
     },
   });
