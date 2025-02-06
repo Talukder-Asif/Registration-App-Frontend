@@ -417,7 +417,7 @@ const ManageSingleRegistration = () => {
         >
           <button>Modify</button>
         </Link>
-        {participant?.status === "Unpaid" && (
+        {participant?.status === "Paid" && (
           <Link
             to={`/idcard/${participant?.participantId}`}
             className="text-white ml-3 mb-5 bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none font-medium rounded text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 text-center md:py-2.5"
