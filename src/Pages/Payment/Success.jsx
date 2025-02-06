@@ -65,7 +65,7 @@ const Success = () => {
   useEffect(() => {
     axios
       .get(
-        `https://api2.registration.exstudentsforum-brghs.com/payment/${paymentId}`
+        `https://api.registration.exstudentsforum-brghs.com/payment/${paymentId}`
       )
       .then((res) => {
         setPaymentData(res.data);

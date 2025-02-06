@@ -17,7 +17,7 @@ const SearchPage = () => {
     const fetchTotalParticipants = async () => {
       try {
         const response = await axios.get(
-          "https://api2.registration.exstudentsforum-brghs.com/totalParticipant"
+          "https://api.registration.exstudentsforum-brghs.com/totalParticipant"
         );
         setTotalParticipants(response?.data);
       } catch (error) {
@@ -33,7 +33,7 @@ const SearchPage = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          "https://api2.registration.exstudentsforum-brghs.com/allParticipant",
+          "https://api.registration.exstudentsforum-brghs.com/allParticipant",
           {
             params: { page, size },
           }
@@ -63,7 +63,7 @@ const SearchPage = () => {
     setsearching(true);
     axios
       .get(
-        "https://api2.registration.exstudentsforum-brghs.com/participants/search",
+        "https://api.registration.exstudentsforum-brghs.com/participants/search",
         {
           params: {
             query: e.target.search.value.toLowerCase(),

@@ -19,7 +19,7 @@ const ManageUser = () => {
     };
     axios
       .put(
-        `https://api2.registration.exstudentsforum-brghs.com/user/${user?.email}`,
+        `https://api.registration.exstudentsforum-brghs.com/user/${user?.email}`,
         updateData
       )
       .then((res) => {
@@ -48,7 +48,7 @@ const ManageUser = () => {
       if (result.isConfirmed) {
         axios
           .delete(
-            `https://api2.registration.exstudentsforum-brghs.com/user/${user?._id}`
+            `https://api.registration.exstudentsforum-brghs.com/user/${user?._id}`
           )
           .then((res) => {
             if (res.data.deletedCount > 0) {
