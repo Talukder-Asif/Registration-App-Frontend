@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import useAxios from "../../Hooks/useAxios";
+import { FaArrowDown } from "react-icons/fa";
+import { FaPhoneAlt } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
 
 const Batch = () => {
   const [batches, setBatches] = useState([]);
@@ -106,14 +108,13 @@ const Batch = () => {
               </span>
             </button>
             <div
-              className={`grid overflow-hidden text-zinc-black transition-all duration-300 ease-in-out p-3 ${
+              className={`grid overflow-hidden text-zinc-black transition-all duration-300 ease-in-out pl-3 ${
                 isOpen === idx
                   ? "grid-rows-[1fr] pb-1 pt-3 opacity-100"
                   : "grid-rows-[0fr] opacity-0"
               }`}
             >
               <div className="overflow-x-auto pr-4 text-sm">
-                {/* Table Data */}
                 {participantLoading ? (
                   <div className="grid min-h-[50vh] content-center justify-center">
                     <div className="text-center">
@@ -142,64 +143,47 @@ const Batch = () => {
                     </h1>
                   </div>
                 ) : (
-                  <div>
-                    <table className="table">
-                      <thead>
-                        <tr>
-                          <th className="text-center">Name</th>
-                          <th>Batch</th>
-                          <th>Guest</th>
-                          <th>Child</th>
-                          <th>Driver</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {participants?.map((participantsData, i) => (
-                          <tr key={i}>
-                            <td>
-                              <Link
-                                to={`/preview/${participantsData?.participantId}`}
-                              >
-                                <div className="flex items-center gap-3">
-                                  <div className="avatar">
-                                    <div className="mask mask-squircle w-12 h-12">
-                                      <img
-                                        src={
-                                          participantsData?.image
-                                            ? participantsData?.image
-                                            : null
-                                        }
-                                        alt="User Avatar"
-                                      />
-                                    </div>
-                                  </div>
-                                  <div>
-                                    <p className="font-bold">
-                                      {participantsData?.name_english} <br />
-                                    </p>
-                                    <span className="text-sm">
-                                      {participantsData?.phone}
-                                    </span>
-                                  </div>
-                                </div>
-                              </Link>
-                            </td>
-                            <td>
-                              {participantsData?.ssc_year
-                                ? participantsData?.ssc_year
-                                : "Not Defined"}
-                            </td>
-                            <td>{participantsData?.family_members}</td>
-                            <td>
-                              {participantsData?.children
-                                ? participantsData.children
-                                : 0}
-                            </td>
-                            <td>{participantsData?.driver}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                  <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-5">
+                    {participants?.map((participantsData, i) => (
+                      <div
+                        key={i}
+                        className="card bg-base-100 relative shadow-xl"
+                      >
+                        <figure className="">
+                          <img
+                            src={participantsData?.image}
+                            alt={participantsData?.name_english}
+                            className="rounded-t w-full h-[150px] md:h-[200px] object-cover object-center"
+                          />
+                        </figure>
+                        <div className="md:p-3 p-2 space-y-1">
+                          <p className="font-semibold">
+                            ID: {participantsData?.participantId}
+                          </p>
+                          <p className="font-semibold">
+                            {participantsData?.name_english}
+                          </p>
+                          <p>Batch: {participantsData?.ssc_year}</p>
+                          <p>
+                            <FaLocationDot className="inline-block text-green-500" />{" "}
+                            {participantsData?.address}
+                          </p>
+                          <p>
+                            <FaPhoneAlt className="inline-block text-green-500" />{" "}
+                            {participantsData?.phone}
+                          </p>
+
+                          <a
+                            href={participantsData?.image}
+                            target="_blank"
+                            download="image.jpg"
+                            className="absolute bottom-1 right-1 p-2 bg-green-600 text-white rounded-full text-sm md:text-xl"
+                          >
+                            <FaArrowDown />
+                          </a>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>

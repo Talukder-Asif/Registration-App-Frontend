@@ -29,7 +29,7 @@ const RegForm = ({ id }) => {
 
     axios
       .post(
-        "https://api.registration.exstudentsforum-brghs.com/create-payment",
+        "https://api2.registration.exstudentsforum-brghs.com/create-payment",
         formData,
         {
           withCredentials: true,
@@ -449,15 +449,15 @@ const RegForm = ({ id }) => {
       </div>
       <div className="mt-5 flex flex-wrap gap-5">
         {participant?.status === "Unpaid" ? (
-          /* adminUser?.role === "Admin" || adminUser?.role === "Executive" ? ( */
-          <Link
-            to={`/update/${participant?.participantId}`}
-            className="text-white ml-3 mb-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 text-center md:py-2.5"
-          >
-            <button>Update Now</button>
-          </Link>
+          adminUser?.role === "Admin" || adminUser?.role === "Executive" ? (
+            <Link
+              to={`/update/${participant?.participantId}`}
+              className="text-white ml-3 mb-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 text-center md:py-2.5"
+            >
+              <button>Update Now</button>
+            </Link>
+          ) : null
         ) : (
-          /* ) : null */
           <Link
             to={`/idcard/${participant?.participantId}`}
             className="text-white ml-3 mb-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 text-center md:py-2.5"
@@ -466,7 +466,7 @@ const RegForm = ({ id }) => {
           </Link>
         )}
 
-        {participant?.status === "Unpaid" /*&& adminUser?.role === "Admin"*/ ? (
+        {participant?.status === "Unpaid" && adminUser?.role === "Admin" ? (
           <button
             onClick={btnActive ? handleCreatePayment : undefined}
             className={`text-white ${

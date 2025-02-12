@@ -3,7 +3,7 @@ import MainLayout from "../Layout/MainLayout";
 import ManageSingleUser from "../Pages/Admin/ManageSingleUser/ManageSingleUser";
 import ManageUser from "../Pages/Admin/ManageUser/ManageUser";
 import Dashboard from "../Pages/Dashboard/Dashboard";
-import HomePage from "../Pages/HomePage/HomePage";
+// import HomePage from "../Pages/HomePage/HomePage";
 import Signin from "../Pages/SIgnin/Signin";
 import Profile from "../Pages/User/Profile";
 import AdminRoute from "./AdminRoute";
@@ -20,8 +20,8 @@ import NotPaid from "../Pages/Admin/NotPaid/NotPaid";
 import UpdateParticipant from "../Pages/Admin/UpdateParticipant/UpdateParticipant";
 import ManageSingleRegistration from "../Pages/Admin/ManageSingleRegistration/ManageSingleRegistration";
 import UserRoute from "./UserRoute";
-// import TimeOut from "../Pages/HomePage/TimeOut";
-// import Batch from "../Pages/BatchView/Batch";
+import TimeOut from "../Pages/HomePage/TimeOut";
+import Batch from "../Pages/BatchView/Batch";
 
 const router = createBrowserRouter([
   {
@@ -30,8 +30,8 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomePage></HomePage>,
-        // element: <TimeOut></TimeOut>,
+        // element: <HomePage></HomePage>,
+        element: <TimeOut></TimeOut>,
       },
       {
         path: "/update/:id",
@@ -45,10 +45,10 @@ const router = createBrowserRouter([
         path: "/payment-success/:paymentId",
         element: <Success></Success>,
       },
-      // {
-      //   path: "/batch",
-      //   element: <Batch></Batch>,
-      // },
+      {
+        path: "/press",
+        element: <Batch></Batch>,
+      },
       {
         path: "/idcard/:id",
         element: <IdCard></IdCard>,

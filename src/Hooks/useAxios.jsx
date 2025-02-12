@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosPublic = axios.create({
-  baseURL: "https://api.registration.exstudentsforum-brghs.com",
+  baseURL: "https://api2.registration.exstudentsforum-brghs.com",
 });
 
 const useAxios = () => {
