@@ -82,6 +82,8 @@ const ManageRegistration = () => {
     });
   };
 
+  console.log(batches);
+
   const handleDelete = (participantId) => {
     Swal.fire({
       title: "Are you sure?",
@@ -215,7 +217,7 @@ const ManageRegistration = () => {
                 <option value="">Batch</option>
                 {batches?.map((batch) => (
                   <option key={batch?._id} value={batch?._id}>
-                    {batch?._id}
+                    {batch?._id} ({batch.count})
                   </option>
                 ))}
               </select>
