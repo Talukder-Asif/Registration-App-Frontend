@@ -6,6 +6,7 @@ const PaidRegistration = () => {
   const [batches, setBatches] = useState([]);
   const [isOpen, setIsOpen] = useState(null);
   const [participants, setParticipants] = useState(null);
+  const [religion, setReligion] = useState(null);
   const [participantLoading, setParticipantLoading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [shirtSize, setShirtSize] = useState(null);
@@ -31,6 +32,7 @@ const PaidRegistration = () => {
         });
         setShirtSize(response?.data?.tshirtSizes);
         setParticipants(response?.data?.result);
+        setReligion(response?.data?.religion);
         setParticipantLoading(false);
       } catch (error) {
         console.error(error);
@@ -174,6 +176,20 @@ const PaidRegistration = () => {
                       3XL <br />
                       {shirtSize?._3XL || 0}
                     </div>
+                  </div>
+                  <h3 className="text-lg md:text-2xl underline pb-4 mt-5">
+                    Religion:
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-6">
+                    {religion &&
+                      Object.entries(religion).map(([religion, count]) => (
+                        <div
+                          key={religion}
+                          className="text-center py-2 hover:scale-105 duration-200 bg-green-500 text-xs md:text-lg rounded-md text-white"
+                        >
+                          {religion} <br /> {count}
+                        </div>
+                      ))}
                   </div>
 
                   <table className="table">

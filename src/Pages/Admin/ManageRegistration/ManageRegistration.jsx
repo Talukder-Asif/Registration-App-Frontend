@@ -82,8 +82,6 @@ const ManageRegistration = () => {
     });
   };
 
-  console.log(batches);
-
   const handleDelete = (participantId) => {
     Swal.fire({
       title: "Are you sure?",
