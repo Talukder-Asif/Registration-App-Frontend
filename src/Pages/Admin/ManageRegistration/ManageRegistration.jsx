@@ -62,7 +62,7 @@ const ManageRegistration = () => {
       if (result.isConfirmed) {
         axios
           .put(
-            `https://api2.registration.exstudentsforum-brghs.com/participant/${participantData?.participantId}`,
+            `http://localhost:3000/participant/${participantData?.participantId}`,
             updateData
           )
           .then((res) => {
@@ -113,9 +113,7 @@ const ManageRegistration = () => {
   useEffect(() => {
     const fetchTotalBatch = async () => {
       try {
-        const batchs = await axios.get(
-          "https://api2.registration.exstudentsforum-brghs.com/allSscYears"
-        );
+        const batchs = await axios.get("http://localhost:3000/allSscYears");
         setBatches(batchs?.data);
       } catch (error) {
         console.error("Error fetching total participants:", error);
@@ -128,7 +126,7 @@ const ManageRegistration = () => {
     const fetchTotalParticipants = async () => {
       try {
         const response = await axios.get(
-          "https://api2.registration.exstudentsforum-brghs.com/totalParticipant",
+          "http://localhost:3000/totalParticipant",
           {
             params: { selectedBatch, search },
           }
@@ -148,7 +146,7 @@ const ManageRegistration = () => {
       try {
         setsearchingItem(true);
         const response = await axios.get(
-          "https://api2.registration.exstudentsforum-brghs.com/allParticipant",
+          "http://localhost:3000/allParticipant",
           {
             params: { page, size, selectedBatch, search },
           }
@@ -185,7 +183,7 @@ const ManageRegistration = () => {
     // setSearchingLoading(true);
     // setsearching(true);
     // axios
-    //   .get("https://api2.registration.exstudentsforum-brghs.com/participants/search", {
+    //   .get("http://localhost:3000/participants/search", {
     //     params: {
     //       query: e.target.search.value.toLowerCase(),
     //       selectedBatch,

@@ -7,7 +7,7 @@ const Footer = () => {
         <div className="grid-flow-col items-center">
           <img className="max-w-16" src={Logo} alt="Computer Club KYAU" />
           <p>
-            Copyright © {new Date().getFullYear()} - All right reserved and
+            Copyright © {new Date().getFullYear()} - All rights reserved and
             Developed By{" "}
             <a className="text-[#2ec4b6]" href="https://inforsix.com/">
               Inforsix LTD

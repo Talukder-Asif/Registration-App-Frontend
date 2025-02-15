@@ -12,6 +12,7 @@ const Statistic = () => {
       setStatisticData(res.data);
     });
   }, [axiosPrivate]);
+
   if (loading)
     return (
       <div className="grid min-h-screen content-center justify-center">
@@ -89,6 +90,19 @@ const Statistic = () => {
           {statisticData?.totalChildren}
         </div>
       </div>
+      <h3 className="text-xl md:text-3xl underline pb-4 mt-5">Religion:</h3>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-6">
+        {statisticData?.religion &&
+          Object.entries(statisticData.religion).map(([religion, count]) => (
+            <div
+              key={religion}
+              className="text-center py-10 hover:scale-105 duration-200 bg-green-500 text-xs md:text-xl text-white"
+            >
+              {religion} <br /> {count}
+            </div>
+          ))}
+      </div>
+
       <h3 className="text-xl md:text-3xl underline pb-4 mt-5">Driver:</h3>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-6">
         <div className="text-center py-10 hover:scale-105 duration-200 bg-yellow-400 text-xs md:text-xl text-black">
