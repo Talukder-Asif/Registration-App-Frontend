@@ -17,7 +17,7 @@ const SearchPage = () => {
     const fetchTotalParticipants = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/totalParticipant"
+          "https://api2.registration.exstudentsforum-brghs.com/totalParticipant"
         );
         setTotalParticipants(response?.data);
       } catch (error) {
@@ -33,7 +33,7 @@ const SearchPage = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          "http://localhost:3000/allParticipant",
+          "https://api2.registration.exstudentsforum-brghs.com/allParticipant",
           {
             params: { page, size },
           }
@@ -62,11 +62,14 @@ const SearchPage = () => {
     setSearchingLoading(true);
     setsearching(true);
     axios
-      .get("http://localhost:3000/participants/search", {
-        params: {
-          query: e.target.search.value.toLowerCase(),
-        },
-      })
+      .get(
+        "https://api2.registration.exstudentsforum-brghs.com/participants/search",
+        {
+          params: {
+            query: e.target.search.value.toLowerCase(),
+          },
+        }
+      )
       .then((response) => {
         setParticipants(response?.data);
         setSearchingLoading(false);

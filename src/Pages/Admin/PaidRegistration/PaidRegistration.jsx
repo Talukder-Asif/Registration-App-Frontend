@@ -116,7 +116,7 @@ const PaidRegistration = () => {
                 : "grid-rows-[0fr] opacity-0"
             }`}
           >
-            <div className="overflow-x-auto pr-4 text-sm">
+            <div className="overflow-x-auto px-4 text-sm">
               {/* Table Data */}
               {participantLoading ? (
                 <div className="grid min-h-[50vh] content-center justify-center">
@@ -151,28 +151,28 @@ const PaidRegistration = () => {
                     T-Shirt Data:
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-6">
-                    <div className="text-center py-2 hover:scale-105 duration-200 bg-yellow-400 text-xs md:text-lg rounded-md text-black">
+                    <div className="text-center py-2 hover:scale-105 duration-200 border-2 border-black text-xs md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300">
                       S <br />
                       {shirtSize?.S || 0}
                     </div>
-                    <div className="text-center py-2 hover:scale-105 duration-200 bg-green-500 text-xs md:text-lg rounded-md text-white">
+                    <div className="text-center py-2 hover:scale-105 duration-200 border-2 border-black text-xs md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300">
                       M
                       <br />
                       {shirtSize?.M || 0}
                     </div>
-                    <div className="text-center py-2 hover:scale-105 duration-200 bg-blue-400 text-xs md:text-lg rounded-md text-white">
+                    <div className="text-center py-2 hover:scale-105 duration-200 border-2 border-black text-xs md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300">
                       L <br />
                       {shirtSize?.L || 0}
                     </div>
-                    <div className="text-center py-2 hover:scale-105 duration-200 bg-red-500 text-xs md:text-lg rounded-md text-white">
+                    <div className="text-center py-2 hover:scale-105 duration-200 border-2 border-black text-xs md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300">
                       XL <br />
                       {shirtSize?.XL || 0}
                     </div>
-                    <div className="text-center py-2 hover:scale-105 duration-200 bg-slate-400 text-xs md:text-lg rounded-md text-white">
+                    <div className="text-center py-2 hover:scale-105 duration-200 border-2 border-black text-xs md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300">
                       2XL <br />
                       {shirtSize?.XXL || 0}
                     </div>
-                    <div className="text-center py-2 hover:scale-105 duration-200 bg-teal-400 text-xs md:text-lg rounded-md text-white">
+                    <div className="text-center py-2 hover:scale-105 duration-200 border-2 border-black text-xs md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300">
                       3XL <br />
                       {shirtSize?._3XL || 0}
                     </div>
@@ -185,7 +185,7 @@ const PaidRegistration = () => {
                       Object.entries(religion).map(([religion, count]) => (
                         <div
                           key={religion}
-                          className="text-center py-2 hover:scale-105 duration-200 bg-green-500 text-xs md:text-lg rounded-md text-white"
+                          className="text-center py-2 hover:scale-105 duration-200 border-2 border-black  text-xs md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300"
                         >
                           {religion} <br /> {count}
                         </div>

@@ -80,7 +80,7 @@ const NotPaid = () => {
       if (result.isConfirmed) {
         axios
           .put(
-            `http://localhost:3000/participant/${participantData?.participantId}`,
+            `https://api2.registration.exstudentsforum-brghs.com/participant/${participantData?.participantId}`,
             updateData
           )
           .then((res) => {
