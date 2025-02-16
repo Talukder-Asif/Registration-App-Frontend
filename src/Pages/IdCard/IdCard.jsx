@@ -5,17 +5,42 @@ import rightLogo from "/src/assets/rigthLogo.png";
 import { QRCodeSVG } from "qrcode.react";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const IdCard = () => {
   const params = useParams();
   const id = params.id;
-  const [participant, isParticipantLoading] = useOneParticipant({ id });
+  const [participant] = useOneParticipant({ id });
+  const [loading, setLoading] = useState(true);
   const printRef = React.useRef(null);
+  const [base64Image, setBase64Image] = useState(null);
+
+  const convertToBase64 = async (imageUrl) => {
+    const response = await fetch(
+      `https://brghc.inforsix.com/proxy-image?url=${encodeURIComponent(
+        imageUrl
+      )}`
+    );
+    const blob = await response.blob();
+    const abc = new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = () => resolve(reader.result);
+    });
+
+    setLoading(false);
+    return abc;
+  };
+
+  useEffect(() => {
+    if (participant?.image) {
+      convertToBase64(participant.image).then(setBase64Image);
+    }
+  }, [participant]);
 
   const handleDownloadPDF = async () => {
     try {
-      const element = document.getElementById("printElement"); // Use the ID here
+      const element = document.getElementById("printElement");
       if (!element) {
         throw new Error("Element with the specified ID not found");
       }
@@ -53,7 +78,6 @@ const IdCard = () => {
         currentHeight -= pageHeight;
       }
 
-      // Save the generated PDF with high-quality images
       pdf.save("registration_form.pdf");
     } catch (error) {
       console.error("Error generating PDF:", error);
@@ -62,7 +86,7 @@ const IdCard = () => {
 
   return (
     <div className="bg-[#f5f7fa] pt-5">
-      {isParticipantLoading ? (
+      {loading ? (
         <div className="grid min-h-screen content-center justify-center">
           <div className="text-center">
             <div role="status">
@@ -186,8 +210,8 @@ const IdCard = () => {
                       </div>
                       <img
                         className="max-w-[70px] h-auto md:max-w-[130px] lg:max-w-[180px]"
-                        src={participant?.image}
-                        alt={participant?.name_english}
+                        src={base64Image}
+                        alt={participant?.name_english + "'s image Loading..."}
                       />
                     </div>
 
