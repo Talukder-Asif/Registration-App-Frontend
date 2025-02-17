@@ -23,6 +23,7 @@ import UserRoute from "./UserRoute";
 import TimeOut from "../Pages/HomePage/TimeOut";
 import Batch from "../Pages/BatchView/Batch";
 import Batches from "../Pages/Admin/Batches/Batches";
+import Batchprint from "../Pages/Admin/BatchPrint/Batchprint";
 
 const router = createBrowserRouter([
   {
@@ -67,6 +68,14 @@ const router = createBrowserRouter([
         element: <Signin></Signin>,
       },
       {
+        path: "/dashboard/batch/:batch",
+        element: (
+          <UserRoute>
+            <Batchprint></Batchprint>
+          </UserRoute>
+        ),
+      },
+      {
         path: "/dashboard",
         element: <Dashboard></Dashboard>,
         children: [
@@ -90,6 +99,7 @@ const router = createBrowserRouter([
               </UserRoute>
             ),
           },
+
           {
             path: "/dashboard/users",
             element: (

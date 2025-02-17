@@ -44,10 +44,15 @@ const Batches = () => {
   return (
     <div className="grid grid-cols-10 gap-3">
       {batches.map((batch, idx) => (
-        <div className="p-4 border border-black text-center" key={idx}>
+        <a
+          target="_blank"
+          href={`/dashboard/batch/${batch?._id}`}
+          className="p-4 hover:bg-green-200 border border-black text-center"
+          key={idx}
+        >
           <h2>{batch._id}</h2>
           <p>({batch.count})</p>
-        </div>
+        </a>
       ))}
     </div>
   );
