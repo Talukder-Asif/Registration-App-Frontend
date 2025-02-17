@@ -22,6 +22,7 @@ import ManageSingleRegistration from "../Pages/Admin/ManageSingleRegistration/Ma
 import UserRoute from "./UserRoute";
 import TimeOut from "../Pages/HomePage/TimeOut";
 import Batch from "../Pages/BatchView/Batch";
+import Batches from "../Pages/Admin/Batches/Batches";
 
 const router = createBrowserRouter([
   {
@@ -78,6 +79,14 @@ const router = createBrowserRouter([
             element: (
               <UserRoute>
                 <Statistic></Statistic>
+              </UserRoute>
+            ),
+          },
+          {
+            path: "/dashboard/batch",
+            element: (
+              <UserRoute>
+                <Batches></Batches>
               </UserRoute>
             ),
           },

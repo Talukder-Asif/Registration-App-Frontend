@@ -55,6 +55,21 @@ const Dashboard = () => {
                 <span className="ms-3">Status</span>
               </NavLink>
             </li>
+            <li>
+              <NavLink
+                to={"/dashboard/batch"}
+                className={({ isActive }) =>
+                  `flex items-center py-0.5 px-1 md:py-3 md:px-6 text-xs md:text-sm font-medium uppercase tracking-widest duration-300 border-2 group border-[#002a3f] ${
+                    isActive
+                      ? "!bg-[#002a3f] !text-white hover:!bg-[#2ec4b6] hover:!text-[#002a3f] hover:!border-[#2ec4b6]"
+                      : "hover:bg-[#002a3f] hover:text-white hover:border-[#2ec4b6]"
+                  }`
+                }
+              >
+                <GrStatusInfo className="text-[#2ec4b6] text-base md:text-xl group-hover:text-white" />
+                <span className="ms-3">Batches</span>
+              </NavLink>
+            </li>
             {adminUser?.role == "Admin" && (
               <>
                 <li>
