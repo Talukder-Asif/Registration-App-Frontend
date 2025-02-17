@@ -1,12 +1,17 @@
 import { useParams } from "react-router-dom";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import leftLogo from "/src/assets/logo1.png";
+import axios from "axios";
 const Batchprint = () => {
-  const params = useParams().batch;
-  const printRef = React.useRef(null);
+  const [totalParticipants, setTotalParticipants] = useState(0);
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(10); // Number of items per page
+  const [participants, setParticipants] = useState([]);
 
+  const selectedBatch = useParams().batch;
+  const printRef = React.useRef(null);
   const handleDownloadPDF = async () => {
     try {
       const element = document.getElementById("printElement");
@@ -53,7 +58,81 @@ const Batchprint = () => {
     }
   };
 
-  console.log(params);
+  // Fetch the total number of participants
+  useEffect(() => {
+    const fetchTotalParticipants = async () => {
+      try {
+        const response = await axios.get(
+          "https://api2.registration.exstudentsforum-brghs.com/totalParticipant",
+          {
+            params: { selectedBatch },
+          }
+        );
+        setTotalParticipants(response?.data);
+      } catch (error) {
+        console.error("Error fetching total participants:", error);
+      }
+    };
+    fetchTotalParticipants();
+  }, [selectedBatch]);
+
+  useEffect(() => {
+    // setLoading(true);
+
+    const fetchParticipants = async () => {
+      try {
+        // setsearchingItem(true);
+        const response = await axios.get(
+          "https://api2.registration.exstudentsforum-brghs.com/allParticipant",
+          {
+            params: { page, size, selectedBatch },
+          }
+        );
+        // setParticipants(response?.data);
+        // setLoading(false);
+
+        if (response?.data.length == 0) {
+          //   setsearchingItem(false);
+        } else {
+          //   setsearchingItem(true);
+        }
+      } catch (error) {
+        console.error("Error fetching participants:", error);
+      }
+    };
+    fetchParticipants();
+  }, [page, size, selectedBatch]);
+
+  const totalPages = Math.ceil(totalParticipants?.total / size);
+
+  useEffect(() => {
+    // setLoading(true);
+
+    const fetchParticipants = async () => {
+      try {
+        // setsearchingItem(true);
+        const response = await axios.get(
+          "https://api2.registration.exstudentsforum-brghs.com/allParticipant",
+          {
+            params: { page, size, selectedBatch },
+          }
+        );
+        setParticipants(response?.data);
+        // setLoading(false);
+
+        if (response?.data.length == 0) {
+          // setsearchingItem(false);
+        } else {
+          // setsearchingItem(true);
+        }
+      } catch (error) {
+        console.error("Error fetching participants:", error);
+      }
+    };
+    fetchParticipants();
+  }, [page, size, selectedBatch]);
+
+  console.log(participants);
 
   return (
     <div className="max-w-screen-xl lg:p-5 m-auto">
@@ -75,11 +154,52 @@ const Batchprint = () => {
           <div>
             <p className="text-3xl text-center">Registrations</p>
             <h2 className="text-3xl text-center font-semibold">
-              Batch: {params}
+              Batch: {selectedBatch}
             </h2>
             <div className="border-t border-2 w-[80%] border-[#002A3F] mt-2 m-auto" />
           </div>
         </div>
+      </div>
+
+      {/* Pagination */}
+      <div
+        className="flex text-xs md:text-sm p-1 justify-between"
+        style={{ marginTop: "20px" }}
+      >
+        <div>
+          <button
+            onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
+            disabled={page === 0}
+            className="text-[#002A3F] dark:text-gray-400"
+          >
+            Previous
+          </button>
+          <span style={{ margin: "0 10px" }}>
+            Page {page + 1} of {totalPages}
+          </span>
+          <button
+            onClick={() =>
+              setPage((prev) => (prev + 1 < totalPages ? prev + 1 : prev))
+            }
+            disabled={page + 1 === totalPages}
+            className="text-[#002A3F] dark:text-gray-400"
+          >
+            Next
+          </button>
+        </div>
+
+        <select
+          value={size}
+          onChange={(e) => setSize(parseInt(e.target.value))}
+          style={{ marginLeft: "10px" }}
+          className="border p-1"
+        >
+          {[5, 10, 20, 50].map((option) => (
+            <option key={option} value={option}>
+              {option} per page
+            </option>
+          ))}
+        </select>
       </div>
 
       {/* Print Button Part */}

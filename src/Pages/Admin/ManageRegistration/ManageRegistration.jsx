@@ -123,6 +123,7 @@ const ManageRegistration = () => {
     };
     fetchTotalBatch();
   }, []);
+
   // Fetch the total number of participants
   useEffect(() => {
     const fetchTotalParticipants = async () => {
