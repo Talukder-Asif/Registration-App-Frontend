@@ -2,6 +2,7 @@ import { FaUserAlt, FaUserCheck, FaUserClock } from "react-icons/fa";
 import { NavLink, Outlet } from "react-router-dom";
 import { GrStatusInfo } from "react-icons/gr";
 import useUserDetails from "../../Hooks/useUserDetails";
+import { MdGroups } from "react-icons/md";
 
 const Dashboard = () => {
   const [adminUser, isUsersLoading] = useUserDetails();
@@ -66,7 +67,7 @@ const Dashboard = () => {
                   }`
                 }
               >
-                <GrStatusInfo className="text-[#2ec4b6] text-base md:text-xl group-hover:text-white" />
+                <MdGroups className="text-[#2ec4b6] text-base md:text-xl group-hover:text-white" />
                 <span className="ms-3">Batches</span>
               </NavLink>
             </li>
