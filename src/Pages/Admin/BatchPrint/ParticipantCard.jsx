@@ -75,28 +75,28 @@ const ParticipantCard = ({ participantsData }) => {
   //   );
 
   return (
-    <tr>
-      <td className="py-1 lg:py-[0.8rem]">
+    <tr className="text-[8px] lg:text-sm">
+      <td className="py-1">
         <div className="flex items-center gap-2">
           <div className="avatar">
             {imageLoading ? (
-              <div className="skeleton h-16 w-16"></div>
+              <div className="skeleton lg:h-16 lg:w-16 w-10 h-10"></div>
             ) : (
-              <div className="mask mask-squircle w-16 h-16">
+              <div className="mask mask-squircle lg:w-16 w-10 h-10 lg:h-16">
                 <img src={imageSrc} alt="User Avatar" />
               </div>
             )}
           </div>
           <div>
-            <p className="font-bold text-sm">
+            <p className="font-bold lg:text-sm">
               {participantsData?.name_english} <br />
             </p>
-            <span className="text-sm">{participantsData?.phone}</span>
+            <span className="lg:text-sm">{participantsData?.phone}</span>
           </div>
         </div>
       </td>
 
-      <td className="py-1 lg:py-[0.8rem]">
+      <td className="py-1">
         <p>
           <MdFamilyRestroom className="inline-block text-green-500" />{" "}
           {participantsData?.family_members}
@@ -106,9 +106,9 @@ const ParticipantCard = ({ participantsData }) => {
           {participantsData?.children ? participantsData.children : 0}
         </p>
       </td>
-      <td className="py-1 lg:py-[0.8rem]">{participantsData?.driver}</td>
-      <td className="py-1 lg:py-[0.8rem]">{participantsData?.religion}</td>
-      <td className="py-1 lg:py-[0.8rem]">{participantsData?.tshirt_size}</td>
+      <td className="py-1">{participantsData?.driver}</td>
+      <td className="py-1">{participantsData?.religion}</td>
+      <td className="py-1">{participantsData?.tshirt_size}</td>
     </tr>
   );
 };

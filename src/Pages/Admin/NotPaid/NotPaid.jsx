@@ -311,7 +311,7 @@ const NotPaid = () => {
                                     disabled
                                     className="rounded-md border border-zinc-500 px-5 py-[6px] text-zinc-500 hover:bg-zinc-200"
                                   >
-                                    Update
+                                    Only Admin
                                   </button>
                                 )}
 

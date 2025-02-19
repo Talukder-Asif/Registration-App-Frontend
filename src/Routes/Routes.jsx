@@ -24,6 +24,7 @@ import TimeOut from "../Pages/HomePage/TimeOut";
 import Batch from "../Pages/BatchView/Batch";
 import Batches from "../Pages/Admin/Batches/Batches";
 import Batchprint from "../Pages/Admin/BatchPrint/Batchprint";
+import NotPress from "../Pages/BatchView/NotPress";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "/press",
         element: <Batch></Batch>,
+      },
+      {
+        path: "/batches",
+        element: <NotPress></NotPress>,
       },
       {
         path: "/idcard/:id",
@@ -135,17 +140,17 @@ const router = createBrowserRouter([
           {
             path: "/dashboard/paid",
             element: (
-              <AdminRoute>
+              <UserRoute>
                 <PaidRegistration></PaidRegistration>
-              </AdminRoute>
+              </UserRoute>
             ),
           },
           {
             path: "/dashboard/notpaid",
             element: (
-              <AdminRoute>
+              <UserRoute>
                 <NotPaid></NotPaid>
-              </AdminRoute>
+              </UserRoute>
             ),
           },
           {

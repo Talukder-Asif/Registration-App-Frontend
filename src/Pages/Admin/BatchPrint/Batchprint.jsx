@@ -119,7 +119,7 @@ const Batchprint = () => {
       <div
         id="printElement"
         ref={printRef}
-        className="max-w-screen-md m-auto border border-black a4-page"
+        className="max-w-screen-md m-auto border-none lg:border border-black a4-page overflow-scroll"
       >
         {" "}
         <div className="p-2 h-full">
@@ -214,7 +214,7 @@ const Batchprint = () => {
                   ))}
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid lg:grid-cols-2 gap-2 overflow-scroll ">
                 <table className="table rounded-none border-r-2 border-black">
                   <thead>
                     <tr>
@@ -295,10 +295,14 @@ const Batchprint = () => {
       <div className="px-3 md:px-8 pb-5 ">
         <button
           onClick={handleDownloadPDF}
-          className="text-white mt-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5"
+          className="text-white mt-3 hidden lg:inline-block bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs md:text-sm lg:text-lg md:px-5 px-2.5 py-1.5 md:py-2.5"
         >
           Download PDF
         </button>
+
+        <p className="text-red-500 lg:hidden">
+          Download PDF option only available in Desktop Devices
+        </p>
       </div>
     </div>
   );
