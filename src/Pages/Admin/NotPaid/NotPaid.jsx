@@ -3,8 +3,10 @@ import useAxios from "../../../Hooks/useAxios";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import useUserDetails from "../../../Hooks/useUserDetails";
 const NotPaid = () => {
   const [batches, setBatches] = useState([]);
+  const [adminUser] = useUserDetails();
   const [updateLoading, setUpdateLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(null);
   const [participants, setParticipants] = useState(null);
@@ -295,12 +297,24 @@ const NotPaid = () => {
                           {participantsData?.status === "Unpaid" ? (
                             <td>
                               <div className="mx-auto w-fit">
-                                <button
-                                  onClick={() => setOpenModal(participantsData)}
-                                  className="rounded-md border border-zinc-500 px-5 py-[6px] text-zinc-500 hover:bg-zinc-200"
-                                >
-                                  Update
-                                </button>
+                                {adminUser?.role === "Admin" ? (
+                                  <button
+                                    onClick={() =>
+                                      setOpenModal(participantsData)
+                                    }
+                                    className="rounded-md border border-zinc-500 px-5 py-[6px] text-zinc-500 hover:bg-zinc-200"
+                                  >
+                                    Update
+                                  </button>
+                                ) : (
+                                  <button
+                                    disabled
+                                    className="rounded-md border border-zinc-500 px-5 py-[6px] text-zinc-500 hover:bg-zinc-200"
+                                  >
+                                    Update
+                                  </button>
+                                )}
+
                                 <div
                                   onClick={() => setOpenModal(false)}
                                   className={`fixed z-[100] w-screen ${

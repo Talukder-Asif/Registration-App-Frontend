@@ -122,15 +122,15 @@ const Batchprint = () => {
         className="max-w-screen-md m-auto border border-black a4-page"
       >
         {" "}
-        <div className=" p-2 h-full">
+        <div className="p-2 h-full">
           <div className="relative">
-            <h2 className="text-3xl text-center font-semibold">
+            <h2 className="text-[8px] md:text-3xl text-center font-semibold">
               Batch: {selectedBatch} ({totalParticipants?.total})
             </h2>
-            <p className="absolute top-2 right-2 text-3xl font-black text-black rounded-full border-4 px-4 py-2 border-black">
+            <p className="absolute top-2 right-2 text-[8px] md:text-3xl font-black text-black rounded-full border md:border-4 px-1 md:px-4 py-0.5 md:py-2 border-black">
               {page + 1}
             </p>
-            <div className="border-t border-2 w-[80%] border-[#002A3F] mt-2 m-auto" />
+            <div className="border-t md:border-t-2 w-[80%] border-[#002A3F] mt-0.5 md:mt-2 m-auto" />
           </div>
 
           {/* Cards */}
@@ -169,45 +169,45 @@ const Batchprint = () => {
             </div> */
 
             <div>
-              <h3 className="text-lg md:text-2xl underline pb-2 mt-3">
+              <h3 className="text-[8px] md:text-2xl underline pb-2 mt-3">
                 T-Shirt Data:
               </h3>
-              <div className="grid grid-cols-2 md:grid-cols-6 gap-2 md:gap-6">
-                <div className="text-center py-2 hover:scale-105 duration-200 border-2 border-black text-xs md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300">
+              <div className="grid grid-cols-6 gap-1 md:gap-6">
+                <div className="text-center py-0.5 md:py-2 hover:scale-105 duration-200 border md:border-2 border-black text-[6px] md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300">
                   S <br />
                   {shirtSize?.S || 0}
                 </div>
-                <div className="text-center py-2 hover:scale-105 duration-200 border-2 border-black text-xs md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300">
+                <div className="text-center py-0.5 md:py-2 hover:scale-105 duration-200 border md:border-2 border-black text-[6px] md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300">
                   M
                   <br />
                   {shirtSize?.M || 0}
                 </div>
-                <div className="text-center py-2 hover:scale-105 duration-200 border-2 border-black text-xs md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300">
+                <div className="text-center py-0.5 md:py-2 hover:scale-105 duration-200 border md:border-2 border-black text-[6px] md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300">
                   L <br />
                   {shirtSize?.L || 0}
                 </div>
-                <div className="text-center py-2 hover:scale-105 duration-200 border-2 border-black text-xs md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300">
+                <div className="text-center py-0.5 md:py-2 hover:scale-105 duration-200 border md:border-2 border-black text-[6px] md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300">
                   XL <br />
                   {shirtSize?.XL || 0}
                 </div>
-                <div className="text-center py-2 hover:scale-105 duration-200 border-2 border-black text-xs md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300">
+                <div className="text-center py-0.5 md:py-2 hover:scale-105 duration-200 border md:border-2 border-black text-[6px] md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300">
                   2XL <br />
                   {shirtSize?.XXL || 0}
                 </div>
-                <div className="text-center py-2 hover:scale-105 duration-200 border-2 border-black text-xs md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300">
+                <div className="text-center py-0.5 md:py-2 hover:scale-105 duration-200 border md:border-2 border-black text-[6px] md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300">
                   3XL <br />
                   {shirtSize?._3XL || 0}
                 </div>
               </div>
-              <h3 className="text-lg md:text-2xl underline pb-2 mt-3">
+              <h3 className="text-[8px] md:text-2xl underline pb-0.5 md:pb-2 mt-1 md:mt-3">
                 Religion:
               </h3>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-6">
+              <div className="grid grid-cols-5 gap-2 md:gap-6">
                 {religion &&
                   Object.entries(religion).map(([religion, count]) => (
                     <div
                       key={religion}
-                      className="text-center py-2 hover:scale-105 duration-200 border-2 border-black  text-xs md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300"
+                      className="text-center py-0.5 md:py-2 hover:scale-105 duration-200 border md:border-2 border-black  text-[5px] md:text-lg rounded-md text-black dark:border-gray-400 dark:text-gray-300"
                     >
                       {religion} <br /> {count}
                     </div>
