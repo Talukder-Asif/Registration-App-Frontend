@@ -69,7 +69,7 @@ const Batchprint = () => {
     const fetchTotalParticipants = async () => {
       try {
         const response = await axios.get(
-          "https://api2.registration.exstudentsforum-brghs.com/totalParticipant",
+          "https://api2.registration.exstudentsforum-brghs.com/totalParticipant/paid",
           {
             params: { selectedBatch },
           }
@@ -91,15 +91,17 @@ const Batchprint = () => {
       try {
         // setsearchingItem(true);
         const response = await axios.get(
-          "https://api2.registration.exstudentsforum-brghs.com/allParticipant",
+          "https://api2.registration.exstudentsforum-brghs.com/allParticipant/paid",
           {
             params: { page, size, selectedBatch },
           }
         );
 
+        console.log(response.data);
+
         const targetBatch = await selectedBatch;
-        const statistic = await axiosPublic.get(`/filteredAll/registration`, {
-          params: { targetBatch },
+        const statistic = await axiosPublic.get(`/filtered/registration`, {
+          params: { targetBatch, status: "Paid" },
         });
         setShirtSize(statistic?.data?.tshirtSizes);
         setReligion(statistic?.data?.religion);

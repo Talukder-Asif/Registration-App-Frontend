@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import useAxios from "../../Hooks/useAxios";
 const NotPress = () => {
   const [batches, setBatches] = useState([]);
@@ -151,8 +150,8 @@ const NotPress = () => {
                         {participants?.map((participantsData, i) => (
                           <tr key={i}>
                             <td>
-                              <Link
-                                to={`/preview/${participantsData?.participantId}`}
+                              <a
+                                href={`/preview/${participantsData?.participantId}`}
                               >
                                 <div className="flex items-center gap-3">
                                   <div className="avatar">
@@ -176,7 +175,7 @@ const NotPress = () => {
                                     </span>
                                   </div>
                                 </div>
-                              </Link>
+                              </a>
                             </td>
                             <td>
                               {participantsData?.ssc_year

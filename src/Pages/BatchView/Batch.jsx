@@ -13,7 +13,7 @@ const Batch = () => {
 
   const axiosPublic = useAxios();
   useEffect(() => {
-    axiosPublic.get("/allSscYears").then((res) => {
+    axiosPublic.get("/allSscYears/paid").then((res) => {
       setBatches(res?.data);
       setLoading(false);
     });
